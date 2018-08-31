@@ -1,0 +1,6 @@
+@media (min-width: 1600px) {
+    div.wide {
+        max-width: 1600px;
+    }
+}
+

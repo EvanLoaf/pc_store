@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="https://gmail.com/evanloafakahaitao"
+           xmlns="https://gmail.com/evanloafakahaitao"
+           elementFormDefault="qualified">
+    <xs:element name="store" type="root"/>
+    <xs:complexType name="root">
+        <xs:sequence>
+            <xs:element name="item" type="itemType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="itemType">
+        <xs:sequence>
+            <xs:element name="name" type="nameType"/>
+            <xs:element name="vendorcode" type="vendorcodeType"/>
+            <xs:element name="description" type="descriptionType"/>
+            <xs:element name="price" type="priceType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="nameType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[a-zA-Z]+[a-zA-Z0-9 ]{0,19}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="vendorcodeType">
+        <xs:restriction base="xs:integer">
+            <xs:pattern value="[0-9]{10}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="descriptionType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[a-zA-Z0-9]+[a-zA-Z0-9 ]{0,99}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="priceType">
+        <xs:restriction base="xs:decimal">
+            <xs:totalDigits value="7"/>
+            <xs:fractionDigits value="2"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>
