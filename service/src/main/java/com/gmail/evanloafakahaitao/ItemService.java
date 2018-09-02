@@ -13,5 +13,4 @@ public interface ItemService {
     Item findByVendorCode(Long vendorCode);
 
     Item findById(int itemId);
-
 }

@@ -1,5 +1,8 @@
 package com.gmail.evanloafakahaitao.model;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public enum CommandEnum {
     LOGIN("/dispatcher?command=login"),
     USERS("/dispatcher?command=users"),
@@ -12,6 +15,8 @@ public enum CommandEnum {
     SEND_FEEDBACK("/dispatcher?command=send_feedback"),
     SUBMIT_FEEDBACK("/dispatcher?command=submit_feedback"),
     SHOW_FEEDBACK("/dispatcher?command=show_feedback");
+
+    private static final Logger logger = LogManager.getLogger(RequestEnum.class);
 
     private final String url;
 
@@ -27,8 +32,7 @@ public enum CommandEnum {
         try {
             return CommandEnum.valueOf(command.toUpperCase());
         } catch (IllegalArgumentException e) {
-            System.out.println("Command " + command.toUpperCase() + " not found");
-            e.printStackTrace();
+            logger.error("Command " + command.toUpperCase() + " not found", e);
         }
         return null;
     }

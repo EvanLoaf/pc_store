@@ -1,8 +1,9 @@
 package com.gmail.evanloafakahaitao.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class User {
+public class User implements Serializable {
 
     private List<Order> ordersFromUser;
     private Long id;

@@ -5,12 +5,16 @@ import com.gmail.evanloafakahaitao.connection.ConnectionService;
 import com.gmail.evanloafakahaitao.model.Feedback;
 import com.gmail.evanloafakahaitao.model.User;
 import com.gmail.evanloafakahaitao.FeedbackService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
 public class FeedbackServiceImpl implements FeedbackService {
+
+    private static final Logger logger = LogManager.getLogger(FeedbackServiceImpl.class);
 
     private ConnectionService connectionService = new ConnectionService();
     private FeedbackDao feedbackDao = new FeedbackDaoImpl();
@@ -26,23 +30,20 @@ public class FeedbackServiceImpl implements FeedbackService {
                     .withMessage(message)
                     .build();
             try {
-                System.out.println("Saving feedback ...");
+                logger.info("Saving feedback ...");
                 connection.setAutoCommit(false);
                 feedbackSaved = feedbackDao.save(connection, feedback);
                 connection.commit();
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                logger.error(e.getMessage(), e);
                 try {
                     connection.rollback();
                 } catch (SQLException e1) {
-                    System.out.println(e1.getMessage());
-                    e1.printStackTrace();
+                    logger.error(e1.getMessage(), e1);
                 }
-                e.printStackTrace();
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return feedbackSaved;
     }
@@ -52,23 +53,20 @@ public class FeedbackServiceImpl implements FeedbackService {
         List<Feedback> feedbackList = null;
         try (Connection connection = connectionService.getConnection()) {
             try {
-                System.out.println("Retrieving all feedback ...");
+                logger.info("Retrieving all feedback ...");
                 connection.setAutoCommit(false);
                 feedbackList = feedbackDao.findAll(connection);
                 connection.commit();
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                logger.error(e.getMessage(), e);
                 try {
                     connection.rollback();
                 } catch (SQLException e1) {
-                    System.out.println(e1.getMessage());
-                    e1.printStackTrace();
+                    logger.error(e1.getMessage(), e1);
                 }
-                e.printStackTrace();
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return feedbackList;
     }

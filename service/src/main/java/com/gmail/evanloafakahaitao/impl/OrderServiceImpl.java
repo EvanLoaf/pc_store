@@ -7,6 +7,8 @@ import com.gmail.evanloafakahaitao.model.Item;
 import com.gmail.evanloafakahaitao.model.Order;
 import com.gmail.evanloafakahaitao.model.User;
 import com.gmail.evanloafakahaitao.OrderService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -15,6 +17,8 @@ import java.util.List;
 import java.util.UUID;
 
 public class OrderServiceImpl implements OrderService {
+
+    private static final Logger logger = LogManager.getLogger(OrderServiceImpl.class);
 
     private ConnectionService connectionService = new ConnectionService();
     private OrderDao orderDao = new OrderDaoImpl();
@@ -36,22 +40,19 @@ public class OrderServiceImpl implements OrderService {
                         .withOrderUuid(uuid)
                         .withQuantity(itemQuantity)
                         .build();
-                System.out.println("Saving order...");
+                logger.info("Saving order...");
                 savedOrders = orderDao.save(connection, order, item);
                 connection.commit();
             } catch (SQLException e) {
-                System.out.printf("Error saving order from User ID %d\n", user.getId());
+                logger.error(e.getMessage(), e);
                 try {
                     connection.rollback();
                 } catch (SQLException e1) {
-                    System.out.println(e1.getMessage());
-                    e1.printStackTrace();
+                    logger.error(e1.getMessage(), e1);
                 }
-                e.printStackTrace();
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return savedOrders;
     }
@@ -61,7 +62,7 @@ public class OrderServiceImpl implements OrderService {
         List<Order> orderList = null;
         try (Connection connection = connectionService.getConnection()) {
             try {
-                System.out.println("Finding orders by user id ...");
+                logger.info("Finding orders by user id ...");
                 connection.setAutoCommit(false);
                 List<Order> orderListWithoutItem = orderDao.findByUserId(connection, id);
                 orderList = new ArrayList<>();
@@ -78,18 +79,15 @@ public class OrderServiceImpl implements OrderService {
                 }
                 connection.commit();
             } catch (SQLException e) {
-                System.out.println("Error retrieving orders by User id");
+                logger.error(e.getMessage(), e);
                 try {
                     connection.rollback();
                 } catch (SQLException e1) {
-                    System.out.println(e1.getMessage());
-                    e1.printStackTrace();
+                    logger.error(e1.getMessage(), e1);
                 }
-                e.printStackTrace();
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return orderList;
     }
@@ -99,23 +97,20 @@ public class OrderServiceImpl implements OrderService {
         int deletedOrders = 0;
         try (Connection connection = connectionService.getConnection()) {
             try {
-                System.out.println("Deleting order by uuid and items from order ...");
+                logger.info("Deleting order by uuid and items from order ...");
                 connection.setAutoCommit(false);
                 deletedOrders = orderDao.deleteByUuid(connection, uuid);
                 connection.commit();
             } catch (SQLException e) {
-                System.out.println("Error deleting order");
+                logger.error(e.getMessage(), e);
                 try {
                     connection.rollback();
                 } catch (SQLException e1) {
-                    System.out.println(e1.getMessage());
-                    e1.printStackTrace();
+                    logger.error(e1.getMessage(), e1);
                 }
-                e.printStackTrace();
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return deletedOrders;
     }

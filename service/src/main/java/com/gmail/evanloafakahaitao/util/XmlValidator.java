@@ -1,5 +1,8 @@
 package com.gmail.evanloafakahaitao.util;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.xml.XMLConstants;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
@@ -9,6 +12,8 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 
 public class XmlValidator {
+
+    private static final Logger logger = LogManager.getLogger(XmlValidator.class);
 
     public boolean validate(String xmlRoute, String xsdRoute) {
         try {
@@ -20,7 +25,7 @@ public class XmlValidator {
             validator.validate(new StreamSource(xml));
             return true;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage(), e);
             return false;
         }
     }

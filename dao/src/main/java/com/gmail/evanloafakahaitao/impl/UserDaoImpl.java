@@ -2,7 +2,10 @@ package com.gmail.evanloafakahaitao.impl;
 
 import com.gmail.evanloafakahaitao.UserDao;
 import com.gmail.evanloafakahaitao.model.User;
+import com.gmail.evanloafakahaitao.util.ItemConverter;
 import com.gmail.evanloafakahaitao.util.UserConverter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoImpl implements UserDao {
+
+    private static final Logger logger = LogManager.getLogger(UserDaoImpl.class);
 
     private UserConverter userConverter = new UserConverter();
 
@@ -28,8 +33,7 @@ public class UserDaoImpl implements UserDao {
                 userList.add(user);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return userList;
     }
@@ -46,8 +50,7 @@ public class UserDaoImpl implements UserDao {
                 }
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return user;
     }

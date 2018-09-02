@@ -2,11 +2,15 @@ package com.gmail.evanloafakahaitao.util;
 
 import com.gmail.evanloafakahaitao.model.RoleEnum;
 import com.gmail.evanloafakahaitao.model.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserConverter {
+
+    private static final Logger logger = LogManager.getLogger(UserConverter.class);
 
     public User toUser(ResultSet resultSet) {
         Long id = null;
@@ -27,8 +31,7 @@ public class UserConverter {
             addInfo = resultSet.getString("add_info");
             role = RoleEnum.getRole(resultSet.getString("role"));
         } catch (SQLException e) {
-            System.out.println("Error extracting values from result set into UserConverter");
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return User.newBuilder()
                 .withId(id)

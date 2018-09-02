@@ -4,6 +4,8 @@ import com.gmail.evanloafakahaitao.OrderDao;
 import com.gmail.evanloafakahaitao.model.Item;
 import com.gmail.evanloafakahaitao.model.Order;
 import com.gmail.evanloafakahaitao.util.OrderConverter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderDaoImpl implements OrderDao {
+
+    private static final Logger logger = LogManager.getLogger(OrderDaoImpl.class);
 
     private OrderConverter orderConverter = new OrderConverter();
 
@@ -29,8 +33,7 @@ public class OrderDaoImpl implements OrderDao {
             preparedStatementSave.setInt(4, order.getQuantity());
             changedRows = preparedStatementSave.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return changedRows;
     }
@@ -50,8 +53,7 @@ public class OrderDaoImpl implements OrderDao {
                 }
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return orderList;
     }
@@ -66,8 +68,7 @@ public class OrderDaoImpl implements OrderDao {
             preparedStatementDeleteOrderByUuid.setString(1, uuid);
             changedOrderRows = preparedStatementDeleteOrderByUuid.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return changedOrderRows;
     }

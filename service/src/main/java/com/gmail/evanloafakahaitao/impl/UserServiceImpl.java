@@ -4,12 +4,16 @@ import com.gmail.evanloafakahaitao.UserDao;
 import com.gmail.evanloafakahaitao.connection.ConnectionService;
 import com.gmail.evanloafakahaitao.model.User;
 import com.gmail.evanloafakahaitao.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
+
+    private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
     private ConnectionService connectionService = new ConnectionService();
     private UserDao userDao = new UserDaoImpl();
@@ -19,24 +23,21 @@ public class UserServiceImpl implements UserService {
         List<User> listOfUsers = null;
         try (Connection connection = connectionService.getConnection()) {
             try {
-                System.out.println("Retrieving all users...");
+                logger.info("Retrieving all users...");
                 connection.setAutoCommit(false);
                 listOfUsers = userDao.findAll(connection);
                 connection.commit();
-                System.out.println("Users found : " + listOfUsers.size());
+                logger.info("Users found : " + listOfUsers.size());
             } catch (SQLException e) {
-                System.out.println("Error retrieving all Users with full info");
+                logger.error(e.getMessage(), e);
                 try {
                     connection.rollback();
                 } catch (SQLException e1) {
-                    System.out.println(e1.getMessage());
-                    e1.printStackTrace();
+                    logger.error(e1.getMessage(), e1);
                 }
-                e.printStackTrace();
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return listOfUsers;
     }
@@ -46,23 +47,20 @@ public class UserServiceImpl implements UserService {
         User user = null;
         try (Connection connection = connectionService.getConnection()) {
             try {
-                System.out.println("Finding user by email...");
+                logger.info("Finding user by email...");
                 connection.setAutoCommit(false);
                 user = userDao.findByEmail(connection, email);
                 connection.commit();
             } catch (SQLException e) {
-                System.out.println("Error retrieving User by email");
+                logger.error(e.getMessage(), e);
                 try {
                     connection.rollback();
                 } catch (SQLException e1) {
-                    System.out.println(e1.getMessage());
-                    e1.printStackTrace();
+                    logger.error(e1.getMessage(), e1);
                 }
-                e.printStackTrace();
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return user;
     }

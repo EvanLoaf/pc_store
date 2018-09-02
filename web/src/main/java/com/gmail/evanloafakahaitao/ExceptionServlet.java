@@ -43,11 +43,11 @@ public class ExceptionServlet extends HttpServlet {
         if (requestUri == null) {
             requestUri = "unknown";
         }
-        System.out.println("Error details:");
-        System.out.println("Status code : " + statusCode);
-        System.out.println("Servlet name : " + servletName);
-        System.out.println("Exception type : " + throwable.getClass().getName());
-        System.out.println("Request Uri : " + requestUri);
+        logger.info("Error details:");
+        logger.info("Status code : " + statusCode);
+        logger.info("Servlet name : " + servletName);
+        logger.info("Exception type : " + throwable.getClass().getName());
+        logger.info("Request Uri : " + requestUri);
         throwable.printStackTrace();
 
         req.setAttribute("error", statusCode);

@@ -2,11 +2,15 @@ package com.gmail.evanloafakahaitao.util;
 
 import com.gmail.evanloafakahaitao.model.Item;
 import com.gmail.evanloafakahaitao.model.Order;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class OrderConverter {
+
+    private static final Logger logger = LogManager.getLogger(OrderConverter.class);
 
     public Order toOrder(ResultSet resultSet) {
         Long id = null;
@@ -21,8 +25,7 @@ public class OrderConverter {
             quantity = resultSet.getInt("quantity");
             itemId = resultSet.getInt("item_id");
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return Order.newBuilder()
                 .withId(id)

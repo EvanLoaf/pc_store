@@ -3,6 +3,8 @@ package com.gmail.evanloafakahaitao.impl;
 import com.gmail.evanloafakahaitao.ItemDao;
 import com.gmail.evanloafakahaitao.model.Item;
 import com.gmail.evanloafakahaitao.util.ItemConverter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemDaoImpl implements ItemDao {
+
+    private static final Logger logger = LogManager.getLogger(ItemDaoImpl.class);
 
     private ItemConverter itemConverter = new ItemConverter();
 
@@ -37,8 +41,7 @@ public class ItemDaoImpl implements ItemDao {
                 }
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return changedRows;
     }
@@ -56,8 +59,7 @@ public class ItemDaoImpl implements ItemDao {
                 itemList.add(item);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return itemList;
     }
@@ -74,8 +76,7 @@ public class ItemDaoImpl implements ItemDao {
                 }
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return item;
     }
@@ -92,8 +93,7 @@ public class ItemDaoImpl implements ItemDao {
                 }
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return item;
     }

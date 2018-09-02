@@ -56,6 +56,17 @@ create table if not exists feedback (
     on delete restrict
 );
 
+create table if not exists audit (
+  id      bigint(19) unsigned auto_increment not null,
+  user_id bigint(19) unsigned                not null,
+  event_type varchar(30)                     not null,
+  created datetime default now() not null,
+  primary key (id),
+  foreign key (user_id) references user (id)
+    on update cascade
+    on delete restrict
+);
+
 insert into role (id, name)
 values (1, 'admin'),
        (2, 'user')

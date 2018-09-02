@@ -2,12 +2,16 @@ package com.gmail.evanloafakahaitao.util;
 
 
 import com.gmail.evanloafakahaitao.model.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ItemConverter {
+
+    private static final Logger logger = LogManager.getLogger(ItemConverter.class);
 
     public Item toItem(ResultSet resultSet) {
         String name = null;
@@ -24,8 +28,7 @@ public class ItemConverter {
             description = resultSet.getString("description");
             price = resultSet.getBigDecimal("price");
         } catch (SQLException e) {
-            System.out.println("Error extracting values from result set into ItemConverter");
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return Item.newBuilder()
                 .withId(id)

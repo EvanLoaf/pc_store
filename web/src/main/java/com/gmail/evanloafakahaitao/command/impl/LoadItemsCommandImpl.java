@@ -9,7 +9,7 @@ import com.gmail.evanloafakahaitao.XmlService;
 import com.gmail.evanloafakahaitao.impl.ItemServiceImpl;
 import com.gmail.evanloafakahaitao.impl.XmlServiceImpl;
 import com.gmail.evanloafakahaitao.model.ItemXml;
-import com.gmail.evanloafakahaitao.util.ItemConverter;
+import com.gmail.evanloafakahaitao.util.XmlItemConverter;
 import com.gmail.evanloafakahaitao.command.Command;
 import com.gmail.evanloafakahaitao.model.CommandEnum;
 
@@ -29,7 +29,7 @@ public class LoadItemsCommandImpl implements Command {
                 configurationManager.getProperty(FileProperties.XML_FILE_PATH),
                 configurationManager.getProperty(FileProperties.SCHEMA_FILE_PATH)
         );
-        List<Item> itemList = ItemConverter.toItems(itemXmlList);
+        List<Item> itemList = XmlItemConverter.toItems(itemXmlList);
         int savedItems = itemService.save(itemList);
         if (savedItems == 0) {
             request.setAttribute("error", "No new items saved, error occurred");

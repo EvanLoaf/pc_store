@@ -4,12 +4,16 @@ import com.gmail.evanloafakahaitao.ItemDao;
 import com.gmail.evanloafakahaitao.connection.ConnectionService;
 import com.gmail.evanloafakahaitao.model.Item;
 import com.gmail.evanloafakahaitao.ItemService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
 public class ItemServiceImpl implements ItemService {
+
+    private static final Logger logger = LogManager.getLogger(ItemServiceImpl.class);
 
     private ConnectionService connectionService = new ConnectionService();
     private ItemDao itemDao = new ItemDaoImpl();
@@ -19,23 +23,20 @@ public class ItemServiceImpl implements ItemService {
         int savedItems = 0;
         try (Connection connection = connectionService.getConnection()) {
             try {
-                System.out.println("Saving list of items ...");
+                logger.info("Saving list of items ...");
                 connection.setAutoCommit(false);
                 savedItems = itemDao.save(connection, itemList);
                 connection.commit();
             } catch (SQLException e) {
-                System.out.printf("Error saving List of %d items\n", itemList.size());
+                logger.error(e.getMessage(), e);
                 try {
                     connection.rollback();
                 } catch (SQLException e1) {
-                    System.out.println(e1.getMessage());
-                    e1.printStackTrace();
+                    logger.error(e1.getMessage(), e1);
                 }
-                e.printStackTrace();
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return savedItems;
     }
@@ -45,23 +46,20 @@ public class ItemServiceImpl implements ItemService {
         List<Item> itemList = null;
         try (Connection connection = connectionService.getConnection()) {
             try {
-                System.out.println("Finding all items ...");
+                logger.info("Finding all items ...");
                 connection.setAutoCommit(false);
                 itemList = itemDao.findAll(connection);
                 connection.commit();
             } catch (SQLException e) {
-                System.out.println("Error retrieving all Items");
+                logger.error(e.getMessage(), e);
                 try {
                     connection.rollback();
                 } catch (SQLException e1) {
-                    System.out.println(e1.getMessage());
-                    e1.printStackTrace();
+                    logger.error(e1.getMessage(), e1);
                 }
-                e.printStackTrace();
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return itemList;
     }
@@ -71,23 +69,20 @@ public class ItemServiceImpl implements ItemService {
         Item item = null;
         try (Connection connection = connectionService.getConnection()) {
             try {
-                System.out.println("Finding item by vendor code ...");
+                logger.info("Finding item by vendor code ...");
                 connection.setAutoCommit(false);
                 item = itemDao.findByVendorCode(connection, vendorCode);
                 connection.commit();
             } catch (SQLException e) {
-                System.out.println("Error retrieving item by vendor code");
+                logger.error(e.getMessage(), e);
                 try {
                     connection.rollback();
                 } catch (SQLException e1) {
-                    System.out.println(e1.getMessage());
-                    e1.printStackTrace();
+                    logger.error(e1.getMessage(), e1);
                 }
-                e.printStackTrace();
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return item;
     }
@@ -97,23 +92,20 @@ public class ItemServiceImpl implements ItemService {
         Item item = null;
         try (Connection connection = connectionService.getConnection()) {
             try {
-                System.out.println("Finding item by id ...");
+                logger.info("Finding item by id ...");
                 connection.setAutoCommit(false);
                 item = itemDao.findById(connection, itemId);
                 connection.commit();
             } catch (SQLException e) {
-                System.out.println("Error retrieving item by id");
+                logger.error(e.getMessage(), e);
                 try {
                     connection.rollback();
                 } catch (SQLException e1) {
-                    System.out.println(e1.getMessage());
-                    e1.printStackTrace();
+                    logger.error(e1.getMessage(), e1);
                 }
-                e.printStackTrace();
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return item;
     }

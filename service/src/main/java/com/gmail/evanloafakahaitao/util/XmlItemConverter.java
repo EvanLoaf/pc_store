@@ -2,11 +2,15 @@ package com.gmail.evanloafakahaitao.util;
 
 import com.gmail.evanloafakahaitao.model.*;
 import com.gmail.evanloafakahaitao.model.ItemXml;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemConverter {
+public class XmlItemConverter {
+
+    private static final Logger logger = LogManager.getLogger(XmlItemConverter.class);
 
     public static List<Item> toItems(List<ItemXml> xmlItemsList) {
         List<Item> itemsList = new ArrayList<>();
@@ -21,9 +25,9 @@ public class ItemConverter {
                         .build();
                 itemsList.add(item);
             }
-            System.out.println("Xml items converted to Items");
+            logger.info("Xml items converted to Items");
         } else {
-            System.out.println("No xml Items in the List");
+            logger.info("No xml Items in the List");
         }
         return itemsList;
     }

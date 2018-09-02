@@ -3,6 +3,8 @@ package com.gmail.evanloafakahaitao.impl;
 import com.gmail.evanloafakahaitao.FeedbackDao;
 import com.gmail.evanloafakahaitao.model.Feedback;
 import com.gmail.evanloafakahaitao.model.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,6 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FeedbackDaoImpl implements FeedbackDao {
+
+    private static final Logger logger = LogManager.getLogger(FeedbackDaoImpl.class);
+
     @Override
     public int save(Connection connection, Feedback feedback) {
         String saveFeedback = "insert into feedback(user_id, message) values(?, ?)";
@@ -21,8 +26,7 @@ public class FeedbackDaoImpl implements FeedbackDao {
             preparedStatement.setString(2, feedback.getMessage());
             changedRows = preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return changedRows;
     }
@@ -48,8 +52,7 @@ public class FeedbackDaoImpl implements FeedbackDao {
                 feedbackList.add(feedback);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return feedbackList;
     }
