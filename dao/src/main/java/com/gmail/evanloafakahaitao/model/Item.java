@@ -14,7 +14,7 @@ public class Item implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
-    private Integer id;
+    private Long id;
     @Column(name = "name")
     private String name;
     @Column(name = "vendor_code")
@@ -44,7 +44,7 @@ public class Item implements Serializable {
         return ordersForItem;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
@@ -68,7 +68,7 @@ public class Item implements Serializable {
         this.ordersForItem = ordersForItem;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -90,7 +90,7 @@ public class Item implements Serializable {
 
     public static final class Builder {
         private List<Order> ordersForItem;
-        private Integer id;
+        private Long id;
         private String name;
         private Long vendorCode;
         private String description;
@@ -104,7 +104,7 @@ public class Item implements Serializable {
             return this;
         }
 
-        public Builder withId(Integer val) {
+        public Builder withId(Long val) {
             id = val;
             return this;
         }

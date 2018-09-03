@@ -17,7 +17,7 @@ public class OrderConverter {
         String orderUuid = null;
         String createdDate = null;
         int quantity = 0;
-        int itemId = 0;
+        Long itemId = 0;
         try {
             id = resultSet.getLong("order_id");
             orderUuid = resultSet.getString("uuid");

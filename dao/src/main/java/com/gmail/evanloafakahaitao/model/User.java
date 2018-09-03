@@ -5,7 +5,11 @@ import java.util.List;
 
 public class User implements Serializable {
 
+    private List<Audit> auditList;
+    private List<Comment> commentList;
+    private List<News> newsList;
     private List<Order> ordersFromUser;
+    private Profile profile;
     private Long id;
     private String email;
     private String password;
@@ -16,7 +20,11 @@ public class User implements Serializable {
     private RoleEnum role;
 
     private User(Builder builder) {
+        auditList = builder.auditList;
+        commentList = builder.commentList;
+        newsList = builder.newsList;
         ordersFromUser = builder.ordersFromUser;
+        profile = builder.profile;
         id = builder.id;
         email = builder.email;
         password = builder.password;
@@ -31,8 +39,24 @@ public class User implements Serializable {
         return new Builder();
     }
 
+    public List<Audit> getAuditList() {
+        return auditList;
+    }
+
+    public List<Comment> getCommentList() {
+        return commentList;
+    }
+
+    public List<News> getNewsList() {
+        return newsList;
+    }
+
     public List<Order> getOrdersFromUser() {
         return ordersFromUser;
+    }
+
+    public Profile getProfile() {
+        return profile;
     }
 
     public Long getId() {
@@ -68,7 +92,11 @@ public class User implements Serializable {
     }
 
     public static final class Builder {
+        private List<Audit> auditList;
+        private List<Comment> commentList;
+        private List<News> newsList;
         private List<Order> ordersFromUser;
+        private Profile profile;
         private Long id;
         private String email;
         private String password;
@@ -81,8 +109,28 @@ public class User implements Serializable {
         private Builder() {
         }
 
+        public Builder withAuditList(List<Audit> val) {
+            auditList = val;
+            return this;
+        }
+
+        public Builder withCommentList(List<Comment> val) {
+            commentList = val;
+            return this;
+        }
+
+        public Builder withNewsList(List<News> val) {
+            newsList = val;
+            return this;
+        }
+
         public Builder withOrdersFromUser(List<Order> val) {
             ordersFromUser = val;
+            return this;
+        }
+
+        public Builder withProfile(Profile val) {
+            profile = val;
             return this;
         }
 

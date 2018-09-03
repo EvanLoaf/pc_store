@@ -18,10 +18,10 @@ public class ItemConverter {
         Long vendorCode = null;
         String description = null;
         BigDecimal price = null;
-        Integer id = null;
+        Long id = null;
         try {
             if (resultSet.getString("item_id") != null) {
-                id = resultSet.getInt("item_id");
+                id = resultSet.getLong("item_id");
             }
             name = resultSet.getString("item_name");
             vendorCode = resultSet.getLong("vendor_code");
