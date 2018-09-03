@@ -82,11 +82,11 @@ public class ItemDaoImpl implements ItemDao {
     }
 
     @Override
-    public Item findById(Connection connection, int itemId) {
+    public Item findById(Connection connection, Long itemId) {
         String findById = "select i.id as item_id, i.name as item_name, i.vendor_code, i.description, i.price from item i where i.id = ?";
         Item item = null;
         try (PreparedStatement preparedStatement = connection.prepareStatement(findById)) {
-            preparedStatement.setInt(1, itemId);
+            preparedStatement.setLong(1, itemId);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     item = itemConverter.toItem(resultSet);

@@ -88,7 +88,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Item findById(int itemId) {
+    public Item findById(Long itemId) {
         Item item = null;
         try (Connection connection = connectionService.getConnection()) {
             try {

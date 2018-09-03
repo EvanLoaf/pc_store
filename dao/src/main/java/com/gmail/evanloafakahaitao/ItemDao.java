@@ -13,5 +13,5 @@ public interface ItemDao {
 
     Item findByVendorCode(Connection connection, Long vendorCode);
 
-    Item findById(Connection connection, int itemId);
+    Item findById(Connection connection, Long itemId);
 }
