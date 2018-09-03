@@ -2,10 +2,15 @@ package com.gmail.evanloafakahaitao.impl;
 
 import com.gmail.evanloafakahaitao.ItemDao;
 import com.gmail.evanloafakahaitao.connection.ConnectionService;
+import com.gmail.evanloafakahaitao.converter.impl.ItemConverterImpl;
+import com.gmail.evanloafakahaitao.converter.impl.ItemDTOConverterImpl;
+import com.gmail.evanloafakahaitao.dto.ItemDTO;
 import com.gmail.evanloafakahaitao.model.Item;
 import com.gmail.evanloafakahaitao.ItemService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -16,7 +21,9 @@ public class ItemServiceImpl implements ItemService {
     private static final Logger logger = LogManager.getLogger(ItemServiceImpl.class);
 
     private ConnectionService connectionService = new ConnectionService();
-    private ItemDao itemDao = new ItemDaoImpl();
+    private ItemDaoImpl itemDao = new ItemDaoImpl(Item.class);
+    private ItemConverterImpl itemConverter = new ItemConverterImpl();
+    private ItemDTOConverterImpl itemDTOConverter = new ItemDTOConverterImpl();
 
     @Override
     public int save(List<Item> itemList) {
@@ -108,5 +115,28 @@ public class ItemServiceImpl implements ItemService {
             logger.error(e.getMessage(), e);
         }
         return item;
+    }
+
+    @Override
+    public ItemDTO save(ItemDTO itemDTO) {
+        Session session = itemDao.getCurrentSession();
+        try {
+            Transaction transaction = session.getTransaction();
+            /*if (!transaction.isActive()) {
+                session.beginTransaction();
+            }*/
+            transaction.begin();
+            Item item = itemConverter.toEntity(itemDTO);
+            itemDao.create(item);
+            transaction.commit();
+            return itemDTOConverter.toDto(item);
+        } catch (Exception e) {
+            if (session.getTransaction().isActive()) {
+                session.getTransaction().rollback();
+            }
+            logger.error("Failed to save Item! - CREATE METHOD");
+            logger.error(e.getMessage(), e);
+        }
+        return itemDTO;
     }
 }

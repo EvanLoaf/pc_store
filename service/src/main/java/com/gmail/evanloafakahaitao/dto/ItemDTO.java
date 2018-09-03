@@ -1,34 +1,27 @@
-package com.gmail.evanloafakahaitao.model;
+package com.gmail.evanloafakahaitao.dto;
 
-import javax.persistence.*;
+import com.gmail.evanloafakahaitao.model.Item;
+import com.gmail.evanloafakahaitao.model.Order;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
-@Entity
-@Table(name = "item")
-public class Item implements Serializable {
+public class ItemDTO implements Serializable {
 
-    //private List<Order> ordersForItem;
+    private List<Order> ordersForItem;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false, nullable = false)
     private Long id;
-    @Column(name = "name")
     private String name;
-    @Column(name = "vendor_code")
     private Long vendorCode;
-    @Column(name = "description")
     private String description;
-    @Column(name = "price")
     private BigDecimal price;
 
-    public Item() {
+    public ItemDTO() {
     }
 
-    private Item(Builder builder) {
-        //ordersForItem = builder.ordersForItem;
+    private ItemDTO(Builder builder) {
+        ordersForItem = builder.ordersForItem;
         id = builder.id;
         name = builder.name;
         vendorCode = builder.vendorCode;
@@ -40,9 +33,9 @@ public class Item implements Serializable {
         return new Builder();
     }
 
-    /*public List<Order> getOrdersForItem() {
+    public List<Order> getOrdersForItem() {
         return ordersForItem;
-    }*/
+    }
 
     public Long getId() {
         return id;
@@ -64,9 +57,9 @@ public class Item implements Serializable {
         return price;
     }
 
-    /*public void setOrdersForItem(List<Order> ordersForItem) {
+    public void setOrdersForItem(List<Order> ordersForItem) {
         this.ordersForItem = ordersForItem;
-    }*/
+    }
 
     public void setId(Long id) {
         this.id = id;
@@ -89,7 +82,7 @@ public class Item implements Serializable {
     }
 
     public static final class Builder {
-        //private List<Order> ordersForItem;
+        private List<Order> ordersForItem;
         private Long id;
         private String name;
         private Long vendorCode;
@@ -99,10 +92,10 @@ public class Item implements Serializable {
         private Builder() {
         }
 
-        /*public Builder withOrdersForItem(List<Order> val) {
+        public Builder withOrdersForItem(List<Order> val) {
             ordersForItem = val;
             return this;
-        }*/
+        }
 
         public Builder withId(Long val) {
             id = val;
@@ -129,8 +122,8 @@ public class Item implements Serializable {
             return this;
         }
 
-        public Item build() {
-            return new Item(this);
+        public ItemDTO build() {
+            return new ItemDTO(this);
         }
     }
 }

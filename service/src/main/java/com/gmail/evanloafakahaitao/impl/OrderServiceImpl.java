@@ -22,7 +22,7 @@ public class OrderServiceImpl implements OrderService {
 
     private ConnectionService connectionService = new ConnectionService();
     private OrderDao orderDao = new OrderDaoImpl();
-    private ItemDao itemDao = new ItemDaoImpl();
+    private ItemDao itemDao = new ItemDaoImpl(Item.class);
 
     @Override
     public int save(Long userId, Long vendorCode, int itemQuantity) {

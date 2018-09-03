@@ -46,7 +46,7 @@ create table if not exists `order` (
   id       bigint(19) unsigned auto_increment not null,
   uuid     varchar(36)                        not null,
   user_id  bigint(19) unsigned                not null,
-  item_id  int unsigned                       not null,
+  item_id  bigint(19) unsigned                       not null,
   created  datetime default now()             not null,
   quantity int unsigned                       not null,
   primary key (id),

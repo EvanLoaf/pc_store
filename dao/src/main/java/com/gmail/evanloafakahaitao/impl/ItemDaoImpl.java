@@ -13,11 +13,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemDaoImpl implements ItemDao {
+public class ItemDaoImpl extends GenericDaoImpl<Item> implements ItemDao {
 
     private static final Logger logger = LogManager.getLogger(ItemDaoImpl.class);
 
     private ItemConverter itemConverter = new ItemConverter();
+
+    public ItemDaoImpl(Class<Item> clazz) {
+        super(clazz);
+    }
 
     @Override
     public int save(Connection connection, List<Item> itemList) {

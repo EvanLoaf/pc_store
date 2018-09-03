@@ -25,7 +25,7 @@ public class XmlParser {
             for (ItemXml xmlItem : xmlItems.getXmlItems()) {
                 logger.info(
                         String.format(
-                        "Item from xml: name - %s, vendor code - %d, description - %s, price - %.2f\n",
+                        "Item from xml: name - %s, vendor code - %d, description - %s, price - %.2f",
                         xmlItem.getName(), xmlItem.getVendorcode(), xmlItem.getDescription(), xmlItem.getPrice()
                         )
                 );

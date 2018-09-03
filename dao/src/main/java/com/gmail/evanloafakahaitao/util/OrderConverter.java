@@ -17,13 +17,13 @@ public class OrderConverter {
         String orderUuid = null;
         String createdDate = null;
         int quantity = 0;
-        Long itemId = 0;
+        Long itemId = Long.valueOf(0);
         try {
             id = resultSet.getLong("order_id");
             orderUuid = resultSet.getString("uuid");
             createdDate = resultSet.getString("created");
             quantity = resultSet.getInt("quantity");
-            itemId = resultSet.getInt("item_id");
+            itemId = resultSet.getLong("item_id");
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
         }
