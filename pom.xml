@@ -14,7 +14,10 @@
     </modules>
 
     <properties>
-        <hibernate.version>5.3.3.Final</hibernate.version>
+        <hibernate.validator.version>6.0.12.Final</hibernate.validator.version>
+        <lang3.version>3.8</lang3.version>
+        <ehcache.version>5.3.5.Final</ehcache.version>
+        <hibernate.version>5.3.5.Final</hibernate.version>
         <mysql.version>8.0.11</mysql.version>
         <servlet.jstl.version>1.2</servlet.jstl.version>
         <servlet-api.version>4.0.1</servlet-api.version>

@@ -1,0 +1,6 @@
+<cache name="com.gmail.evanloafakahaitao.dao.model.Item"
+       maxElementsInMemory="500"
+       timeToIdleSeconds="30"
+       timeToLiveSeconds="30"
+       eternal="true"
+       overflowToDisk="false"/>

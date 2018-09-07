@@ -11,7 +11,7 @@
 
     <servlet>
         <servlet-name>DispatcherServlet</servlet-name>
-        <servlet-class>com.gmail.evanloafakahaitao.DispatcherServlet</servlet-class>
+        <servlet-class>com.gmail.evanloafakahaitao.web.DispatcherServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -26,7 +26,7 @@
 
     <servlet>
         <servlet-name>ErrorServlet</servlet-name>
-        <servlet-class>com.gmail.evanloafakahaitao.ExceptionServlet</servlet-class>
+        <servlet-class>com.gmail.evanloafakahaitao.web.ExceptionServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -36,7 +36,7 @@
 
     <filter>
         <filter-name>AuthenticationFilter</filter-name>
-        <filter-class>com.gmail.evanloafakahaitao.filter.AuthenticationFilter</filter-class>
+        <filter-class>com.gmail.evanloafakahaitao.web.filter.AuthenticationFilter</filter-class>
     </filter>
 
     <filter-mapping>
@@ -46,7 +46,7 @@
 
     <filter>
         <filter-name>LogFilter</filter-name>
-        <filter-class>com.gmail.evanloafakahaitao.filter.LogFilter</filter-class>
+        <filter-class>com.gmail.evanloafakahaitao.web.filter.LogFilter</filter-class>
     </filter>
 
     <filter-mapping>
@@ -56,7 +56,7 @@
 
     <filter>
         <filter-name>RequestEncodeFilter</filter-name>
-        <filter-class>com.gmail.evanloafakahaitao.filter.RequestEncodeFilter</filter-class>
+        <filter-class>com.gmail.evanloafakahaitao.web.filter.RequestEncodeFilter</filter-class>
     </filter>
 
     <filter-mapping>

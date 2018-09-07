@@ -23,28 +23,7 @@
         </RollingFile>
     </Appenders>
     <Loggers>
-        <Logger name="com.gmail.evanloafakahaitao.connection" level="info">
-            <AppenderRef ref="RollingFileDao"/>
-        </Logger>
-        <Logger name="com.gmail.evanloafakahaitao.impl.FeedbackDaoImpl" level="info">
-            <AppenderRef ref="RollingFileDao"/>
-        </Logger>
-        <Logger name="com.gmail.evanloafakahaitao.impl.ItemDaoImpl" level="info">
-            <AppenderRef ref="RollingFileDao"/>
-        </Logger>
-        <Logger name="com.gmail.evanloafakahaitao.impl.OrderDaoImpl" level="info">
-            <AppenderRef ref="RollingFileDao"/>
-        </Logger>
-        <Logger name="com.gmail.evanloafakahaitao.impl.UserDaoImpl" level="info">
-            <AppenderRef ref="RollingFileDao"/>
-        </Logger>
-        <Logger name="com.gmail.evanloafakahaitao.util.ItemConverter" level="info">
-            <AppenderRef ref="RollingFileDao"/>
-        </Logger>
-        <Logger name="com.gmail.evanloafakahaitao.util.OrderConverter" level="info">
-            <AppenderRef ref="RollingFileDao"/>
-        </Logger>
-        <Logger name="com.gmail.evanloafakahaitao.util.UserConverter" level="info">
+        <Logger name="com.gmail.evanloafakahaitao.dao" level="info">
             <AppenderRef ref="RollingFileDao"/>
         </Logger>
         <Root level="info">

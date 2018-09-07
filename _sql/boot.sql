@@ -1,123 +1,141 @@
-create table if not exists role (
-  id   bigint(19) unsigned auto_increment not null,
-  name varchar(5)                         not null,
-  primary key (id)
+create table if not exists t_role (
+  f_id   bigint(19) unsigned auto_increment not null,
+  f_name varchar(15)                        not null,
+  primary key (f_id)
 );
 
-create table if not exists permission (
-  id   bigint(19) unsigned auto_increment not null,
-  name varchar(5)                         not null,
-  primary key (id)
+create table if not exists t_permission (
+  f_id   bigint(19) unsigned auto_increment not null,
+  f_name varchar(30)                        not null,
+  primary key (f_id)
 );
 
-create table if not exists role_permission (
-  role_id       bigint(19) unsigned not null,
-  permission_id bigint(19) unsigned not null,
-  primary key (role_id, permission_id)
-);
-
-create table if not exists user (
-  id           bigint(19) unsigned auto_increment not null,
-  email        varchar(30)                        not null,
-  password     varchar(20)                        not null,
-  first_name   varchar(20)                        not null,
-  last_name    varchar(20)                        not null,
-  phone_number varchar(20)                        not null,
-  add_info     varchar(100) default null,
-  role_id      bigint(19) unsigned                not null,
-  primary key (id),
-  unique (email),
-  foreign key (role_id) references role (id)
-    on update cascade
-    on delete restrict
-);
-
-create table if not exists item (
-  id          bigint(19) unsigned auto_increment unique not null,
-  name        varchar(20)                        not null,
-  vendor_code bigint(11)                         not null,
-  description varchar(100)                       not null,
-  price       decimal(20, 15) unsigned           not null,
-  primary key (vendor_code),
-  index (id)
-);
-
-create table if not exists `order` (
-  id       bigint(19) unsigned auto_increment not null,
-  uuid     varchar(36)                        not null,
-  user_id  bigint(19) unsigned                not null,
-  item_id  bigint(19) unsigned                       not null,
-  created  datetime default now()             not null,
-  quantity int unsigned                       not null,
-  primary key (id),
-  foreign key (user_id) references user (id)
+create table if not exists t_role_permission (
+  f_role_id       bigint(19) unsigned not null,
+  f_permission_id bigint(19) unsigned not null,
+  primary key (f_role_id, f_permission_id),
+  foreign key (f_role_id) references t_role (f_id)
     on update cascade
     on delete restrict,
-  foreign key (item_id) references item (id)
+  foreign key (f_permission_id) references t_permission (f_id)
     on update cascade
     on delete restrict
 );
 
-create table if not exists feedback (
-  id      int unsigned auto_increment not null,
-  user_id bigint(19) unsigned         not null,
-  message varchar(200)                not null,
-  primary key (id),
-  foreign key (user_id) references user (id)
+create table if not exists t_user (
+  f_id         bigint(19) unsigned auto_increment not null,
+  f_email      varchar(30)                        not null,
+  f_first_name varchar(20)                        not null,
+  f_last_name  varchar(20)                        not null,
+  f_password   varchar(20)                        not null,
+  f_role_id    bigint(19) unsigned                not null,
+  primary key (f_id),
+  unique (f_email),
+  foreign key (f_role_id) references t_role (f_id)
     on update cascade
     on delete restrict
 );
 
-create table if not exists audit (
-  id         bigint(19) unsigned auto_increment not null,
-  user_id    bigint(19) unsigned                not null,
-  event_type varchar(30)                        not null,
-  created    datetime default now()             not null,
-  primary key (id),
-  foreign key (user_id) references user (id)
+create table if not exists t_profile (
+  f_user_id      bigint(19) unsigned auto_increment not null,
+  f_address      varchar(90)                        not null,
+  f_phone_number varchar(20)                        not null,
+  primary key (f_user_id),
+  foreign key (f_user_id) references t_user (f_id)
     on update cascade
     on delete restrict
 );
 
-create table if not exists news (
-  id      bigint(19) unsigned auto_increment not null,
-  title   varchar(40)                        not null,
-  content varchar(180)                       not null,
-  created datetime default now()             not null,
-  user_id bigint(19) unsigned                not null,
-  primary key (id),
-  foreign key (user_id) references user (id)
+create table if not exists t_item (
+  f_id          bigint(19) unsigned auto_increment not null,
+  f_name        varchar(20)                        not null,
+  f_vendor_code bigint(11) unsigned unique         not null,
+  f_description varchar(100)                       not null,
+  f_price       decimal(10, 5) unsigned            not null,
+  primary key (f_id),
+  index (f_vendor_code)
+);
+
+create table if not exists t_order (
+  f_user_id  bigint(19) unsigned                not null,
+  f_item_id  bigint(19) unsigned                not null,
+  f_uuid     varchar(36)                        not null,
+  f_created  datetime default now()             not null,
+  f_quantity int unsigned                       not null,
+  f_status   varchar(20)                        not null,
+  primary key (f_user_id, f_item_id),
+  foreign key (f_user_id) references t_user (f_id)
+    on update cascade
+    on delete restrict,
+  foreign key (f_item_id) references t_item (f_id)
     on update cascade
     on delete restrict
 );
 
-create table if not exists comment (
-  id      bigint(19) unsigned auto_increment not null,
-  content varchar(180)                       not null,
-  created datetime default now()             not null,
-  user_id bigint(19) unsigned                not null,
-  primary key (id),
-  foreign key (user_id) references user (id)
+create table if not exists t_feedback (
+  f_id      int unsigned auto_increment not null,
+  f_user_id bigint(19) unsigned         not null,
+  f_message varchar(200)                not null,
+  primary key (f_id),
+  foreign key (f_user_id) references t_user (f_id)
     on update cascade
     on delete restrict
 );
 
-create table if not exists profile (
-  user_id   bigint(19) unsigned auto_increment not null,
-  address   varchar(90)                        not null,
-  telephone varchar(25)                        not null,
-  primary key (user_id),
-  foreign key (user_id) references user (id)
+create table if not exists t_audit (
+  f_id         bigint(19) unsigned auto_increment not null,
+  f_user_id    bigint(19) unsigned                not null,
+  f_event_type varchar(30)                        not null,
+  f_created    datetime default now()             not null,
+  primary key (f_id),
+  foreign key (f_user_id) references t_user (f_id)
     on update cascade
     on delete restrict
 );
 
-insert into role (id, name)
+create table if not exists t_news (
+  f_id      bigint(19) unsigned auto_increment not null,
+  f_title   varchar(40)                        not null,
+  f_content varchar(180)                       not null,
+  f_created datetime default now()             not null,
+  f_user_id bigint(19) unsigned                not null,
+  primary key (f_id),
+  foreign key (f_user_id) references t_user (f_id)
+    on update cascade
+    on delete restrict
+);
+
+create table if not exists t_comment (
+  f_id      bigint(19) unsigned auto_increment not null,
+  f_content varchar(180)                       not null,
+  f_created datetime default now()             not null,
+  f_user_id bigint(19) unsigned                not null,
+  f_news_id bigint(19) unsigned                not null,
+  primary key (f_id),
+  foreign key (f_user_id) references t_user (f_id)
+    on update cascade
+    on delete restrict,
+  foreign key (f_news_id) references t_news (f_id)
+    on update cascade
+    on delete restrict
+);
+
+insert into t_role (f_id, f_name)
 values (1, 'admin'),
        (2, 'user')
-on duplicate key update id = id;
+on duplicate key update f_id = f_id;
 
-insert into user (id, email, password, first_name, last_name, phone_number, add_info, role_id)
-values (1, 'root@admin', 'root', 'root', 'admin', '1-800-admin', 'unknown', (select id from role where name = 'admin')),
-       (2, 'root@user', 'root', 'root', 'user', '1-800-user', 'unknown', (select id from role where name = 'user'))
-on duplicate key update id = id;
+insert into t_permission (f_id, f_name)
+values (1, 'admin_permission_set'),
+       (2, 'user_permission_set')
+on duplicate key update f_id = f_id;
+
+insert into t_role_permission (f_role_id, f_permission_id)
+values (1, 1),
+       (2, 2)
+on duplicate key update f_role_id = f_role_id;
+
+insert into t_user (f_id, f_email, f_password, f_first_name, f_last_name, f_role_id)
+values (1, 'root@admin', 'root', 'root', 'admin', (select f_id from t_role where f_name = 'admin')),
+       (2, 'root@user', 'root', 'root', 'user', (select f_id from t_role where f_name = 'user'))
+on duplicate key update f_id = f_id;
