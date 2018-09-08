@@ -3,7 +3,7 @@ package com.gmail.evanloafakahaitao.service.impl;
 import com.gmail.evanloafakahaitao.dao.XmlDao;
 import com.gmail.evanloafakahaitao.service.XmlService;
 import com.gmail.evanloafakahaitao.dao.impl.XmlDaoImpl;
-import com.gmail.evanloafakahaitao.service.model.ItemXml;
+import com.gmail.evanloafakahaitao.dao.model.ItemXml;
 import com.gmail.evanloafakahaitao.service.util.XmlParser;
 import com.gmail.evanloafakahaitao.service.util.XmlValidator;
 import org.apache.logging.log4j.LogManager;

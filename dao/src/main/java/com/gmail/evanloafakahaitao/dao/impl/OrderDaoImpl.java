@@ -1,50 +1,23 @@
 package com.gmail.evanloafakahaitao.dao.impl;
 
 import com.gmail.evanloafakahaitao.dao.OrderDao;
-import com.gmail.evanloafakahaitao.dao.model.Item;
 import com.gmail.evanloafakahaitao.dao.model.Order;
-import com.gmail.evanloafakahaitao.dao.util.OrderConverter;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.hibernate.query.Query;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class OrderDaoImpl extends GenericDaoImpl<Order> implements OrderDao {
 
-    private static final Logger logger = LogManager.getLogger(OrderDaoImpl.class);
-
-    private OrderConverter orderConverter = new OrderConverter();
+    //private static final Logger logger = LogManager.getLogger(OrderDaoImpl.class);
 
     public OrderDaoImpl(Class<Order> clazz) {
         super(clazz);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public int save(Connection connection, Order order, Item item) {
-        String saveOrder = "insert into `order`(user_id, uuid, item_id, quantity) values(?, ?, ? , ?)";
-        int changedRows = 0;
-        try (
-                PreparedStatement preparedStatementSave = connection.prepareStatement(saveOrder, PreparedStatement.RETURN_GENERATED_KEYS)
-        ) {
-            preparedStatementSave.setLong(1, order.getUser().getId());
-            preparedStatementSave.setString(2, order.getUuid());
-            preparedStatementSave.setLong(3, item.getId());
-            preparedStatementSave.setInt(4, order.getQuantity());
-            changedRows = preparedStatementSave.executeUpdate();
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-        }
-        return changedRows;
-    }
-
-    @Override
-    public List<Order> findByUserId(Connection connection, Long id) {
-        String findOrdersByUserId = "select id as order_id, uuid, item_id, created, quantity from `order` where user_id = ?";
+    public List<Order> findByUserId(Long id) {
+        /*String findOrdersByUserId = "select id as order_id, uuid, item_id, created, quantity from `order` where user_id = ?";
         List<Order> orderList = new ArrayList<>();
         try (
                 PreparedStatement preparedStatementOrders = connection.prepareStatement(findOrdersByUserId);
@@ -59,12 +32,16 @@ public class OrderDaoImpl extends GenericDaoImpl<Order> implements OrderDao {
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
         }
-        return orderList;
+        return orderList;*/
+        String hql = "from Order as O where O.user.id=:id";
+        Query query = getCurrentSession().createQuery(hql);
+        query.setParameter("id", id);
+        return query.getResultList();
     }
 
     @Override
-    public int deleteByUuid(Connection connection, String uuid) {
-        String deleteOrderByUuid = "delete from `order` where uuid = ?";
+    public int deleteByUuid(String uuid) {
+        /*String deleteOrderByUuid = "delete from `order` where uuid = ?";
         int changedOrderRows = 0;
         try (
                 PreparedStatement preparedStatementDeleteOrderByUuid = connection.prepareStatement(deleteOrderByUuid)
@@ -74,6 +51,10 @@ public class OrderDaoImpl extends GenericDaoImpl<Order> implements OrderDao {
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
         }
-        return changedOrderRows;
+        return changedOrderRows;*/
+        String hql = "delete from Order as O where O.uuid=:uuid";
+        Query query = getCurrentSession().createQuery(hql);
+        query.setParameter("uuid", uuid);
+        return query.executeUpdate();
     }
 }

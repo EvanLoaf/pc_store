@@ -1,14 +1,9 @@
-package com.gmail.evanloafakahaitao.web.dto;
-
-import com.gmail.evanloafakahaitao.dao.model.Order;
+package com.gmail.evanloafakahaitao.service.dto;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
 
 public class ItemDTO implements Serializable {
-
-    private List<Order> ordersForItem;
 
     private Long id;
     private String name;
@@ -20,7 +15,6 @@ public class ItemDTO implements Serializable {
     }
 
     private ItemDTO(Builder builder) {
-        ordersForItem = builder.ordersForItem;
         id = builder.id;
         name = builder.name;
         vendorCode = builder.vendorCode;
@@ -30,10 +24,6 @@ public class ItemDTO implements Serializable {
 
     public static Builder newBuilder() {
         return new Builder();
-    }
-
-    public List<Order> getOrdersForItem() {
-        return ordersForItem;
     }
 
     public Long getId() {
@@ -54,10 +44,6 @@ public class ItemDTO implements Serializable {
 
     public BigDecimal getPrice() {
         return price;
-    }
-
-    public void setOrdersForItem(List<Order> ordersForItem) {
-        this.ordersForItem = ordersForItem;
     }
 
     public void setId(Long id) {
@@ -81,7 +67,6 @@ public class ItemDTO implements Serializable {
     }
 
     public static final class Builder {
-        private List<Order> ordersForItem;
         private Long id;
         private String name;
         private Long vendorCode;
@@ -89,11 +74,6 @@ public class ItemDTO implements Serializable {
         private BigDecimal price;
 
         private Builder() {
-        }
-
-        public Builder withOrdersForItem(List<Order> val) {
-            ordersForItem = val;
-            return this;
         }
 
         public Builder withId(Long val) {

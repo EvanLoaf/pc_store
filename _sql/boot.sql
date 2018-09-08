@@ -96,7 +96,7 @@ create table if not exists t_audit (
 create table if not exists t_news (
   f_id      bigint(19) unsigned auto_increment not null,
   f_title   varchar(40)                        not null,
-  f_content varchar(180)                       not null,
+  f_content varchar(500)                       not null,
   f_created datetime default now()             not null,
   f_user_id bigint(19) unsigned                not null,
   primary key (f_id),

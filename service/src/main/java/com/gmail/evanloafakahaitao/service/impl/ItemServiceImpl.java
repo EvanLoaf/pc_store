@@ -5,7 +5,7 @@ import com.gmail.evanloafakahaitao.dao.connection.ConnectionService;
 import com.gmail.evanloafakahaitao.service.converter.impl.ItemConverterImpl;
 import com.gmail.evanloafakahaitao.service.converter.impl.ItemDTOConverterImpl;
 import com.gmail.evanloafakahaitao.dao.impl.ItemDaoImpl;
-import com.gmail.evanloafakahaitao.web.dto.ItemDTO;
+import com.gmail.evanloafakahaitao.service.dto.ItemDTO;
 import com.gmail.evanloafakahaitao.dao.model.Item;
 import com.gmail.evanloafakahaitao.service.ItemService;
 import org.apache.logging.log4j.LogManager;

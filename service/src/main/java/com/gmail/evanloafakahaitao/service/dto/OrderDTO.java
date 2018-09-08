@@ -1,41 +1,21 @@
-package com.gmail.evanloafakahaitao.dao.model;
+package com.gmail.evanloafakahaitao.service.dto;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
-@Entity
-@Table
-public class Order implements Serializable {
+public class OrderDTO implements Serializable {
 
-    @EmbeddedId
-    private OrderId id;
-    @NotNull
-    @Column
     private String uuid;
-    @NotNull
-    @Column
     private LocalDateTime created;
-    @NotNull
-    @Column
     private int quantity;
-    @NotNull
-    @Column
     private String status;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @MapsId("F_USER_ID")
-    private User user;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @MapsId("F_ITEM_ID")
-    private Item item;
+    private UserDTO user;
+    private ItemDTO item;
 
-    public Order() {
+    public OrderDTO() {
     }
 
-    private Order(Builder builder) {
-        setId(builder.id);
+    private OrderDTO(Builder builder) {
         setUuid(builder.uuid);
         setCreated(builder.created);
         setQuantity(builder.quantity);
@@ -46,14 +26,6 @@ public class Order implements Serializable {
 
     public static Builder newBuilder() {
         return new Builder();
-    }
-
-    public OrderId getId() {
-        return id;
-    }
-
-    public void setId(OrderId id) {
-        this.id = id;
     }
 
     public String getUuid() {
@@ -88,71 +60,65 @@ public class Order implements Serializable {
         this.status = status;
     }
 
-    public User getUser() {
+    public UserDTO getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserDTO user) {
         this.user = user;
     }
 
-    public Item getItem() {
+    public ItemDTO getItem() {
         return item;
     }
 
-    public void setItem(Item item) {
+    public void setItem(ItemDTO item) {
         this.item = item;
     }
 
     public static final class Builder {
-        private OrderId id;
-        private @NotNull String uuid;
-        private @NotNull LocalDateTime created;
-        private @NotNull int quantity;
-        private @NotNull String status;
-        private User user;
-        private Item item;
+        private String uuid;
+        private LocalDateTime created;
+        private int quantity;
+        private String status;
+        private UserDTO user;
+        private ItemDTO item;
 
         private Builder() {
         }
 
-        public Builder withId(OrderId val) {
-            id = val;
-            return this;
-        }
-
-        public Builder withUuid(@NotNull String val) {
+        public Builder withUuid(String val) {
             uuid = val;
             return this;
         }
 
-        public Builder withCreated(@NotNull LocalDateTime val) {
+        public Builder withCreated(LocalDateTime val) {
             created = val;
             return this;
         }
 
-        public Builder withQuantity(@NotNull int val) {
+        public Builder withQuantity(int val) {
             quantity = val;
             return this;
         }
 
-        public Builder withStatus(@NotNull String val) {
+        public Builder withStatus(String val) {
             status = val;
             return this;
         }
 
-        public Builder withUser(User val) {
+        public Builder withUser(UserDTO val) {
             user = val;
             return this;
         }
 
-        public Builder withItem(Item val) {
+        public Builder withItem(ItemDTO val) {
             item = val;
             return this;
         }
 
-        public Order build() {
-            return new Order(this);
+        public OrderDTO build() {
+            return new OrderDTO(this);
         }
     }
 }

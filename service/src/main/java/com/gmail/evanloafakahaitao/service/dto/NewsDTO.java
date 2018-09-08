@@ -1,41 +1,23 @@
-package com.gmail.evanloafakahaitao.dao.model;
+package com.gmail.evanloafakahaitao.service.dto;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
-@Table
-@Entity
-public class News implements Serializable {
+public class NewsDTO implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false, nullable = false)
     private Long id;
-    @NotNull
-    @Column
     private String title;
-    @NotNull
-    @Column
     private String content;
-    @NotNull
-    @Column
     private LocalDateTime created;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "F_USER_ID")
-    private User user;
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "F_NEWS_ID")
-    private Set<Comment> commentSet = new HashSet<>();
+    private NewsAndCommentUserDTO user;
+    private Set<CommentDTO> commentSet = new HashSet<>();
 
-    public News() {
+    public NewsDTO() {
     }
 
-    private News(Builder builder) {
+    private NewsDTO(Builder builder) {
         id = builder.id;
         setTitle(builder.title);
         setContent(builder.content);
@@ -76,29 +58,29 @@ public class News implements Serializable {
         this.created = created;
     }
 
-    public User getUser() {
+    public NewsAndCommentUserDTO getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(NewsAndCommentUserDTO user) {
         this.user = user;
     }
 
-    public Set<Comment> getCommentSet() {
+    public Set<CommentDTO> getCommentSet() {
         return commentSet;
     }
 
-    public void setCommentSet(Set<Comment> commentSet) {
+    public void setCommentSet(Set<CommentDTO> commentSet) {
         this.commentSet = commentSet;
     }
 
     public static final class Builder {
         private Long id;
-        private @NotNull String title;
-        private @NotNull String content;
-        private @NotNull LocalDateTime created;
-        private User user;
-        private Set<Comment> commentSet;
+        private String title;
+        private String content;
+        private LocalDateTime created;
+        private NewsAndCommentUserDTO user;
+        private Set<CommentDTO> commentSet;
 
         private Builder() {
         }
@@ -108,33 +90,33 @@ public class News implements Serializable {
             return this;
         }
 
-        public Builder withTitle(@NotNull String val) {
+        public Builder withTitle(String val) {
             title = val;
             return this;
         }
 
-        public Builder withContent(@NotNull String val) {
+        public Builder withContent(String val) {
             content = val;
             return this;
         }
 
-        public Builder withCreated(@NotNull LocalDateTime val) {
+        public Builder withCreated(LocalDateTime val) {
             created = val;
             return this;
         }
 
-        public Builder withUser(User val) {
+        public Builder withUser(NewsAndCommentUserDTO val) {
             user = val;
             return this;
         }
 
-        public Builder withCommentSet(Set<Comment> val) {
+        public Builder withCommentSet(Set<CommentDTO> val) {
             commentSet = val;
             return this;
         }
 
-        public News build() {
-            return new News(this);
+        public NewsDTO build() {
+            return new NewsDTO(this);
         }
     }
 }

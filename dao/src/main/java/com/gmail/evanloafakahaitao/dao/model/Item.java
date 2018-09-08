@@ -119,17 +119,4 @@ public class Item implements Serializable {
             return new Item(this);
         }
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Item item = (Item) o;
-        return Objects.equals(vendorCode, item.vendorCode);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(vendorCode);
-    }
 }

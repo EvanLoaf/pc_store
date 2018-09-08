@@ -8,7 +8,7 @@ import com.gmail.evanloafakahaitao.service.ItemService;
 import com.gmail.evanloafakahaitao.service.XmlService;
 import com.gmail.evanloafakahaitao.service.impl.ItemServiceImpl;
 import com.gmail.evanloafakahaitao.service.impl.XmlServiceImpl;
-import com.gmail.evanloafakahaitao.service.model.ItemXml;
+import com.gmail.evanloafakahaitao.dao.model.ItemXml;
 import com.gmail.evanloafakahaitao.service.util.XmlItemConverter;
 import com.gmail.evanloafakahaitao.web.command.Command;
 import com.gmail.evanloafakahaitao.web.model.CommandEnum;

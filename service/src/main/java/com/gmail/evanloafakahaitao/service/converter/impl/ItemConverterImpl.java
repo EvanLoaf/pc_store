@@ -1,13 +1,13 @@
 package com.gmail.evanloafakahaitao.service.converter.impl;
 
 import com.gmail.evanloafakahaitao.service.converter.Converter;
-import com.gmail.evanloafakahaitao.web.dto.ItemDTO;
+import com.gmail.evanloafakahaitao.service.dto.ItemDTO;
 import com.gmail.evanloafakahaitao.dao.model.Item;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ItemConverterImpl<D, E> implements Converter<ItemDTO, Item> {
+public class ItemConverterImpl implements Converter<ItemDTO, Item> {
     @Override
     public Item toEntity(ItemDTO dto) {
         return Item.newBuilder()

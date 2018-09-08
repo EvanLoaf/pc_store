@@ -1,4 +1,4 @@
-package com.gmail.evanloafakahaitao.service.model;
+package com.gmail.evanloafakahaitao.dao.model;
 
 import javax.xml.bind.annotation.XmlElement;
 import java.math.BigDecimal;

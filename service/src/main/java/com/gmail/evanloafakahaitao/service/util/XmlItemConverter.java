@@ -1,7 +1,7 @@
 package com.gmail.evanloafakahaitao.service.util;
 
 import com.gmail.evanloafakahaitao.dao.model.Item;
-import com.gmail.evanloafakahaitao.service.model.ItemXml;
+import com.gmail.evanloafakahaitao.dao.model.ItemXml;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

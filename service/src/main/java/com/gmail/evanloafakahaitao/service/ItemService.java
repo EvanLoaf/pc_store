@@ -1,6 +1,6 @@
 package com.gmail.evanloafakahaitao.service;
 
-import com.gmail.evanloafakahaitao.web.dto.ItemDTO;
+import com.gmail.evanloafakahaitao.service.dto.ItemDTO;
 import com.gmail.evanloafakahaitao.dao.model.Item;
 
 import java.util.List;
