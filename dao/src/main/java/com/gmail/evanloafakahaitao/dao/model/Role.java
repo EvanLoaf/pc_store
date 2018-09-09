@@ -30,12 +30,32 @@ public class Role implements Serializable {
 
     private Role(Builder builder) {
         id = builder.id;
-        name = builder.name;
-        permissionSet = builder.permissionSet;
+        setName(builder.name);
+        setPermissionSet(builder.permissionSet);
     }
 
     public static Builder newBuilder() {
         return new Builder();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Set<Permission> getPermissionSet() {
+        return permissionSet;
+    }
+
+    public void setPermissionSet(Set<Permission> permissionSet) {
+        this.permissionSet = permissionSet;
     }
 
     public static final class Builder {

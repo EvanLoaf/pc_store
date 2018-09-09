@@ -5,6 +5,7 @@ import com.gmail.evanloafakahaitao.service.dto.ItemDTO;
 import com.gmail.evanloafakahaitao.dao.model.Item;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ItemDTOConverterImpl implements DTOConverter<ItemDTO, Item> {
@@ -28,5 +29,10 @@ public class ItemDTOConverterImpl implements DTOConverter<ItemDTO, Item> {
                 .withPrice(entity.getPrice())
                 .withVendorCode(entity.getVendorCode())
                 .build()).collect(Collectors.toList());
+    }
+
+    @Override
+    public Set<ItemDTO> toDTOSet(Set<Item> entitySet) {
+        return null;
     }
 }

@@ -6,7 +6,7 @@ public class FeedbackDTO implements Serializable {
 
     private Long id;
     private String message;
-    private FeedbackUserDTO user;
+    private CommentFeedbackNewsUserDTO user;
 
     public FeedbackDTO() {
     }
@@ -33,18 +33,18 @@ public class FeedbackDTO implements Serializable {
         this.message = message;
     }
 
-    public FeedbackUserDTO getUser() {
+    public CommentFeedbackNewsUserDTO getUser() {
         return user;
     }
 
-    public void setUser(FeedbackUserDTO user) {
+    public void setUser(CommentFeedbackNewsUserDTO user) {
         this.user = user;
     }
 
     public static final class Builder {
         private Long id;
         private String message;
-        private FeedbackUserDTO user;
+        private CommentFeedbackNewsUserDTO user;
 
         private Builder() {
         }
@@ -59,7 +59,7 @@ public class FeedbackDTO implements Serializable {
             return this;
         }
 
-        public Builder withUser(FeedbackUserDTO val) {
+        public Builder withUser(CommentFeedbackNewsUserDTO val) {
             user = val;
             return this;
         }

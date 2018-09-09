@@ -1,14 +1,14 @@
 package com.gmail.evanloafakahaitao.service.dto;
 
-public class FeedbackUserDTO {
+public class CommentFeedbackNewsUserDTO {
 
     private String name;
     private String email;
 
-    public FeedbackUserDTO() {
+    public CommentFeedbackNewsUserDTO() {
     }
 
-    private FeedbackUserDTO(Builder builder) {
+    private CommentFeedbackNewsUserDTO(Builder builder) {
         setName(builder.name);
         setEmail(builder.email);
     }
@@ -50,8 +50,8 @@ public class FeedbackUserDTO {
             return this;
         }
 
-        public FeedbackUserDTO build() {
-            return new FeedbackUserDTO(this);
+        public CommentFeedbackNewsUserDTO build() {
+            return new CommentFeedbackNewsUserDTO(this);
         }
     }
 }

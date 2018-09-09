@@ -58,7 +58,7 @@ public class LoginCommandImpl implements Command {
             User user = userService.findByEmail(email);
             HttpSession session = request.getSession();
             session.setAttribute("user", UserPrincipalConverter.toUserPrincipal(user));
-            if (user.getRole() == RoleEnum.ADMIN) {
+            if (user.getRole().getName().equals(RoleEnum.ADMIN.toString())) {
                 response.sendRedirect(request.getContextPath() + CommandEnum.USERS.getUrl());
             } else {
                 response.sendRedirect(request.getContextPath() + CommandEnum.ITEMS.getUrl());

@@ -1,12 +1,10 @@
 package com.gmail.evanloafakahaitao.service.dto;
 
-import com.gmail.evanloafakahaitao.dao.model.Role;
-
 public class AuditUserDTO {
 
     private String name;
     private String email;
-    private Role role;
+    private RoleDTO role;
 
     public AuditUserDTO() {
     }
@@ -37,18 +35,18 @@ public class AuditUserDTO {
         this.email = email;
     }
 
-    public Role getRole() {
+    public RoleDTO getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(RoleDTO role) {
         this.role = role;
     }
 
     public static final class Builder {
         private String name;
         private String email;
-        private Role role;
+        private RoleDTO role;
 
         private Builder() {
         }
@@ -63,7 +61,7 @@ public class AuditUserDTO {
             return this;
         }
 
-        public Builder withRole(Role val) {
+        public Builder withRole(RoleDTO val) {
             role = val;
             return this;
         }

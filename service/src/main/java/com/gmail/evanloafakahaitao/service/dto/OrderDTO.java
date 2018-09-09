@@ -9,7 +9,7 @@ public class OrderDTO implements Serializable {
     private LocalDateTime created;
     private int quantity;
     private String status;
-    private UserDTO user;
+    private OrderUserDTO user;
     private ItemDTO item;
 
     public OrderDTO() {
@@ -60,11 +60,11 @@ public class OrderDTO implements Serializable {
         this.status = status;
     }
 
-    public UserDTO getUser() {
+    public OrderUserDTO getUser() {
         return user;
     }
 
-    public void setUser(UserDTO user) {
+    public void setUser(OrderUserDTO user) {
         this.user = user;
     }
 
@@ -81,7 +81,7 @@ public class OrderDTO implements Serializable {
         private LocalDateTime created;
         private int quantity;
         private String status;
-        private UserDTO user;
+        private OrderUserDTO user;
         private ItemDTO item;
 
         private Builder() {
@@ -107,7 +107,7 @@ public class OrderDTO implements Serializable {
             return this;
         }
 
-        public Builder withUser(UserDTO val) {
+        public Builder withUser(OrderUserDTO val) {
             user = val;
             return this;
         }

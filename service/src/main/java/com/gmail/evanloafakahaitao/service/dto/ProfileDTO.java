@@ -8,7 +8,6 @@ public class ProfileDTO implements Serializable {
     private Long userId;
     private String address;
     private String phoneNumber;
-    private UserDTO user;
 
     public ProfileDTO() {
     }
@@ -17,7 +16,6 @@ public class ProfileDTO implements Serializable {
         setUserId(builder.userId);
         setAddress(builder.address);
         setPhoneNumber(builder.phoneNumber);
-        setUser(builder.user);
     }
 
     public static Builder newBuilder() {
@@ -48,19 +46,10 @@ public class ProfileDTO implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public UserDTO getUser() {
-        return user;
-    }
-
-    public void setUser(UserDTO user) {
-        this.user = user;
-    }
-
     public static final class Builder {
         private Long userId;
         private String address;
         private String phoneNumber;
-        private UserDTO user;
 
         private Builder() {
         }
@@ -77,11 +66,6 @@ public class ProfileDTO implements Serializable {
 
         public Builder withPhoneNumber(String val) {
             phoneNumber = val;
-            return this;
-        }
-
-        public Builder withUser(UserDTO val) {
-            user = val;
             return this;
         }
 
