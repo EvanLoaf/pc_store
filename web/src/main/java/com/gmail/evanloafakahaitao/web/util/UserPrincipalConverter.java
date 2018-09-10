@@ -10,7 +10,7 @@ public class UserPrincipalConverter {
                 .withId(user.getId())
                 .withEmail(user.getEmail())
                 .withName(user.getFirstName() + " " + user.getLastName())
-                .withRole(user.getRole())
+                /*.withRole(user.getRole())*/
                 .build();
     }
 }

@@ -26,9 +26,9 @@ public class User implements Serializable {
     @Column
     private String lastName;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "F_ROLE_ID")
+    @JoinColumn(name = "roleId")
     private Role role;
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, optional = false)
     private Profile profile;
 
     public User() {

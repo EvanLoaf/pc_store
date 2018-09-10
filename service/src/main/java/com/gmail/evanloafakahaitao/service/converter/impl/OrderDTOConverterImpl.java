@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class OrderDTOConverterImpl<D, E> implements DTOConverter<OrderDTO, Order> {
+public class OrderDTOConverterImpl implements DTOConverter<OrderDTO, Order> {
 
     private DTOConverter orderUserDTOConverter = new OrderUserDTOConverterImpl();
     private DTOConverter itemDTOConverter = new ItemDTOConverterImpl();

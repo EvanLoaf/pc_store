@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface ItemService {
 
-    int save(List<Item> itemList);
+    List<ItemDTO> save(List<ItemDTO> itemList);
 
-    List<Item> findAll();
+    List<ItemDTO> findAll();
 
-    Item findByVendorCode(Long vendorCode);
+    ItemDTO findByVendorCode(ItemDTO itemDTO);
 
-    Item findById(Long itemId);
+    ItemDTO findById(ItemDTO itemDTO);
 
     ItemDTO save(ItemDTO itemDTO);
 }

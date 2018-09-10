@@ -18,12 +18,12 @@ public class AddOrderCommandImpl implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Long vendorCode = Long.valueOf(request.getParameter("vendor_code"));
-        Item item = itemService.findByVendorCode(vendorCode);
+        /*Item item = itemService.findByVendorCode(vendorCode);
         if (item == null) {
             request.setAttribute("error", "An error occurred ordering an item");
         } else {
             request.setAttribute("item", item);
-        }
+        }*/
         return configurationManager.getProperty(PageProperties.ADD_ORDER_PAGE_PATH);
     }
 }

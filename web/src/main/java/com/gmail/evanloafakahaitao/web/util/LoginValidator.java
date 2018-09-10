@@ -11,7 +11,7 @@ public class LoginValidator {
     public boolean validate(String email, String password) {
         if (email != null && !email.equals("") && password != null && !password.equals("")) {
             if (email.trim().length() <= 30 && password.trim().length() <= 20) {
-                User userByEmail = userService.findByEmail(email.trim());
+                /*User userByEmail = userService.findByEmail(email.trim());
                 if (userByEmail != null) {
                     if (userByEmail.getPassword().equals(password.trim())) {
                         return true;
@@ -20,12 +20,17 @@ public class LoginValidator {
                     }
                 } else {
                     return false;
-                }
+                }*/
             } else {
                 return false;
             }
         } else {
             return false;
         }
+
+
+
+        // TEMPORARY DELETE AFTER !!!!!!!!!!!!
+        return true;
     }
 }

@@ -13,22 +13,20 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ItemServiceImpl implements ItemService {
 
     private static final Logger logger = LogManager.getLogger(ItemServiceImpl.class);
 
-    private ConnectionService connectionService = new ConnectionService();
     private ItemDao itemDao = new ItemDaoImpl(Item.class);
     private ItemConverterImpl itemConverter = new ItemConverterImpl();
     private ItemDTOConverterImpl itemDTOConverter = new ItemDTOConverterImpl();
 
     @Override
-    public int save(List<Item> itemList) {
-        int savedItems = 0;
+    public List<ItemDTO> save(List<ItemDTO> itemList) {
+        /*int savedItems = 0;
         try (Connection connection = connectionService.getConnection()) {
             try {
                 logger.info("Saving list of items ...");
@@ -46,12 +44,33 @@ public class ItemServiceImpl implements ItemService {
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
         }
-        return savedItems;
+        return savedItems;*/
+        Session session = itemDao.getCurrentSession();
+        try {
+            Transaction transaction = session.getTransaction();
+            if (!transaction.isActive()) {
+                session.beginTransaction();
+            }
+            List<Item> savedItems = new ArrayList<>();
+            for (ItemDTO itemDTO : itemList) {
+                Item item = itemConverter.toEntity(itemDTO);
+                itemDao.create(item);
+                savedItems.add(item);
+            }
+            transaction.commit();
+            return itemDTOConverter.toDTOList(savedItems);
+        } catch (Exception e) {
+            if (session.getTransaction().isActive()) {
+                session.getTransaction().rollback();
+            }
+            logger.error("Failed to save List of Items", e);
+        }
+        return null;
     }
 
     @Override
-    public List<Item> findAll() {
-        List<Item> itemList = null;
+    public List<ItemDTO> findAll() {
+        /*List<Item> itemList = null;
         try (Connection connection = connectionService.getConnection()) {
             try {
                 logger.info("Finding all items ...");
@@ -69,12 +88,29 @@ public class ItemServiceImpl implements ItemService {
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
         }
-        return itemList;
+        return itemList;*/
+        Session session = itemDao.getCurrentSession();
+        try {
+            Transaction transaction = session.getTransaction();
+            if (!transaction.isActive()) {
+                session.beginTransaction();
+            }
+            List<Item> itemList = itemDao.findAll();
+            List<ItemDTO> itemDTOList = itemDTOConverter.toDTOList(itemList);
+            transaction.commit();
+            return itemDTOList;
+        } catch (Exception e) {
+            if (session.getTransaction().isActive()) {
+                session.getTransaction().rollback();
+            }
+            logger.error("Failed to retrieve Items", e);
+        }
+        return null;
     }
 
     @Override
-    public Item findByVendorCode(Long vendorCode) {
-        Item item = null;
+    public ItemDTO findByVendorCode(ItemDTO itemDTO) {
+        /*Item item = null;
         try (Connection connection = connectionService.getConnection()) {
             try {
                 logger.info("Finding item by vendor code ...");
@@ -92,12 +128,28 @@ public class ItemServiceImpl implements ItemService {
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
         }
-        return item;
+        return item;*/
+        Session session = itemDao.getCurrentSession();
+        try {
+            Transaction transaction = session.getTransaction();
+            if (!transaction.isActive()) {
+                session.beginTransaction();
+            }
+            Item item = itemDao.findByVendorCode(itemDTO.getVendorCode());
+            transaction.commit();
+            return itemDTOConverter.toDto(item);
+        } catch (Exception e) {
+            if (session.getTransaction().isActive()) {
+                session.getTransaction().rollback();
+            }
+            logger.error("Failed to retrieve Item by vendor code", e);
+        }
+        return null;
     }
 
     @Override
-    public Item findById(Long itemId) {
-        Item item = null;
+    public ItemDTO findById(ItemDTO itemDTO) {
+        /*Item item = null;
         try (Connection connection = connectionService.getConnection()) {
             try {
                 logger.info("Finding item by id ...");
@@ -115,12 +167,28 @@ public class ItemServiceImpl implements ItemService {
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
         }
-        return item;
+        return item;*/
+        Session session = itemDao.getCurrentSession();
+        try {
+            Transaction transaction = session.getTransaction();
+            if (!transaction.isActive()) {
+                session.beginTransaction();
+            }
+            Item item = itemDao.findOne(itemDTO.getId());
+            transaction.commit();
+            return itemDTOConverter.toDto(item);
+        } catch (Exception e) {
+            if (session.getTransaction().isActive()) {
+                session.getTransaction().rollback();
+            }
+            logger.error("Failed to retrieve Item by id", e);
+        }
+        return null;
     }
 
     @Override
     public ItemDTO save(ItemDTO itemDTO) {
-        Session session = itemDao.getCurrentSession();
+        /*Session session = itemDao.getCurrentSession();
         try {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive()) {
@@ -138,9 +206,26 @@ public class ItemServiceImpl implements ItemService {
             logger.error(e.getMessage(), e);
             throw new RuntimeException("Failed to save Item! - CREATE METHOD");
         }
-        /*
+        *//*
         return luchshe null
         i v catch throw runtime exc
          */
+        Session session = itemDao.getCurrentSession();
+        try {
+            Transaction transaction = session.getTransaction();
+            if (!transaction.isActive()) {
+                session.beginTransaction();
+            }
+            Item item = itemConverter.toEntity(itemDTO);
+            itemDao.create(item);
+            transaction.commit();
+            return itemDTOConverter.toDto(item);
+        } catch (Exception e) {
+            if (session.getTransaction().isActive()) {
+                session.getTransaction().rollback();
+            }
+            logger.error("Failed to save Item", e);
+        }
+        return null;
     }
 }

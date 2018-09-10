@@ -26,10 +26,10 @@ public class News implements Serializable {
     @Column
     private LocalDateTime created;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "F_USER_ID")
+    @JoinColumn(name = "userId")
     private User user;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "F_NEWS_ID")
+    @JoinColumn(name = "userId")
     private Set<Comment> commentSet = new HashSet<>();
 
     public News() {

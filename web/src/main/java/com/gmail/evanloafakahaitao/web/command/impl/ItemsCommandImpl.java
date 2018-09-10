@@ -18,12 +18,12 @@ public class ItemsCommandImpl implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        List<Item> items = itemService.findAll();
+        /*List<Item> items = itemService.findAll();
         if (items != null) {
             request.setAttribute("items", items);
         } else {
             request.setAttribute("error", "Error retrieving items");
-        }
+        }*/
         return configurationManager.getProperty(PageProperties.ITEMS_PAGE_PATH);
     }
 }

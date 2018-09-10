@@ -21,7 +21,7 @@ public class Comment implements Serializable {
     @Column
     private LocalDateTime created;
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "F_USER_ID")
+    @JoinColumn(name = "userId")
     private User user;
 
     public Comment() {

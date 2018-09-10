@@ -1,7 +1,5 @@
 package com.gmail.evanloafakahaitao.web.model;
 
-import com.gmail.evanloafakahaitao.dao.model.RoleEnum;
-
 import java.io.Serializable;
 
 public class UserPrincipal implements Serializable {

@@ -18,12 +18,12 @@ public class UsersCommandImpl implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        List<User> users = userService.findAll();
+        /*List<User> users = userService.findAll();
         if (users != null) {
             request.setAttribute("users", users);
         } else {
             request.setAttribute("error", "Error retrieving users");
-        }
+        }*/
         return configurationManager.getProperty(PageProperties.USERS_PAGE_PATH);
     }
 }

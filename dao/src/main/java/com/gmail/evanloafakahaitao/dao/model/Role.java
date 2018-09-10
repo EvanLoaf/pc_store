@@ -17,11 +17,11 @@ public class Role implements Serializable {
     @NotNull
     @Column
     private String name;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
-            name = "T_ROLE_PERMISSION",
-            joinColumns = @JoinColumn(name = "F_ROLE_ID"),
-            inverseJoinColumns = @JoinColumn(name = "F_PERMISSION_ID")
+            name = "RolePermission",
+            joinColumns = @JoinColumn(name = "roleId"),
+            inverseJoinColumns = @JoinColumn(name = "permissionId")
     )
     private Set<Permission> permissionSet = new HashSet<>();
 

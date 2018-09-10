@@ -2,7 +2,7 @@ package com.gmail.evanloafakahaitao.web.filter;
 
 import com.gmail.evanloafakahaitao.config.ConfigurationManager;
 import com.gmail.evanloafakahaitao.config.properties.PageProperties;
-import com.gmail.evanloafakahaitao.dao.model.RoleEnum;
+import com.gmail.evanloafakahaitao.web.model.RoleEnum;
 import com.gmail.evanloafakahaitao.web.model.AccessMode;
 import com.gmail.evanloafakahaitao.web.model.CommandEnum;
 import com.gmail.evanloafakahaitao.web.model.RequestEnum;

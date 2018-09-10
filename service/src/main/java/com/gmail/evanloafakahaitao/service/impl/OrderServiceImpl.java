@@ -9,8 +9,17 @@ import com.gmail.evanloafakahaitao.dao.model.Item;
 import com.gmail.evanloafakahaitao.dao.model.Order;
 import com.gmail.evanloafakahaitao.dao.model.User;
 import com.gmail.evanloafakahaitao.service.OrderService;
+import com.gmail.evanloafakahaitao.service.converter.Converter;
+import com.gmail.evanloafakahaitao.service.converter.DTOConverter;
+import com.gmail.evanloafakahaitao.service.converter.impl.OrderConverterImpl;
+import com.gmail.evanloafakahaitao.service.converter.impl.OrderDTOConverterImpl;
+import com.gmail.evanloafakahaitao.service.dto.OrderDTO;
+import com.gmail.evanloafakahaitao.service.dto.ShowToUserOrderDTO;
+import com.gmail.evanloafakahaitao.service.dto.UserDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -23,12 +32,15 @@ public class OrderServiceImpl implements OrderService {
     private static final Logger logger = LogManager.getLogger(OrderServiceImpl.class);
 
     private ConnectionService connectionService = new ConnectionService();
-    private OrderDao orderDao = new OrderDaoImpl();
+    private OrderDao orderDao = new OrderDaoImpl(Order.class);
     private ItemDao itemDao = new ItemDaoImpl(Item.class);
+    private Converter orderConverter = new OrderConverterImpl();
+    private DTOConverter orderDTOConverter = new OrderDTOConverterImpl();
 
+    @SuppressWarnings("unchecked")
     @Override
-    public int save(Long userId, Long vendorCode, int itemQuantity) {
-        int savedOrders = 0;
+    public OrderDTO save(OrderDTO orderDTO) {
+        /*int savedOrders = 0;
         try (Connection connection = connectionService.getConnection()) {
             String uuid = UUID.randomUUID().toString();
             User user = User.newBuilder()
@@ -56,12 +68,30 @@ public class OrderServiceImpl implements OrderService {
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
         }
-        return savedOrders;
+        return savedOrders;*/
+        Session session = orderDao.getCurrentSession();
+        try {
+            Transaction transaction = session.getTransaction();
+            if (!transaction.isActive()) {
+                session.beginTransaction();
+            }
+            Order order = (Order) orderConverter.toEntity(orderDTO);
+            orderDao.create(order);
+            transaction.commit();
+            return (OrderDTO) orderDTOConverter.toDto(order);
+        } catch (Exception e) {
+            if (session.getTransaction().isActive()) {
+                session.getTransaction().rollback();
+            }
+            logger.error("Failed to save Order", e);
+        }
+        return null;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public List<Order> findByUserId(Long id) {
-        List<Order> orderList = null;
+    public List<ShowToUserOrderDTO> findByUserId(UserDTO userDTO) {
+        /*List<Order> orderList = null;
         try (Connection connection = connectionService.getConnection()) {
             try {
                 logger.info("Finding orders by user id ...");
@@ -91,12 +121,29 @@ public class OrderServiceImpl implements OrderService {
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
         }
-        return orderList;
+        return orderList;*/
+        Session session = orderDao.getCurrentSession();
+        try {
+            Transaction transaction = session.getTransaction();
+            if (!transaction.isActive()) {
+                session.beginTransaction();
+            }
+            List<Order> orderList = orderDao.findByUserId(userDTO.getId());
+            List<ShowToUserOrderDTO> showToUserOrderDTOList = orderDTOConverter.toDTOList(orderList);
+            transaction.commit();
+            return showToUserOrderDTOList;
+        } catch (Exception e) {
+            if (session.getTransaction().isActive()) {
+                session.getTransaction().rollback();
+            }
+            logger.error("Failed to find Order by userId", e);
+        }
+        return null;
     }
 
     @Override
-    public int deleteByUuid(String uuid) {
-        int deletedOrders = 0;
+    public Integer deleteByUuid(OrderDTO orderDTO) {
+        /*int deletedOrders = 0;
         try (Connection connection = connectionService.getConnection()) {
             try {
                 logger.info("Deleting order by uuid and items from order ...");
@@ -114,6 +161,27 @@ public class OrderServiceImpl implements OrderService {
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
         }
-        return deletedOrders;
+        return deletedOrders;*/
+        Session session = orderDao.getCurrentSession();
+        try {
+            Transaction transaction = session.getTransaction();
+            if (!transaction.isActive()) {
+                session.beginTransaction();
+            }
+            int deletedRows = orderDao.deleteByUuid(orderDTO.getUuid());
+            transaction.commit();
+            return deletedRows;
+        } catch (Exception e) {
+            if (session.getTransaction().isActive()) {
+                session.getTransaction().rollback();
+            }
+            logger.error("Failed to delete Order by uuid", e);
+        }
+        return null;
+    }
+
+    @Override
+    public List<OrderDTO> findAll() {
+        return null;
     }
 }

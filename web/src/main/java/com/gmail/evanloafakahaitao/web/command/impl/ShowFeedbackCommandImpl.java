@@ -18,13 +18,17 @@ public class ShowFeedbackCommandImpl implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        List<Feedback> feedbackList = feedbackService.findAll();
+        /*List<Feedback> feedbackList = feedbackService.findAll();
         if (feedbackList == null) {
             request.setAttribute("error", "Error retrieving feedback");
             return configurationManager.getProperty(PageProperties.USERS_PAGE_PATH);
         } else {
             request.setAttribute("feedback", feedbackList);
             return configurationManager.getProperty(PageProperties.SHOW_FEEDBACK_PAGE_PATH);
-        }
+        }*/
+
+
+        // DELETE THIS RETURN, TEMP INSERTED
+        return null;
     }
 }

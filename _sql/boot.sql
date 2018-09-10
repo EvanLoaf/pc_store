@@ -73,9 +73,9 @@ create table if not exists t_order (
 );
 
 create table if not exists t_feedback (
-  f_id      int unsigned auto_increment not null,
-  f_user_id bigint(19) unsigned         not null,
-  f_message varchar(200)                not null,
+  f_id      bigint(19) unsigned auto_increment not null,
+  f_user_id bigint(19) unsigned                not null,
+  f_message varchar(200)                       not null,
   primary key (f_id),
   foreign key (f_user_id) references t_user (f_id)
     on update cascade
@@ -139,3 +139,8 @@ insert into t_user (f_id, f_email, f_password, f_first_name, f_last_name, f_role
 values (1, 'root@admin', 'root', 'root', 'admin', (select f_id from t_role where f_name = 'admin')),
        (2, 'root@user', 'root', 'root', 'user', (select f_id from t_role where f_name = 'user'))
 on duplicate key update f_id = f_id;
+
+insert into t_profile (f_user_id, f_address, f_phone_number)
+VALUES (1, 'admin address', 'admin pn'),
+       (2, 'user address', 'user pn')
+on duplicate key update f_user_id = f_user_id;

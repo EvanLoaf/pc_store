@@ -21,7 +21,7 @@ public class Audit implements Serializable {
     @Column
     private LocalDateTime created;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "F_USER_ID")
+    @JoinColumn(name = "userId")
     private User user;
 
     public Audit() {

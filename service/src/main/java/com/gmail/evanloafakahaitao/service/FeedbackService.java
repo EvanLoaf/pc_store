@@ -1,12 +1,12 @@
 package com.gmail.evanloafakahaitao.service;
 
-import com.gmail.evanloafakahaitao.dao.model.Feedback;
+import com.gmail.evanloafakahaitao.service.dto.FeedbackDTO;
 
 import java.util.List;
 
 public interface FeedbackService {
 
-    int save(Long userId, String message);
+    FeedbackDTO save(FeedbackDTO feedbackDTO);
 
-    List<Feedback> findAll();
+    List<FeedbackDTO> findAll();
 }

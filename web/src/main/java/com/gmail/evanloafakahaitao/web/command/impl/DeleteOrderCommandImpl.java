@@ -18,13 +18,13 @@ public class DeleteOrderCommandImpl implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String uuid = request.getParameter("uuid");
-        int deletedOrders = orderService.deleteByUuid(uuid);
+        /*int deletedOrders = orderService.deleteByUuid(uuid);
         if (deletedOrders != 0) {
             response.sendRedirect(request.getContextPath() + CommandEnum.ORDERS.getUrl());
         } else {
             request.setAttribute("error", "Could not delete order");
             return configurationManager.getProperty(PageProperties.ORDERS_PAGE_PATH);
-        }
+        }*/
         return null;
     }
 }

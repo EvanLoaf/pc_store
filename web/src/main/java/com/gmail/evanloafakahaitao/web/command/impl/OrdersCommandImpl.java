@@ -20,7 +20,7 @@ public class OrdersCommandImpl implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HttpSession session = request.getSession();
+        /*HttpSession session = request.getSession();
         UserPrincipal userPrincipal = (UserPrincipal) session.getAttribute("user");
         Long userId = userPrincipal.getId();
         List<Order> orderList = orderService.findByUserId(userId);
@@ -28,7 +28,7 @@ public class OrdersCommandImpl implements Command {
             request.setAttribute("orders", orderList);
         } else {
             request.setAttribute("error", "Error retrieving your orders");
-        }
+        }*/
         return configurationManager.getProperty(PageProperties.ORDERS_PAGE_PATH);
     }
 }

@@ -28,7 +28,7 @@ public class ConfirmOrderCommandImpl implements Command {
         Long vendorCode = Long.valueOf(request.getParameter("vendor_code"));
         String itemQuantity = request.getParameter("quantity");
         boolean quantityValidation = orderValidator.validateQuantity(itemQuantity);
-        if (!quantityValidation) {
+        /*if (!quantityValidation) {
             Item item = itemService.findByVendorCode(vendorCode);
             request.setAttribute("item", item);
             request.setAttribute("vendor_code", vendorCode);
@@ -44,7 +44,7 @@ public class ConfirmOrderCommandImpl implements Command {
         } else {
             request.setAttribute("error", "Could not save order");
             return configurationManager.getProperty(PageProperties.ORDERS_PAGE_PATH);
-        }
+        }*/
         return null;
     }
 }

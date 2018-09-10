@@ -1,12 +1,12 @@
 package com.gmail.evanloafakahaitao.service;
 
-import com.gmail.evanloafakahaitao.dao.model.User;
+import com.gmail.evanloafakahaitao.service.dto.UserDTO;
 
 import java.util.List;
 
 public interface UserService {
 
-    List<User> findAll();
+    List<UserDTO> findAll();
 
-    User findByEmail(String email);
+    UserDTO findByEmail(String email);
 }

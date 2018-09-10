@@ -31,14 +31,14 @@ public class SubmitFeedbackCommandImpl implements Command {
         HttpSession session = request.getSession();
         UserPrincipal userPrincipal = (UserPrincipal) session.getAttribute("user");
         Long userId = userPrincipal.getId();
-        int feedbackSaved = feedbackService.save(userId, feedback.trim());
+        /*int feedbackSaved = feedbackService.save(userId, feedback.trim());
         if (feedbackSaved != 0) {
             response.sendRedirect(request.getContextPath() + CommandEnum.ITEMS.getUrl());
         } else {
             request.setAttribute("error", "Error saving your feedback");
             request.setAttribute("feedback", feedback);
             return configurationManager.getProperty(PageProperties.SEND_FEEDBACK_PAGE_PATH);
-        }
+        }*/
         return null;
     }
 }

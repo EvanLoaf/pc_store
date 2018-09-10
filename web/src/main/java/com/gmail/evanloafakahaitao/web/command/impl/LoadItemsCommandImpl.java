@@ -25,7 +25,7 @@ public class LoadItemsCommandImpl implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        List<ItemXml> itemXmlList = xmlService.getXmlItems(
+        /*List<ItemXml> itemXmlList = xmlService.getXmlItems(
                 configurationManager.getProperty(FileProperties.XML_FILE_PATH),
                 configurationManager.getProperty(FileProperties.SCHEMA_FILE_PATH)
         );
@@ -36,7 +36,7 @@ public class LoadItemsCommandImpl implements Command {
             return configurationManager.getProperty(PageProperties.USERS_PAGE_PATH);
         } else {
             response.sendRedirect(request.getContextPath() + CommandEnum.ITEMS.getUrl());
-        }
+        }*/
         return null;
     }
 }

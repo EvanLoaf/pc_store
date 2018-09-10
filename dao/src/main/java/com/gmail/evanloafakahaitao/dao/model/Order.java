@@ -11,7 +11,7 @@ import java.util.Objects;
 public class Order implements Serializable {
 
     @EmbeddedId
-    private OrderId id;
+    private OrderId id = OrderId.newBuilder().build();
     @NotNull
     @Column
     private String uuid;
@@ -25,10 +25,12 @@ public class Order implements Serializable {
     @Column
     private String status;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @MapsId("F_USER_ID")
+    @MapsId("userId")
+    @JoinColumn(name = "userId", insertable = false, updatable = false)
     private User user;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @MapsId("F_ITEM_ID")
+    @MapsId("itemId")
+    @JoinColumn(name = "itemId", insertable = false, updatable = false)
     private Item item;
 
     public Order() {
@@ -105,7 +107,7 @@ public class Order implements Serializable {
     }
 
     public static final class Builder {
-        private OrderId id;
+        private OrderId id = OrderId.newBuilder().build();
         private @NotNull String uuid;
         private @NotNull LocalDateTime created;
         private @NotNull int quantity;
