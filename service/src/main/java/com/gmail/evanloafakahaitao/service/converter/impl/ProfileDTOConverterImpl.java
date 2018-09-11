@@ -8,11 +8,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class ProfileDTOConverterImpl<D, E> implements DTOConverter<ProfileDTO, Profile> {
+public class ProfileDTOConverterImpl implements DTOConverter<ProfileDTO, Profile> {
     @Override
     public ProfileDTO toDto(Profile entity) {
         return ProfileDTO.newBuilder()
-                .withUserId(entity.getUserId())
                 .withAddress(entity.getAddress())
                 .withPhoneNumber(entity.getPhoneNumber())
                 .build();
@@ -21,7 +20,6 @@ public class ProfileDTOConverterImpl<D, E> implements DTOConverter<ProfileDTO, P
     @Override
     public List<ProfileDTO> toDTOList(List<Profile> entityList) {
         return entityList.stream().map(entity -> ProfileDTO.newBuilder()
-                .withUserId(entity.getUserId())
                 .withAddress(entity.getAddress())
                 .withPhoneNumber(entity.getPhoneNumber())
                 .build()).collect(Collectors.toList());

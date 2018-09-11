@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class RoleConverterImpl<D, E> implements Converter<RoleDTO, Role> {
+public class RoleConverterImpl implements Converter<RoleDTO, Role> {
 
     private Converter permissionConverter = new PermissionConverterImpl();
 

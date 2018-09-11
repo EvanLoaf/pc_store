@@ -1,10 +1,10 @@
 package com.gmail.evanloafakahaitao.dao.impl;
 
-import com.gmail.evanloafakahaitao.dao.XmlDao;
+import com.gmail.evanloafakahaitao.dao.XMLDao;
 
 import java.io.File;
 
-public class XmlDaoImpl implements XmlDao {
+public class XMLDaoImpl implements XMLDao {
     @Override
     public File getXmlFile(String xmlFilePath) {
         return new File(xmlFilePath);

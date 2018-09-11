@@ -1,7 +1,7 @@
 package com.gmail.evanloafakahaitao.service.util;
 
-import com.gmail.evanloafakahaitao.dao.model.ItemXml;
-import com.gmail.evanloafakahaitao.dao.model.ItemsXml;
+import com.gmail.evanloafakahaitao.service.dto.ItemXMLDTO;
+import com.gmail.evanloafakahaitao.service.dto.ItemsXMLDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -11,18 +11,18 @@ import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.util.List;
 
-public class XmlParser {
+public class XMLParser {
 
-    private static final Logger logger = LogManager.getLogger(XmlParser.class);
+    private static final Logger logger = LogManager.getLogger(XMLParser.class);
 
-    public List<ItemXml> parse(File xmlFile) {
-        ItemsXml xmlItems = new ItemsXml();
+    public List<ItemXMLDTO> parse(File xmlFile) {
+        ItemsXMLDTO xmlItems = new ItemsXMLDTO();
         try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(ItemsXml.class);
+            JAXBContext jaxbContext = JAXBContext.newInstance(ItemsXMLDTO.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-            xmlItems = (ItemsXml) unmarshaller.unmarshal(xmlFile);
+            xmlItems = (ItemsXMLDTO) unmarshaller.unmarshal(xmlFile);
             logger.info("XML parse result: ");
-            for (ItemXml xmlItem : xmlItems.getXmlItems()) {
+            for (ItemXMLDTO xmlItem : xmlItems.getXmlItems()) {
                 logger.info(
                         String.format(
                         "Item from xml: name - %s, vendor code - %d, description - %s, price - %.2f",

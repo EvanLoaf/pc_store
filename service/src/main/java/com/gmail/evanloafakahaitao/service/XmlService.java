@@ -1,10 +1,10 @@
 package com.gmail.evanloafakahaitao.service;
 
-import com.gmail.evanloafakahaitao.dao.model.ItemXml;
+import com.gmail.evanloafakahaitao.service.dto.ItemXMLDTO;
 
 import java.util.List;
 
-public interface XmlService {
+public interface XMLService {
 
-    List<ItemXml> getXmlItems(String xmlFilePath, String schemaFilePath);
+    List<ItemXMLDTO> getXmlItems(String xmlFilePath, String schemaFilePath);
 }

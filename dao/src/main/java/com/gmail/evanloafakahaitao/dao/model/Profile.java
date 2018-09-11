@@ -27,7 +27,7 @@ public class Profile implements Serializable {
     @NotNull
     @Column
     private String phoneNumber;
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne
     @PrimaryKeyJoinColumn
     private User user;
 

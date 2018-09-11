@@ -9,4 +9,6 @@ public interface FeedbackService {
     FeedbackDTO save(FeedbackDTO feedbackDTO);
 
     List<FeedbackDTO> findAll();
+
+    boolean deleteById(FeedbackDTO feedbackDTO);
 }

@@ -6,7 +6,9 @@ import java.util.List;
 
 public interface OrderDao extends GenericDao<Order> {
 
-    List findByUserId(Long id);
+    List<Order> findByUserId(Long id);
+
+    Order findByUuid(String uuid);
 
     int deleteByUuid(String uuid);
 }

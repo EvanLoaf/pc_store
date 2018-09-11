@@ -20,7 +20,7 @@ public class Comment implements Serializable {
     @NotNull
     @Column
     private LocalDateTime created;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "userId")
     private User user;
 
@@ -106,11 +106,12 @@ public class Comment implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Comment comment = (Comment) o;
         return Objects.equals(id, comment.id) &&
+                Objects.equals(content, comment.content) &&
                 Objects.equals(created, comment.created);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, created);
+        return Objects.hash(id, content, created);
     }
 }

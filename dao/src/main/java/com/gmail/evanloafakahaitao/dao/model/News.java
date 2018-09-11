@@ -5,7 +5,6 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Table
@@ -29,7 +28,7 @@ public class News implements Serializable {
     @JoinColumn(name = "userId")
     private User user;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "newsId", nullable = false)
     private Set<Comment> commentSet = new HashSet<>();
 
     public News() {
@@ -98,7 +97,7 @@ public class News implements Serializable {
         private @NotNull String content;
         private @NotNull LocalDateTime created;
         private User user;
-        private Set<Comment> commentSet;
+        private Set<Comment> commentSet = new HashSet<>();
 
         private Builder() {
         }

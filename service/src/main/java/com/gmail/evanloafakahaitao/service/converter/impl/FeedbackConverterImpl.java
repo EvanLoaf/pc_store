@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class FeedbackConverterImpl<D, E> implements Converter<FeedbackDTO, Feedback> {
+public class FeedbackConverterImpl implements Converter<FeedbackDTO, Feedback> {
 
-    private Converter commentFeedbackNewsUserConverter = new CommentFeedbackNewsUserConverterImpl();
+    private Converter commentFeedbackNewsLoginUserConverter = new CommentFeedbackNewsLoginUserConverterImpl();
 
     @SuppressWarnings("unchecked")
     @Override
@@ -19,7 +19,7 @@ public class FeedbackConverterImpl<D, E> implements Converter<FeedbackDTO, Feedb
         return Feedback.newBuilder()
                 .withId(dto.getId())
                 .withMessage(dto.getMessage())
-                .withUser((User) commentFeedbackNewsUserConverter.toEntity(dto.getUser()))
+                .withUser((User) commentFeedbackNewsLoginUserConverter.toEntity(dto.getUser()))
                 .build();
     }
 
@@ -29,7 +29,7 @@ public class FeedbackConverterImpl<D, E> implements Converter<FeedbackDTO, Feedb
         return dtoList.stream().map(dto -> Feedback.newBuilder()
                 .withId(dto.getId())
                 .withMessage(dto.getMessage())
-                .withUser((User) commentFeedbackNewsUserConverter.toEntity(dto.getUser()))
+                .withUser((User) commentFeedbackNewsLoginUserConverter.toEntity(dto.getUser()))
                 .build()).collect(Collectors.toList());
     }
 

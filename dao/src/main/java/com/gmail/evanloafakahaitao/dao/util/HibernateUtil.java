@@ -49,8 +49,6 @@ public class HibernateUtil {
                 logger.info("Hibernate Registry builder created");
 
                 MetadataSources sources = new MetadataSources(registry)
-                        .addAnnotatedClass(Item.class)
-                        .addAnnotatedClass(Order.class)
                         .addAnnotatedClass(OrderId.class)
                         .addAnnotatedClass(User.class)
                         .addAnnotatedClass(Role.class)
@@ -59,7 +57,9 @@ public class HibernateUtil {
                         .addAnnotatedClass(Audit.class)
                         .addAnnotatedClass(Profile.class)
                         .addAnnotatedClass(News.class)
-                        .addAnnotatedClass(Comment.class);
+                        .addAnnotatedClass(Comment.class)
+                        .addAnnotatedClass(Item.class)
+                        .addAnnotatedClass(Order.class);
                 Metadata metadata = sources.getMetadataBuilder().build();
                 sessionFactory = metadata.getSessionFactoryBuilder().build();
                 logger.info("SessionFactory created");

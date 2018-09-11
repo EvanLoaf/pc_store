@@ -8,7 +8,7 @@ import com.gmail.evanloafakahaitao.service.dto.AuditUserDTO;
 import java.util.List;
 import java.util.Set;
 
-public class AuditUserConverterImpl<D, E> implements Converter<AuditUserDTO, User> {
+public class AuditUserConverterImpl implements Converter<AuditUserDTO, User> {
 
     private Converter roleConverter = new RoleConverterImpl();
 

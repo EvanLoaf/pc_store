@@ -9,7 +9,7 @@ public class CommentDTO implements Serializable {
     private Long id;
     private String content;
     private LocalDateTime created;
-    private CommentFeedbackNewsUserDTO user;
+    private CommentFeedbackNewsLoginUserDTO user;
 
     public CommentDTO() {
     }
@@ -45,11 +45,11 @@ public class CommentDTO implements Serializable {
         this.created = created;
     }
 
-    public CommentFeedbackNewsUserDTO getUser() {
+    public CommentFeedbackNewsLoginUserDTO getUser() {
         return user;
     }
 
-    public void setUser(CommentFeedbackNewsUserDTO user) {
+    public void setUser(CommentFeedbackNewsLoginUserDTO user) {
         this.user = user;
     }
 
@@ -57,7 +57,7 @@ public class CommentDTO implements Serializable {
         private Long id;
         private String content;
         private LocalDateTime created;
-        private CommentFeedbackNewsUserDTO user;
+        private CommentFeedbackNewsLoginUserDTO user;
 
         private Builder() {
         }
@@ -77,7 +77,7 @@ public class CommentDTO implements Serializable {
             return this;
         }
 
-        public Builder withUser(CommentFeedbackNewsUserDTO val) {
+        public Builder withUser(CommentFeedbackNewsLoginUserDTO val) {
             user = val;
             return this;
         }
@@ -93,11 +93,12 @@ public class CommentDTO implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         CommentDTO that = (CommentDTO) o;
         return Objects.equals(id, that.id) &&
+                Objects.equals(content, that.content) &&
                 Objects.equals(created, that.created);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, created);
+        return Objects.hash(id, content, created);
     }
 }

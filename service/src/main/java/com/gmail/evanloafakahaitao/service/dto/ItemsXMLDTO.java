@@ -1,4 +1,4 @@
-package com.gmail.evanloafakahaitao.dao.model;
+package com.gmail.evanloafakahaitao.service.dto;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -6,16 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @XmlRootElement(name = "store")
-public class ItemsXml {
+public class ItemsXMLDTO {
 
-    private List<ItemXml> xmlItems = new ArrayList<>();
+    private List<ItemXMLDTO> xmlItems = new ArrayList<>();
 
-    public List<ItemXml> getXmlItems() {
+    public List<ItemXMLDTO> getXmlItems() {
         return xmlItems;
     }
 
     @XmlElement(name = "item")
-    public void setXmlItems(List<ItemXml> xmlItems) {
+    public void setXmlItems(List<ItemXMLDTO> xmlItems) {
         this.xmlItems = xmlItems;
     }
 }

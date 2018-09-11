@@ -1,10 +1,14 @@
 package com.gmail.evanloafakahaitao.dao.util;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.boot.model.naming.Identifier;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
 import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -46,7 +50,7 @@ public class StorePhysicalNamingStrategy implements PhysicalNamingStrategy {
 
     private List<String> splitAndReplace(String name) {
         List<String> result = new LinkedList<>();
-        for (String part : StringUtils.splitByCharacterTypeCamelCase(name)) {
+        for (String part : splitByCharacterTypeCamelCase(name)) {
             if (part == null || part.trim().isEmpty()) {
                 continue;
             }
@@ -68,5 +72,43 @@ public class StorePhysicalNamingStrategy implements PhysicalNamingStrategy {
             }
         }
         return joined.toString();
+    }
+
+    private String[] splitByCharacterType(String str, boolean camelCase) {
+        if (str == null) {
+            return null;
+        } else if (str.isEmpty()) {
+            return ArrayUtils.EMPTY_STRING_ARRAY;
+        } else {
+            char[] c = str.toCharArray();
+            List<String> list = new ArrayList<>();
+            int tokenStart = 0;
+            int currentType = Character.getType(c[tokenStart]);
+
+            for(int pos = tokenStart + 1; pos < c.length; ++pos) {
+                int type = Character.getType(c[pos]);
+                if (type != currentType && type != Character.CONNECTOR_PUNCTUATION) {
+                    if (camelCase && type == 2 && currentType == 1) {
+                        int newTokenStart = pos - 1;
+                        if (newTokenStart != tokenStart) {
+                            list.add(new String(c, tokenStart, newTokenStart - tokenStart));
+                            tokenStart = newTokenStart;
+                        }
+                    } else {
+                        list.add(new String(c, tokenStart, pos - tokenStart));
+                        tokenStart = pos;
+                    }
+
+                    currentType = type;
+                }
+            }
+
+            list.add(new String(c, tokenStart, c.length - tokenStart));
+            return list.toArray(new String[list.size()]);
+        }
+    }
+
+    private String[] splitByCharacterTypeCamelCase(String str) {
+        return splitByCharacterType(str, true);
     }
 }

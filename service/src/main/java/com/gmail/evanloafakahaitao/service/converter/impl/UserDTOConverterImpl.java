@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class UserDTOConverterImpl<D, E> implements DTOConverter<UserDTO, User> {
+public class UserDTOConverterImpl implements DTOConverter<UserDTO, User> {
 
-    private DTOConverter profileDTOConveter = new ProfileDTOConverterImpl();
+    private DTOConverter profileDTOConverter = new ProfileDTOConverterImpl();
     private DTOConverter roleDTOConverter = new RoleDTOConverterImpl();
 
     @SuppressWarnings("unchecked")
@@ -24,7 +24,7 @@ public class UserDTOConverterImpl<D, E> implements DTOConverter<UserDTO, User> {
                 .withFirstName(entity.getFirstName())
                 .withPassword(entity.getPassword())
                 .withEmail(entity.getEmail())
-                .withProfile((ProfileDTO) profileDTOConveter.toDto(entity.getProfile()))
+                .withProfile((ProfileDTO) profileDTOConverter.toDto(entity.getProfile()))
                 .withRole((RoleDTO) roleDTOConverter.toDto(entity.getRole()))
                 .build();
     }
@@ -38,7 +38,7 @@ public class UserDTOConverterImpl<D, E> implements DTOConverter<UserDTO, User> {
                 .withFirstName(entity.getFirstName())
                 .withPassword(entity.getPassword())
                 .withEmail(entity.getEmail())
-                .withProfile((ProfileDTO) profileDTOConveter.toDto(entity.getProfile()))
+                .withProfile((ProfileDTO) profileDTOConverter.toDto(entity.getProfile()))
                 .withRole((RoleDTO) roleDTOConverter.toDto(entity.getRole()))
                 .build()).collect(Collectors.toList());
     }

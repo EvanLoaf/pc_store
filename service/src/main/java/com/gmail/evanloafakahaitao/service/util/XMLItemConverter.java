@@ -1,27 +1,27 @@
 package com.gmail.evanloafakahaitao.service.util;
 
 import com.gmail.evanloafakahaitao.dao.model.Item;
-import com.gmail.evanloafakahaitao.dao.model.ItemXml;
+import com.gmail.evanloafakahaitao.service.dto.ItemXMLDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class XmlItemConverter {
+public class XMLItemConverter {
 
-    private static final Logger logger = LogManager.getLogger(XmlItemConverter.class);
+    private static final Logger logger = LogManager.getLogger(XMLItemConverter.class);
 
-    public static List<Item> toItems(List<ItemXml> xmlItemsList) {
+    public static List<Item> toItems(List<ItemXMLDTO> xmlItemsList) {
         List<Item> itemsList = new ArrayList<>();
         if (xmlItemsList != null && xmlItemsList.size() != 0) {
             itemsList = new ArrayList<>();
-            for (ItemXml itemXml : xmlItemsList) {
+            for (ItemXMLDTO itemXMLDTO : xmlItemsList) {
                 Item item = Item.newBuilder()
-                        .withName(itemXml.getName())
-                        .withVendorCode(itemXml.getVendorcode())
-                        .withDescription(itemXml.getDescription())
-                        .withPrice(itemXml.getPrice())
+                        .withName(itemXMLDTO.getName())
+                        .withVendorCode(itemXMLDTO.getVendorcode())
+                        .withDescription(itemXMLDTO.getDescription())
+                        .withPrice(itemXMLDTO.getPrice())
                         .build();
                 itemsList.add(item);
             }

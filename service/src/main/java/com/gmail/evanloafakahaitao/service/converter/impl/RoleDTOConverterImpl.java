@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class RoleDTOConverterImpl<D, E> implements DTOConverter<RoleDTO, Role> {
+public class RoleDTOConverterImpl implements DTOConverter<RoleDTO, Role> {
 
     private DTOConverter permissionDTOConverter = new PermissionDTOConverterImpl();
 

@@ -11,7 +11,7 @@ public class NewsDTO implements Serializable {
     private String title;
     private String content;
     private LocalDateTime created;
-    private CommentFeedbackNewsUserDTO user;
+    private CommentFeedbackNewsLoginUserDTO user;
     private Set<CommentDTO> commentSet = new HashSet<>();
 
     public NewsDTO() {
@@ -58,11 +58,11 @@ public class NewsDTO implements Serializable {
         this.created = created;
     }
 
-    public CommentFeedbackNewsUserDTO getUser() {
+    public CommentFeedbackNewsLoginUserDTO getUser() {
         return user;
     }
 
-    public void setUser(CommentFeedbackNewsUserDTO user) {
+    public void setUser(CommentFeedbackNewsLoginUserDTO user) {
         this.user = user;
     }
 
@@ -79,8 +79,8 @@ public class NewsDTO implements Serializable {
         private String title;
         private String content;
         private LocalDateTime created;
-        private CommentFeedbackNewsUserDTO user;
-        private Set<CommentDTO> commentSet;
+        private CommentFeedbackNewsLoginUserDTO user;
+        private Set<CommentDTO> commentSet = new HashSet<>();
 
         private Builder() {
         }
@@ -105,7 +105,7 @@ public class NewsDTO implements Serializable {
             return this;
         }
 
-        public Builder withUser(CommentFeedbackNewsUserDTO val) {
+        public Builder withUser(CommentFeedbackNewsLoginUserDTO val) {
             user = val;
             return this;
         }

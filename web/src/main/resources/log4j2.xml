@@ -6,7 +6,7 @@
         </Console>
 
         <RollingFile name="RollingFile" fileName="logs/application.log" filePattern="logs/app-%d{yyyy-MM-dd-HH}-%i.log.gz">
-            <PatternLayout pattern="%d{YYYY-MM-DD} [%t] %-5p %c{10}:%L - %msg%n"/>
+            <PatternLayout pattern="%d{YYYY-MM-DD} [%t] %-5p %c{3}:%L - %msg%n"/>
             <Policies>
                 <SizeBasedTriggeringPolicy size="10 MB"/>
             </Policies>
@@ -15,7 +15,7 @@
 
         <RollingFile name="RollingFileDao" fileName="logs/application_dao.log"
                      filePattern="logs/app-%d{MM-dd-yyyy}.log.gz">
-            <PatternLayout pattern="%d{YYYY-MM-DD} [%t] %-5p %c{10}:%L - %msg%n"/>
+            <PatternLayout pattern="%d{YYYY-MM-DD} [%t] %-5p %c{3}:%L - %msg%n"/>
             <Policies>
                 <SizeBasedTriggeringPolicy size="10 MB"/>
             </Policies>

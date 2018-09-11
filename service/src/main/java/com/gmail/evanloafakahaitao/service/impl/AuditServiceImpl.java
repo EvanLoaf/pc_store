@@ -1,17 +1,17 @@
 package com.gmail.evanloafakahaitao.service.impl;
 
-import com.gmail.evanloafakahaitao.dao.FeedbackDao;
+import com.gmail.evanloafakahaitao.dao.AuditDao;
 import com.gmail.evanloafakahaitao.dao.UserDao;
-import com.gmail.evanloafakahaitao.dao.impl.FeedbackDaoImpl;
+import com.gmail.evanloafakahaitao.dao.impl.AuditDaoImpl;
 import com.gmail.evanloafakahaitao.dao.impl.UserDaoImpl;
-import com.gmail.evanloafakahaitao.dao.model.Feedback;
+import com.gmail.evanloafakahaitao.dao.model.Audit;
 import com.gmail.evanloafakahaitao.dao.model.User;
-import com.gmail.evanloafakahaitao.service.FeedbackService;
+import com.gmail.evanloafakahaitao.service.AuditService;
 import com.gmail.evanloafakahaitao.service.converter.Converter;
 import com.gmail.evanloafakahaitao.service.converter.DTOConverter;
-import com.gmail.evanloafakahaitao.service.converter.impl.FeedbackConverterImpl;
-import com.gmail.evanloafakahaitao.service.converter.impl.FeedbackDTOConverterImpl;
-import com.gmail.evanloafakahaitao.service.dto.FeedbackDTO;
+import com.gmail.evanloafakahaitao.service.converter.impl.AuditDTOConverterImpl;
+import com.gmail.evanloafakahaitao.service.converter.impl.AuditUserConverterImpl;
+import com.gmail.evanloafakahaitao.service.dto.AuditDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
@@ -19,77 +19,77 @@ import org.hibernate.Transaction;
 
 import java.util.List;
 
-public class FeedbackServiceImpl implements FeedbackService {
+public class AuditServiceImpl implements AuditService {
 
-    private static final Logger logger = LogManager.getLogger(FeedbackServiceImpl.class);
+    private static final Logger logger = LogManager.getLogger(AuditServiceImpl.class);
 
-    private FeedbackDao feedbackDao = new FeedbackDaoImpl(Feedback.class);
+    private AuditDao auditDao = new AuditDaoImpl(Audit.class);
     private UserDao userDao = new UserDaoImpl(User.class);
-    private Converter feedbackConverter = new FeedbackConverterImpl();
-    private DTOConverter feedbackDTOConverter = new FeedbackDTOConverterImpl();
+    private Converter auditConverter = new AuditUserConverterImpl();
+    private DTOConverter auditDTOConverter = new AuditDTOConverterImpl();
 
     @SuppressWarnings("unchecked")
     @Override
-    public FeedbackDTO save(FeedbackDTO feedbackDTO) {
-        Session session = feedbackDao.getCurrentSession();
+    public AuditDTO save(AuditDTO auditDTO) {
+        Session session = auditDao.getCurrentSession();
         try {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive()) {
                 session.beginTransaction();
             }
-            Feedback feedback = (Feedback) feedbackConverter.toEntity(feedbackDTO);
-            User user = userDao.findByEmail(feedbackDTO.getUser().getEmail());
-            feedback.setUser(user);
-            feedbackDao.create(feedback);
+            Audit audit = (Audit) auditConverter.toEntity(auditDTO);
+            User user = userDao.findByEmail(auditDTO.getUser().getEmail());
+            audit.setUser(user);
+            auditDao.create(audit);
             transaction.commit();
-            return (FeedbackDTO) feedbackDTOConverter.toDto(feedback);
+            return (AuditDTO) auditDTOConverter.toDto(audit);
         } catch (Exception e) {
             if (session.getTransaction().isActive()) {
                 session.getTransaction().rollback();
             }
-            logger.error("Failed to save Feedback", e);
+            logger.error("Failed to save Audit", e);
         }
         return null;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<FeedbackDTO> findAll() {
-        Session session = feedbackDao.getCurrentSession();
+    public List<AuditDTO> findAll() {
+        Session session = auditDao.getCurrentSession();
         try {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive()) {
                 session.beginTransaction();
             }
-            List<Feedback> feedbackList = feedbackDao.findAll();
-            List<FeedbackDTO> feedbackDTOList = feedbackDTOConverter.toDTOList(feedbackList);
+            List<Audit> auditList = auditDao.findAll();
+            List<AuditDTO> auditDTOList = auditDTOConverter.toDTOList(auditList);
             transaction.commit();
-            return feedbackDTOList;
+            return auditDTOList;
         } catch (Exception e) {
             if (session.getTransaction().isActive()) {
                 session.getTransaction().rollback();
             }
-            logger.error("Failed to retrieve Feedback", e);
+            logger.error("Failed to retrieve Audit", e);
         }
         return null;
     }
 
     @Override
-    public boolean deleteById(FeedbackDTO feedbackDTO) {
-        Session session = feedbackDao.getCurrentSession();
+    public boolean deleteById(AuditDTO auditDTO) {
+        Session session = auditDao.getCurrentSession();
         try {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive()) {
                 session.beginTransaction();
             }
-            feedbackDao.deleteById(feedbackDTO.getId());
+            auditDao.deleteById(auditDTO.getId());
             transaction.commit();
             return true;
         } catch (Exception e) {
             if (session.getTransaction().isActive()) {
                 session.getTransaction().rollback();
             }
-            logger.error("Failed to delete feedback by id", e);
+            logger.error("Failed to delete audit by id", e);
         }
         return false;
     }

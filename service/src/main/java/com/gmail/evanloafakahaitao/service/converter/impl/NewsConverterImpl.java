@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class NewsConverterImpl<D, E> implements Converter<NewsDTO, News> {
+public class NewsConverterImpl implements Converter<NewsDTO, News> {
 
-    private Converter commentFeedbackNewsUserConverter = new CommentFeedbackNewsUserConverterImpl();
+    private Converter commentFeedbackNewsUserConverter = new CommentFeedbackNewsLoginUserConverterImpl();
     private Converter commentConverter = new CommentConverterImpl();
 
     @SuppressWarnings("unchecked")

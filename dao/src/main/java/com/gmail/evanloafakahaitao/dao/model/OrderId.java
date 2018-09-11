@@ -20,28 +20,28 @@ public class OrderId implements Serializable {
     }
 
     private OrderId(Builder builder) {
-        setUserId(builder.userId);
-        setItemId(builder.itemId);
+        setfUserId(builder.userId);
+        setfItemId(builder.itemId);
     }
 
     public static Builder newBuilder() {
         return new Builder();
     }
 
-    public Long getUserId() {
+    public Long getfUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setfUserId(Long fUserId) {
+        this.userId = fUserId;
     }
 
-    public Long getItemId() {
+    public Long getfItemId() {
         return itemId;
     }
 
-    public void setItemId(Long itemId) {
-        this.itemId = itemId;
+    public void setfItemId(Long fItemId) {
+        this.itemId = fItemId;
     }
 
     public static final class Builder {

@@ -3,7 +3,6 @@ package com.gmail.evanloafakahaitao.dao.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table

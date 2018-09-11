@@ -1,7 +1,6 @@
 package com.gmail.evanloafakahaitao.service.impl;
 
 import com.gmail.evanloafakahaitao.dao.ItemDao;
-import com.gmail.evanloafakahaitao.dao.connection.ConnectionService;
 import com.gmail.evanloafakahaitao.service.converter.impl.ItemConverterImpl;
 import com.gmail.evanloafakahaitao.service.converter.impl.ItemDTOConverterImpl;
 import com.gmail.evanloafakahaitao.dao.impl.ItemDaoImpl;
@@ -26,25 +25,6 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDTO> save(List<ItemDTO> itemList) {
-        /*int savedItems = 0;
-        try (Connection connection = connectionService.getConnection()) {
-            try {
-                logger.info("Saving list of items ...");
-                connection.setAutoCommit(false);
-                savedItems = itemDao.save(connection, itemList);
-                connection.commit();
-            } catch (SQLException e) {
-                logger.error(e.getMessage(), e);
-                try {
-                    connection.rollback();
-                } catch (SQLException e1) {
-                    logger.error(e1.getMessage(), e1);
-                }
-            }
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-        }
-        return savedItems;*/
         Session session = itemDao.getCurrentSession();
         try {
             Transaction transaction = session.getTransaction();
@@ -70,25 +50,6 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDTO> findAll() {
-        /*List<Item> itemList = null;
-        try (Connection connection = connectionService.getConnection()) {
-            try {
-                logger.info("Finding all items ...");
-                connection.setAutoCommit(false);
-                itemList = itemDao.findAll(connection);
-                connection.commit();
-            } catch (SQLException e) {
-                logger.error(e.getMessage(), e);
-                try {
-                    connection.rollback();
-                } catch (SQLException e1) {
-                    logger.error(e1.getMessage(), e1);
-                }
-            }
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-        }
-        return itemList;*/
         Session session = itemDao.getCurrentSession();
         try {
             Transaction transaction = session.getTransaction();
@@ -110,25 +71,6 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDTO findByVendorCode(ItemDTO itemDTO) {
-        /*Item item = null;
-        try (Connection connection = connectionService.getConnection()) {
-            try {
-                logger.info("Finding item by vendor code ...");
-                connection.setAutoCommit(false);
-                item = itemDao.findByVendorCode(connection, vendorCode);
-                connection.commit();
-            } catch (SQLException e) {
-                logger.error(e.getMessage(), e);
-                try {
-                    connection.rollback();
-                } catch (SQLException e1) {
-                    logger.error(e1.getMessage(), e1);
-                }
-            }
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-        }
-        return item;*/
         Session session = itemDao.getCurrentSession();
         try {
             Transaction transaction = session.getTransaction();
@@ -149,25 +91,6 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDTO findById(ItemDTO itemDTO) {
-        /*Item item = null;
-        try (Connection connection = connectionService.getConnection()) {
-            try {
-                logger.info("Finding item by id ...");
-                connection.setAutoCommit(false);
-                item = itemDao.findById(connection, itemId);
-                connection.commit();
-            } catch (SQLException e) {
-                logger.error(e.getMessage(), e);
-                try {
-                    connection.rollback();
-                } catch (SQLException e1) {
-                    logger.error(e1.getMessage(), e1);
-                }
-            }
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-        }
-        return item;*/
         Session session = itemDao.getCurrentSession();
         try {
             Transaction transaction = session.getTransaction();
@@ -188,28 +111,6 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDTO save(ItemDTO itemDTO) {
-        /*Session session = itemDao.getCurrentSession();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive()) {
-                session.beginTransaction();
-            }
-            Item item = itemConverter.toEntity(itemDTO);
-            itemDao.create(item);
-            transaction.commit();
-            return itemDTOConverter.toDto(item);
-        } catch (Exception e) {
-            if (session.getTransaction().isActive()) {
-                session.getTransaction().rollback();
-            }
-            logger.error("Failed to save Item! - CREATE METHOD");
-            logger.error(e.getMessage(), e);
-            throw new RuntimeException("Failed to save Item! - CREATE METHOD");
-        }
-        *//*
-        return luchshe null
-        i v catch throw runtime exc
-         */
         Session session = itemDao.getCurrentSession();
         try {
             Transaction transaction = session.getTransaction();

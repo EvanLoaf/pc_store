@@ -1,13 +1,7 @@
 package com.gmail.evanloafakahaitao.web;
 
-import com.gmail.evanloafakahaitao.dao.FeedbackDao;
-import com.gmail.evanloafakahaitao.dao.ItemDao;
-import com.gmail.evanloafakahaitao.dao.OrderDao;
-import com.gmail.evanloafakahaitao.dao.UserDao;
-import com.gmail.evanloafakahaitao.dao.impl.FeedbackDaoImpl;
-import com.gmail.evanloafakahaitao.dao.impl.ItemDaoImpl;
-import com.gmail.evanloafakahaitao.dao.impl.OrderDaoImpl;
-import com.gmail.evanloafakahaitao.dao.impl.UserDaoImpl;
+import com.gmail.evanloafakahaitao.dao.*;
+import com.gmail.evanloafakahaitao.dao.impl.*;
 import com.gmail.evanloafakahaitao.dao.model.*;
 import com.gmail.evanloafakahaitao.service.ItemService;
 import com.gmail.evanloafakahaitao.service.OrderService;
@@ -28,6 +22,7 @@ import org.hibernate.query.Query;
 import java.math.BigDecimal;
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -38,10 +33,13 @@ public class Main {
         Random random = new Random();
         Logger logger = LogManager.getLogger(Main.class);
 
+        /*char c = '_';
+        logger.info("CHAR TYPE NUMBER: " + Character.getType(c));*/
+
         /**
          * Item testing
          */
-        ItemService itemService = new ItemServiceImpl();
+        /*ItemService itemService = new ItemServiceImpl();
         Converter itemConverter = new ItemConverterImpl();
 
         ItemDTO itemDTO = ItemDTO.newBuilder()
@@ -51,10 +49,11 @@ public class Main {
                 .withVendorCode((long) random.nextInt(1111111))
                 .build();
 
-        /*ItemDTO itemDTOsaved = itemService.save(itemDTO);
+        ItemDTO itemDTOsaved = itemService.save(itemDTO);
 
-        logger.info("ItemDTO saved id: " + itemDTOsaved.getId());
+        logger.info("ItemDTO saved id: " + itemDTOsaved.getId());*/
 
+        /*
         //************************************************************
 
         ItemDTO itemDTObyId = itemService.findById(ItemDTO.newBuilder().withId(3L).build());
@@ -83,6 +82,9 @@ public class Main {
         UserDao userDao = new UserDaoImpl(User.class);
         ItemDao itemDao = new ItemDaoImpl(Item.class);
         FeedbackDao feedbackDao = new FeedbackDaoImpl(Feedback.class);
+        AuditDao auditDao = new AuditDaoImpl(Audit.class);
+        NewsDao newsDao = new NewsDaoImpl(News.class);
+        CommentDao commentDao = new CommentDaoImpl(Comment.class);
 
         /*OrderDTO orderDTO = orderService.save(OrderDTO.newBuilder()
                 .withUuid(UUID.randomUUID().toString())
@@ -135,7 +137,7 @@ public class Main {
                     .withVendorCode((long) random.nextInt(1111111))
                     .build();*//*
 
-            User user = userDao.findOne(1L);
+            User user = userDao.findOne(2L);
             //logger.info(user.getRole().getName());
 
             Item item = itemDao.findOne(3L);
@@ -171,8 +173,8 @@ public class Main {
             String hql = "from Order as O where O.id.itemId=:itemId and O.id.userId=:userId";
             Query query = orderDao.getCurrentSession().createQuery(hql);
             query.setParameter("itemId", 2L);
-            query.setParameter("userId", 3L);
-            logger.info("query res: " + ((Order) query.getSingleResult()).getUuid());
+            query.setParameter("userId", 1L);
+            logger.info("query res: " + ((Order) query.getSingleResult()).getUuid() + " Date: " + ((Order) query.getSingleResult()).getCreated());
 
             transaction.commit();
             //logger.info("Saved order for: " + order.getItem().getName() + " " + order.getQuantity() + " pcs.");
@@ -196,8 +198,8 @@ public class Main {
             Transaction transaction = sessionUserTest.getTransaction();
             if (!transaction.isActive()) {
                 sessionUserTest.beginTransaction();
-            }
-            List<User> userList = userDao.findAll();
+            }*/
+            /*List<User> userList = userDao.findAll();
             for (User user : userList) {
                 logger.info("user email: " + user.getEmail());
                 logger.info("user role: " + user.getRole().getName());
@@ -209,18 +211,18 @@ public class Main {
 
             for (Permission permission : user.getRole().getPermissionSet()) {
                 logger.info("user with mail root@user permissions: " + permission.getName());
-            }
+            }*/
 
-            Profile profile = Profile.newBuilder()
+            /*Profile profile = Profile.newBuilder()
                     .withPhoneNumber("555")
                     .withAddress("666")
-                    *//*.withUserId()*//*
-                    *//*.withUser()*//*
+                    *//*.withUserId()
+                    .withUser()*//*
                     .build();
 
             User userToSave = User.newBuilder()
                     .withPassword("123")
-                    .withEmail("456")
+                    .withEmail("4567")
                     .withLastName("789")
                     .withFirstName("101112")
                     .withRole(Role.newBuilder()
@@ -247,7 +249,7 @@ public class Main {
          * Feedback testing
          */
 
-        Session sessionTestFeedback = userDao.getCurrentSession();
+        /*Session sessionTestFeedback = userDao.getCurrentSession();
         try {
             Transaction transaction = sessionTestFeedback.getTransaction();
             if (!transaction.isActive()) {
@@ -274,7 +276,154 @@ public class Main {
                 sessionTestFeedback.getTransaction().rollback();
             }
             logger.error("Failed to retrieve users", e);
-        }
+        }*/
 
+        /**
+         * Audit testing
+         */
+
+        /*Session session = userDao.getCurrentSession();
+        try {
+            Transaction transaction = session.getTransaction();
+            if (!transaction.isActive()) {
+                session.beginTransaction();
+            }
+
+            User user = userDao.findOne(1L);
+
+            *//*Profile profileFake = Profile.newBuilder()
+                    .withUserId(6L)
+                    .withAddress("xd")
+                    .withPhoneNumber("dx")
+                    .build();
+
+            User userFake = User.newBuilder()
+                    .withProfile(profileFake)
+                    .withRole(user.getRole())
+                    .withFirstName(user.getFirstName())
+                    .withLastName(user.getLastName())
+                    .withPassword(user.getPassword())
+                    .withEmail("rand mail")
+                    .withId(6L)
+                    .build();
+
+            profileFake.setUser(userFake);*//*
+
+            Audit audit = Audit.newBuilder()
+                    .withEventType("random event")
+                    .withCreated(LocalDateTime.now(ZoneId.systemDefault()))
+                    .withUser(user)
+                    .build();
+
+            auditDao.create(audit);
+
+            logger.info("audit saved: " + audit.getId());
+
+            List<Audit> auditList = auditDao.findAll();
+            for (Audit auditFromList : auditList) {
+                logger.info("audit from list: " + auditFromList.getCreated());
+            }
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (session.getTransaction().isActive()) {
+                session.getTransaction().rollback();
+            }
+            logger.error("Failed to retrieve users", e);
+        }*/
+
+
+        /**
+         * News and Comments testing
+         */
+
+        /*Session session = userDao.getCurrentSession();
+        try {
+            Transaction transaction = session.getTransaction();
+            if (!transaction.isActive()) {
+                session.beginTransaction();
+            }
+
+            *//*User user = userDao.findOne(2L);
+
+            News news = News.newBuilder()
+                    .withTitle("first title")
+                    .withContent("superinterestingnewsarticle")
+                    .withCreated(LocalDateTime.now())
+                    .withUser(user)
+                    .build();
+
+            newsDao.create(news);
+            logger.info("news saved with title: " + news.getTitle() + " with ID: " + news.getId());*//*
+
+            News news = newsDao.findOne(3L);
+            *//*User user = userDao.findOne(1L);*//*
+
+         *//*News news = News.newBuilder()
+                    .withTitle("second title")
+                    .withContent("superinterestingnewsarticle")
+                    .withCreated(LocalDateTime.now())
+                    .withUser(user)
+                    .build();*//*
+
+         *//*Comment comment1 = Comment.newBuilder()
+                    .withUser(user)
+                    .withCreated(LocalDateTime.now())
+                    .withContent("first comment")
+                    .build();
+
+            Comment comment2 = Comment.newBuilder()
+                    .withUser(user)
+                    .withCreated(LocalDateTime.now())
+                    .withContent("second comment")
+                    .build();
+
+            Comment comment3 = Comment.newBuilder()
+                    .withUser(user)
+                    .withCreated(LocalDateTime.now())
+                    .withContent("third comment")
+                    .build();
+
+            news.getCommentSet().add(comment1);
+            news.getCommentSet().add(comment2);
+            news.getCommentSet().add(comment3);
+
+            newsDao.create(news);*//*
+
+         *//*newsDao.update(news);*//*
+
+            newsDao.delete(news);
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (session.getTransaction().isActive()) {
+                session.getTransaction().rollback();
+            }
+            logger.error("Failed to retrieve users", e);
+        }*/
+
+        Session session = userDao.getCurrentSession();
+        try {
+            Transaction transaction = session.getTransaction();
+            if (!transaction.isActive()) {
+                session.beginTransaction();
+            }
+            List<Comment> commentList = commentDao.findByNewsId(2L);
+            for (Comment comment : commentList) {
+                logger.info("comment retrieved: " + comment.getId());
+                logger.info(comment.getUser().getEmail());
+                logger.info(comment.getUser().getProfile().getAddress());
+                logger.info(comment.getUser().getRole().getName());
+                for (Permission permission : comment.getUser().getRole().getPermissionSet()) {
+                    logger.info(permission.getName());
+                }
+            }
+            transaction.commit();
+        } catch (Exception e) {
+            if (session.getTransaction().isActive()) {
+                session.getTransaction().rollback();
+            }
+            logger.error("Failed to retrieve users", e);
+        }
     }
 }

@@ -127,12 +127,14 @@ on duplicate key update f_id = f_id;
 
 insert into t_permission (f_id, f_name)
 values (1, 'admin_permission_set'),
-       (2, 'user_permission_set')
+       (2, 'admin_extended_permission_set'),
+       (3, 'user_permission_set')
 on duplicate key update f_id = f_id;
 
 insert into t_role_permission (f_role_id, f_permission_id)
 values (1, 1),
-       (2, 2)
+       (1, 2),
+       (2, 3)
 on duplicate key update f_role_id = f_role_id;
 
 insert into t_user (f_id, f_email, f_password, f_first_name, f_last_name, f_role_id)

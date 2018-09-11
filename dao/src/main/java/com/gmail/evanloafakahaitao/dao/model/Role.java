@@ -17,11 +17,11 @@ public class Role implements Serializable {
     @NotNull
     @Column
     private String name;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "RolePermission",
-            joinColumns = @JoinColumn(name = "roleId"),
-            inverseJoinColumns = @JoinColumn(name = "permissionId")
+            joinColumns = @JoinColumn(name = "roleId", nullable = false, updatable = false),
+            inverseJoinColumns = @JoinColumn(name = "permissionId", nullable = false, updatable = false)
     )
     private Set<Permission> permissionSet = new HashSet<>();
 
@@ -61,7 +61,7 @@ public class Role implements Serializable {
     public static final class Builder {
         private Long id;
         private @NotNull String name;
-        private Set<Permission> permissionSet;
+        private Set<Permission> permissionSet = new HashSet<>();
 
         private Builder() {
         }

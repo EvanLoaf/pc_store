@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class OrderUserConverterImpl<D, E> implements Converter<OrderUserDTO, User> {
+public class OrderUserConverterImpl implements Converter<OrderUserDTO, User> {
 
     private Converter profileConverter = new ProfileConverterImpl();
 

@@ -11,9 +11,9 @@ import javax.xml.validation.Validator;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
-public class XmlValidator {
+public class XMLValidator {
 
-    private static final Logger logger = LogManager.getLogger(XmlValidator.class);
+    private static final Logger logger = LogManager.getLogger(XMLValidator.class);
 
     public boolean validate(String xmlRoute, String xsdRoute) {
         try {

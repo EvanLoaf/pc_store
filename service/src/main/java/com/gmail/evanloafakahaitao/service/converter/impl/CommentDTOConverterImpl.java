@@ -3,15 +3,15 @@ package com.gmail.evanloafakahaitao.service.converter.impl;
 import com.gmail.evanloafakahaitao.dao.model.Comment;
 import com.gmail.evanloafakahaitao.service.converter.DTOConverter;
 import com.gmail.evanloafakahaitao.service.dto.CommentDTO;
-import com.gmail.evanloafakahaitao.service.dto.CommentFeedbackNewsUserDTO;
+import com.gmail.evanloafakahaitao.service.dto.CommentFeedbackNewsLoginUserDTO;
 
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class CommentDTOConverterImpl<D, E> implements DTOConverter<CommentDTO, Comment> {
+public class CommentDTOConverterImpl implements DTOConverter<CommentDTO, Comment> {
 
-    private DTOConverter commentFeedbackNewsUserDTOConverter = new CommentFeedbackNewsUserDTOConverterImpl();
+    private DTOConverter commentFeedbackNewsUserDTOConverter = new CommentFeedbackNewsLoginUserDTOConverterImpl();
 
     @SuppressWarnings("unchecked")
     @Override
@@ -20,7 +20,7 @@ public class CommentDTOConverterImpl<D, E> implements DTOConverter<CommentDTO, C
                 .withId(entity.getId())
                 .withContent(entity.getContent())
                 .withCreated(entity.getCreated())
-                .withUser((CommentFeedbackNewsUserDTO) commentFeedbackNewsUserDTOConverter.toDto(entity.getUser()))
+                .withUser((CommentFeedbackNewsLoginUserDTO) commentFeedbackNewsUserDTOConverter.toDto(entity.getUser()))
                 .build();
     }
 
@@ -31,7 +31,7 @@ public class CommentDTOConverterImpl<D, E> implements DTOConverter<CommentDTO, C
                 .withId(entity.getId())
                 .withContent(entity.getContent())
                 .withCreated(entity.getCreated())
-                .withUser((CommentFeedbackNewsUserDTO) commentFeedbackNewsUserDTOConverter.toDto(entity.getUser()))
+                .withUser((CommentFeedbackNewsLoginUserDTO) commentFeedbackNewsUserDTOConverter.toDto(entity.getUser()))
                 .build()).collect(Collectors.toList());
     }
 
@@ -42,7 +42,7 @@ public class CommentDTOConverterImpl<D, E> implements DTOConverter<CommentDTO, C
                 .withId(entity.getId())
                 .withContent(entity.getContent())
                 .withCreated(entity.getCreated())
-                .withUser((CommentFeedbackNewsUserDTO) commentFeedbackNewsUserDTOConverter.toDto(entity.getUser()))
+                .withUser((CommentFeedbackNewsLoginUserDTO) commentFeedbackNewsUserDTOConverter.toDto(entity.getUser()))
                 .build()).collect(Collectors.toSet());
     }
 }

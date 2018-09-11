@@ -1,9 +1,9 @@
-package com.gmail.evanloafakahaitao.dao.model;
+package com.gmail.evanloafakahaitao.service.dto;
 
 import javax.xml.bind.annotation.XmlElement;
 import java.math.BigDecimal;
 
-public class ItemXml {
+public class ItemXMLDTO {
 
     private String name;
     private Long vendorcode;

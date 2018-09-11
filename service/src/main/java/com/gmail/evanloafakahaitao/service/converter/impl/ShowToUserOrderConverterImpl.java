@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class ShowToUserOrderConverterImpl<D, E> implements Converter<ShowToUserOrderDTO, Order> {
+public class ShowToUserOrderConverterImpl implements Converter<ShowToUserOrderDTO, Order> {
 
     private Converter itemConverter = new ItemConverterImpl();
 

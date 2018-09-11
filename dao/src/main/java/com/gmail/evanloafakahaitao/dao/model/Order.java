@@ -4,7 +4,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 @Table
@@ -26,11 +25,9 @@ public class Order implements Serializable {
     private String status;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @MapsId("userId")
-    @JoinColumn(name = "userId", insertable = false, updatable = false)
     private User user;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @MapsId("itemId")
-    @JoinColumn(name = "itemId", insertable = false, updatable = false)
     private Item item;
 
     public Order() {

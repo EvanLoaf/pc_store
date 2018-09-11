@@ -2,9 +2,10 @@ package com.gmail.evanloafakahaitao.service.impl;
 
 import com.gmail.evanloafakahaitao.dao.ItemDao;
 import com.gmail.evanloafakahaitao.dao.OrderDao;
-import com.gmail.evanloafakahaitao.dao.connection.ConnectionService;
+import com.gmail.evanloafakahaitao.dao.UserDao;
 import com.gmail.evanloafakahaitao.dao.impl.ItemDaoImpl;
 import com.gmail.evanloafakahaitao.dao.impl.OrderDaoImpl;
+import com.gmail.evanloafakahaitao.dao.impl.UserDaoImpl;
 import com.gmail.evanloafakahaitao.dao.model.Item;
 import com.gmail.evanloafakahaitao.dao.model.Order;
 import com.gmail.evanloafakahaitao.dao.model.User;
@@ -13,6 +14,7 @@ import com.gmail.evanloafakahaitao.service.converter.Converter;
 import com.gmail.evanloafakahaitao.service.converter.DTOConverter;
 import com.gmail.evanloafakahaitao.service.converter.impl.OrderConverterImpl;
 import com.gmail.evanloafakahaitao.service.converter.impl.OrderDTOConverterImpl;
+import com.gmail.evanloafakahaitao.service.converter.impl.ShowToUserOrderDTOConverterImpl;
 import com.gmail.evanloafakahaitao.service.dto.OrderDTO;
 import com.gmail.evanloafakahaitao.service.dto.ShowToUserOrderDTO;
 import com.gmail.evanloafakahaitao.service.dto.UserDTO;
@@ -21,64 +23,36 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class OrderServiceImpl implements OrderService {
 
     private static final Logger logger = LogManager.getLogger(OrderServiceImpl.class);
 
-    private ConnectionService connectionService = new ConnectionService();
     private OrderDao orderDao = new OrderDaoImpl(Order.class);
     private ItemDao itemDao = new ItemDaoImpl(Item.class);
+    private UserDao userDao = new UserDaoImpl(User.class);
     private Converter orderConverter = new OrderConverterImpl();
     private DTOConverter orderDTOConverter = new OrderDTOConverterImpl();
+    private DTOConverter showToUserOrderDTOConverter = new ShowToUserOrderDTOConverterImpl();
 
     @SuppressWarnings("unchecked")
     @Override
-    public OrderDTO save(OrderDTO orderDTO) {
-        /*int savedOrders = 0;
-        try (Connection connection = connectionService.getConnection()) {
-            String uuid = UUID.randomUUID().toString();
-            User user = User.newBuilder()
-                    .withId(userId)
-                    .build();
-            try {
-                connection.setAutoCommit(false);
-                Item item = itemDao.findByVendorCode(connection, vendorCode);
-                Order order = Order.newBuilder()
-                        .withUser(user)
-                        .withOrderUuid(uuid)
-                        .withQuantity(itemQuantity)
-                        .build();
-                logger.info("Saving order...");
-                savedOrders = orderDao.save(connection, order, item);
-                connection.commit();
-            } catch (SQLException e) {
-                logger.error(e.getMessage(), e);
-                try {
-                    connection.rollback();
-                } catch (SQLException e1) {
-                    logger.error(e1.getMessage(), e1);
-                }
-            }
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-        }
-        return savedOrders;*/
+    public ShowToUserOrderDTO save(OrderDTO orderDTO) {
         Session session = orderDao.getCurrentSession();
         try {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive()) {
                 session.beginTransaction();
             }
+            User user = userDao.findByEmail(orderDTO.getUser().getEmail());
+            Item item = itemDao.findByVendorCode(orderDTO.getItem().getVendorCode());
             Order order = (Order) orderConverter.toEntity(orderDTO);
+            order.setUser(user);
+            order.setItem(item);
             orderDao.create(order);
             transaction.commit();
-            return (OrderDTO) orderDTOConverter.toDto(order);
+            return (ShowToUserOrderDTO) showToUserOrderDTOConverter.toDto(order);
         } catch (Exception e) {
             if (session.getTransaction().isActive()) {
                 session.getTransaction().rollback();
@@ -91,37 +65,6 @@ public class OrderServiceImpl implements OrderService {
     @SuppressWarnings("unchecked")
     @Override
     public List<ShowToUserOrderDTO> findByUserId(UserDTO userDTO) {
-        /*List<Order> orderList = null;
-        try (Connection connection = connectionService.getConnection()) {
-            try {
-                logger.info("Finding orders by user id ...");
-                connection.setAutoCommit(false);
-                List<Order> orderListWithoutItem = orderDao.findByUserId(connection, id);
-                orderList = new ArrayList<>();
-                for (Order order : orderListWithoutItem) {
-                    Item item = itemDao.findById(connection, order.getItem().getId());
-                    Order orderWithItem = Order.newBuilder()
-                            .withItem(item)
-                            .withCreatedDate(order.getCreatedDate())
-                            .withQuantity(order.getQuantity())
-                            .withId(order.getId())
-                            .withOrderUuid(order.getOrderUuid())
-                            .build();
-                    orderList.add(orderWithItem);
-                }
-                connection.commit();
-            } catch (SQLException e) {
-                logger.error(e.getMessage(), e);
-                try {
-                    connection.rollback();
-                } catch (SQLException e1) {
-                    logger.error(e1.getMessage(), e1);
-                }
-            }
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-        }
-        return orderList;*/
         Session session = orderDao.getCurrentSession();
         try {
             Transaction transaction = session.getTransaction();
@@ -136,32 +79,64 @@ public class OrderServiceImpl implements OrderService {
             if (session.getTransaction().isActive()) {
                 session.getTransaction().rollback();
             }
-            logger.error("Failed to find Order by userId", e);
+            logger.error("Failed to find Orders by userId", e);
+        }
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public ShowToUserOrderDTO findByUuid(OrderDTO orderDTO) {
+        Session session = orderDao.getCurrentSession();
+        try {
+            Transaction transaction = session.getTransaction();
+            if (!transaction.isActive()) {
+                session.beginTransaction();
+            }
+            Order order = orderDao.findByUuid(orderDTO.getUuid());
+            ShowToUserOrderDTO foundOrderDTO = (ShowToUserOrderDTO) showToUserOrderDTOConverter.toDto(order);
+            transaction.commit();
+            return foundOrderDTO;
+        } catch (Exception e) {
+            if (session.getTransaction().isActive()) {
+                session.getTransaction().rollback();
+            }
+            logger.error("Failed to find Orders by uuid", e);
+        }
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public OrderDTO update(OrderDTO orderDTO) {
+        Session session = orderDao.getCurrentSession();
+        try {
+            Transaction transaction = session.getTransaction();
+            if (!transaction.isActive()) {
+                session.beginTransaction();
+            }
+            Order order = orderDao.findByUuid(orderDTO.getUuid());
+            if (orderDTO.getStatus() != null) {
+                order.setStatus(orderDTO.getStatus());
+            }
+            User user = userDao.findByEmail(orderDTO.getUser().getEmail());
+            Item item = itemDao.findByVendorCode(orderDTO.getItem().getVendorCode());
+            order.setUser(user);
+            order.setItem(item);
+            orderDao.update(order);
+            transaction.commit();
+            return (OrderDTO) orderDTOConverter.toDto(order);
+        } catch (Exception e) {
+            if (session.getTransaction().isActive()) {
+                session.getTransaction().rollback();
+            }
+            logger.error("Failed to update Order", e);
         }
         return null;
     }
 
     @Override
     public Integer deleteByUuid(OrderDTO orderDTO) {
-        /*int deletedOrders = 0;
-        try (Connection connection = connectionService.getConnection()) {
-            try {
-                logger.info("Deleting order by uuid and items from order ...");
-                connection.setAutoCommit(false);
-                deletedOrders = orderDao.deleteByUuid(connection, uuid);
-                connection.commit();
-            } catch (SQLException e) {
-                logger.error(e.getMessage(), e);
-                try {
-                    connection.rollback();
-                } catch (SQLException e1) {
-                    logger.error(e1.getMessage(), e1);
-                }
-            }
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-        }
-        return deletedOrders;*/
         Session session = orderDao.getCurrentSession();
         try {
             Transaction transaction = session.getTransaction();
@@ -180,8 +155,25 @@ public class OrderServiceImpl implements OrderService {
         return null;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<OrderDTO> findAll() {
+        Session session = orderDao.getCurrentSession();
+        try {
+            Transaction transaction = session.getTransaction();
+            if (!transaction.isActive()) {
+                session.beginTransaction();
+            }
+            List<Order> orderList = orderDao.findAll();
+            List<OrderDTO> orderDTOList = orderDTOConverter.toDTOList(orderList);
+            transaction.commit();
+            return orderDTOList;
+        } catch (Exception e) {
+            if (session.getTransaction().isActive()) {
+                session.getTransaction().rollback();
+            }
+            logger.error("Failed to retrieve orders", e);
+        }
         return null;
     }
 }

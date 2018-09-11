@@ -8,9 +8,13 @@ import java.util.List;
 
 public interface OrderService {
 
-    OrderDTO save(OrderDTO orderDTO);
+    ShowToUserOrderDTO save(OrderDTO orderDTO);
 
     List<ShowToUserOrderDTO> findByUserId(UserDTO userDTO);
+
+    ShowToUserOrderDTO findByUuid(OrderDTO orderDTO);
+
+    OrderDTO update(OrderDTO orderDTO);
 
     Integer deleteByUuid(OrderDTO orderDTO);
 

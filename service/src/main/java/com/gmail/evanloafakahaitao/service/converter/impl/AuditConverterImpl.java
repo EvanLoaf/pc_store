@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class AuditConverterImpl<D, E> implements Converter<AuditDTO, Audit> {
+public class AuditConverterImpl implements Converter<AuditDTO, Audit> {
 
     private Converter auditUserConverter = new AuditUserConverterImpl();
 

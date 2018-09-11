@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class UserConverterImpl<D, E> implements Converter<UserDTO, User> {
+public class UserConverterImpl implements Converter<UserDTO, User> {
 
     private Converter profileConverter = new ProfileConverterImpl();
     private Converter roleConverter = new RoleConverterImpl();
