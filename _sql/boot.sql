@@ -49,7 +49,7 @@ create table if not exists t_profile (
 create table if not exists t_item (
   f_id          bigint(19) unsigned auto_increment not null,
   f_name        varchar(20)                        not null,
-  f_vendor_code bigint(11) unsigned unique         not null,
+  f_vendor_code varchar(20) unique                 not null,
   f_description varchar(100)                       not null,
   f_price       decimal(10, 5) unsigned            not null,
   primary key (f_id),

@@ -23,7 +23,7 @@
         </RollingFile>
     </Appenders>
     <Loggers>
-        <Logger name="com.gmail.evanloafakahaitao.dao" level="info">
+        <Logger name="com.gmail.evanloafakahaitao.pcstore.dao" level="info">
             <AppenderRef ref="RollingFileDao"/>
         </Logger>
         <Root level="info">

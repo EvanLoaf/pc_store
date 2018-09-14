@@ -14,6 +14,9 @@
     </modules>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <hibernate.validator.version>6.0.12.Final</hibernate.validator.version>
         <lang3.version>3.8</lang3.version>
         <ehcache.version>5.3.5.Final</ehcache.version>
@@ -21,8 +24,6 @@
         <mysql.version>8.0.11</mysql.version>
         <servlet.jstl.version>1.2</servlet.jstl.version>
         <servlet-api.version>4.0.1</servlet-api.version>
-        <encoding.type>UTF-8</encoding.type>
-        <jdk.version>1.8</jdk.version>
         <logger.version>2.2</logger.version>
     </properties>
 </project>
