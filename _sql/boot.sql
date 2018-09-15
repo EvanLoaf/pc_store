@@ -1,3 +1,7 @@
+drop database computer_store;
+create database computer_store;
+use computer_store;
+
 create table if not exists t_role (
   f_id   bigint(19) unsigned auto_increment not null,
   f_name varchar(15)                        not null,
@@ -22,16 +26,28 @@ create table if not exists t_role_permission (
     on delete restrict
 );
 
+create table if not exists t_discount (
+  f_id          bigint(19) unsigned auto_increment not null,
+  f_name        varchar(30)                        not null,
+  f_percent     int(3) unsigned                    not null,
+  f_finish_date datetime                           not null,
+  primary key (f_id)
+);
+
 create table if not exists t_user (
-  f_id         bigint(19) unsigned auto_increment not null,
-  f_email      varchar(30)                        not null,
-  f_first_name varchar(20)                        not null,
-  f_last_name  varchar(20)                        not null,
-  f_password   varchar(20)                        not null,
-  f_role_id    bigint(19) unsigned                not null,
+  f_id          bigint(19) unsigned auto_increment not null,
+  f_email       varchar(30)                        not null,
+  f_first_name  varchar(20)                        not null,
+  f_last_name   varchar(20)                        not null,
+  f_password    varchar(20)                        not null,
+  f_role_id     bigint(19) unsigned                not null,
+  f_discount_id bigint(19) unsigned,
   primary key (f_id),
   unique (f_email),
   foreign key (f_role_id) references t_role (f_id)
+    on update cascade
+    on delete restrict,
+  foreign key (f_discount_id) references t_discount (f_id)
     on update cascade
     on delete restrict
 );
@@ -120,6 +136,18 @@ create table if not exists t_comment (
     on delete restrict
 );
 
+create table if not exists t_item_discount (
+  f_item_id     bigint(19) unsigned not null,
+  f_discount_id bigint(19) unsigned not null,
+  primary key (f_item_id, f_discount_id),
+  foreign key (f_item_id) references t_item (f_id)
+    on update cascade
+    on delete restrict,
+  foreign key (f_discount_id) references t_discount (f_id)
+    on update cascade
+    on delete restrict
+);
+
 insert into t_role (f_id, f_name)
 values (1, 'admin'),
        (2, 'user')
@@ -136,13 +164,3 @@ values (1, 1),
        (1, 2),
        (2, 3)
 on duplicate key update f_role_id = f_role_id;
-
-insert into t_user (f_id, f_email, f_password, f_first_name, f_last_name, f_role_id)
-values (1, 'root@admin', 'root', 'root', 'admin', (select f_id from t_role where f_name = 'admin')),
-       (2, 'root@user', 'root', 'root', 'user', (select f_id from t_role where f_name = 'user'))
-on duplicate key update f_id = f_id;
-
-insert into t_profile (f_user_id, f_address, f_phone_number)
-VALUES (1, 'admin address', 'admin pn'),
-       (2, 'user address', 'user pn')
-on duplicate key update f_user_id = f_user_id;

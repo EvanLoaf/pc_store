@@ -47,7 +47,7 @@ public class RoleDTO implements Serializable {
     public static final class Builder {
         private Long id;
         private String name;
-        private Set<PermissionDTO> permissionSet;
+        private Set<PermissionDTO> permissionSet = new HashSet<>();
 
         private Builder() {
         }

@@ -4,7 +4,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table
@@ -26,16 +28,24 @@ public class Item implements Serializable {
     @NotNull
     @Column
     private BigDecimal price;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "ItemDiscount",
+            joinColumns = @JoinColumn(name = "itemId", nullable = false, updatable = false),
+            inverseJoinColumns = @JoinColumn(name = "discountId", nullable = false, updatable = false)
+    )
+    private Set<Discount> discounts = new HashSet<>();
 
     public Item() {
     }
 
     private Item(Builder builder) {
-        id = builder.id;
+        setId(builder.id);
         setName(builder.name);
         setVendorCode(builder.vendorCode);
         setDescription(builder.description);
         setPrice(builder.price);
+        setDiscounts(builder.discounts);
     }
 
     public static Builder newBuilder() {
@@ -44,6 +54,10 @@ public class Item implements Serializable {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -78,12 +92,36 @@ public class Item implements Serializable {
         this.price = price;
     }
 
+    public Set<Discount> getDiscounts() {
+        return discounts;
+    }
+
+    public void setDiscounts(Set<Discount> discounts) {
+        this.discounts = discounts;
+    }
+
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Item item = (Item) o;
+        return Objects.equals(vendorCode, item.vendorCode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(vendorCode);
+    }
+
     public static final class Builder {
         private Long id;
         private @NotNull String name;
         private @NotNull String vendorCode;
         private @NotNull String description;
         private @NotNull BigDecimal price;
+        private Set<Discount> discounts;
 
         private Builder() {
         }
@@ -113,21 +151,13 @@ public class Item implements Serializable {
             return this;
         }
 
+        public Builder withDiscounts(Set<Discount> val) {
+            discounts = val;
+            return this;
+        }
+
         public Item build() {
             return new Item(this);
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Item item = (Item) o;
-        return Objects.equals(vendorCode, item.vendorCode);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(vendorCode);
     }
 }
