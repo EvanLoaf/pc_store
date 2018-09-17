@@ -16,15 +16,27 @@ public class UserConverter implements Converter<UserDTO, User> {
     @SuppressWarnings("unchecked")
     @Override
     public User toEntity(UserDTO dto) {
-        return User.newBuilder()
-                .withId(dto.getId())
-                .withFirstName(dto.getFirstName())
-                .withLastName(dto.getLastName())
-                .withEmail(dto.getEmail())
-                .withPassword(dto.getPassword())
-                .withProfile((Profile) profileConverter.toEntity(dto.getProfile()))
-                .withRole((Role) roleConverter.toEntity(dto.getRole()))
-                .withDiscount((Discount) discountConverter.toEntity(dto.getDiscount()))
-                .build();
+        if (dto.getRole() != null) {
+            return User.newBuilder()
+                    .withId(dto.getId())
+                    .withFirstName(dto.getFirstName())
+                    .withLastName(dto.getLastName())
+                    .withEmail(dto.getEmail())
+                    .withPassword(dto.getPassword())
+                    .withProfile((Profile) profileConverter.toEntity(dto.getProfile()))
+                    .withRole((Role) roleConverter.toEntity(dto.getRole()))
+                    .withDiscount((Discount) discountConverter.toEntity(dto.getDiscount()))
+                    .build();
+        } else {
+            return User.newBuilder()
+                    .withId(dto.getId())
+                    .withFirstName(dto.getFirstName())
+                    .withLastName(dto.getLastName())
+                    .withEmail(dto.getEmail())
+                    .withPassword(dto.getPassword())
+                    .withProfile((Profile) profileConverter.toEntity(dto.getProfile()))
+                    .withDiscount((Discount) discountConverter.toEntity(dto.getDiscount()))
+                    .build();
+        }
     }
 }

@@ -152,11 +152,6 @@ public class TestMain {
                 .withFirstName("first")
                 .withLastName("last")
                 .withPassword("12345")
-                .withRole(
-                        RoleDTO.newBuilder()
-                                .withName("user")
-                                .build()
-                )
                 .withProfile(
                         ProfileDTO.newBuilder()
                                 .withAddress("address")
@@ -203,7 +198,7 @@ public class TestMain {
          */
 
         Long countOfItems = itemService.findCountInPriceRange(BigDecimal.valueOf(250), BigDecimal.valueOf(450));
-        logger.info(countOfItems);
+        logger.info("Items in 250-450 price range" + countOfItems);
 
         /*
                +1 since random can return 0 and -3 since I wanna retrieve 4 items, so, for example, if I got 20 items

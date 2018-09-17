@@ -16,15 +16,32 @@ public class UserDTOConverter implements DTOConverter<UserDTO, User> {
     @SuppressWarnings("unchecked")
     @Override
     public UserDTO toDto(User entity) {
-        return UserDTO.newBuilder()
-                .withId(entity.getId())
-                .withLastName(entity.getLastName())
-                .withFirstName(entity.getFirstName())
-                .withPassword(entity.getPassword())
-                .withEmail(entity.getEmail())
-                .withProfile((ProfileDTO) profileDTOConverter.toDto(entity.getProfile()))
-                .withRole((RoleDTO) roleDTOConverter.toDto(entity.getRole()))
-                .withDiscount((DiscountDTO) discountDTOConverter.toDto(entity.getDiscount()))
-                .build();
+        if (entity.getRole() != null) {
+            return UserDTO.newBuilder()
+                    .withId(entity.getId())
+                    .withLastName(entity.getLastName())
+                    .withFirstName(entity.getFirstName())
+                    .withPassword(entity.getPassword())
+                    .withEmail(entity.getEmail())
+                    .withProfile((ProfileDTO) profileDTOConverter.toDto(entity.getProfile()))
+                    .withRole((RoleDTO) roleDTOConverter.toDto(entity.getRole()))
+                    .withDiscount((DiscountDTO) discountDTOConverter.toDto(entity.getDiscount()))
+                    .build();
+        } else {
+            return UserDTO.newBuilder()
+                    .withId(entity.getId())
+                    .withLastName(entity.getLastName())
+                    .withFirstName(entity.getFirstName())
+                    .withPassword(entity.getPassword())
+                    .withEmail(entity.getEmail())
+                    .withProfile((ProfileDTO) profileDTOConverter.toDto(entity.getProfile()))
+                    .withRole(
+                            RoleDTO.newBuilder()
+                                    .withName("testrole")
+                                    .build()
+                    )
+                    .withDiscount((DiscountDTO) discountDTOConverter.toDto(entity.getDiscount()))
+                    .build();
+        }
     }
 }

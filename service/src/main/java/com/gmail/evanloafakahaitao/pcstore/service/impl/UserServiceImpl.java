@@ -47,8 +47,8 @@ public class UserServiceImpl implements UserService {
             }
             User user = (User) userConverter.toEntity(userDTO);
             user.getProfile().setUser(user);
-            Role role = roleDao.findByName(user.getRole().getName());
-            user.setRole(role);
+            /*Role role = roleDao.findByName(user.getRole().getName());
+            user.setRole(role);*/
             if (userDTO.getDiscount() != null && userDTO.getDiscount().getPercent() != null) {
                 Discount discount = discountDao.findByPercent(userDTO.getDiscount().getPercent());
                 user.setDiscount(discount);
