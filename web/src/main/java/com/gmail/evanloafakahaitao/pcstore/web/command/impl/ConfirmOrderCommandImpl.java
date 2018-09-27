@@ -7,14 +7,19 @@ import com.gmail.evanloafakahaitao.pcstore.service.impl.ItemServiceImpl;
 import com.gmail.evanloafakahaitao.pcstore.service.impl.OrderServiceImpl;
 import com.gmail.evanloafakahaitao.pcstore.web.command.Command;
 import com.gmail.evanloafakahaitao.pcstore.web.util.OrderValidator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Component
 public class ConfirmOrderCommandImpl implements Command {
 
-    private ItemService itemService = new ItemServiceImpl();
-    private OrderService orderService = new OrderServiceImpl();
+    @Autowired
+    private ItemService itemService;
+    @Autowired
+    private OrderService orderService;
     private ConfigurationManager configurationManager = ConfigurationManager.getInstance();
     private OrderValidator orderValidator = new OrderValidator();
 

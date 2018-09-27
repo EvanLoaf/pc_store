@@ -11,13 +11,26 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
+@Service
 public class RoleServiceImpl implements RoleService {
 
     private static final Logger logger = LogManager.getLogger(RoleServiceImpl.class);
 
-    private RoleDao roleDao = new RoleDaoImpl(Role.class);
-    private DTOConverter roleDTOConverter = new RoleDTOConverter();
+    private final RoleDao roleDao;
+    private final DTOConverter roleDTOConverter;
+
+    @Autowired
+    public RoleServiceImpl(
+            RoleDao roleDao,
+            @Qualifier("roleDTOConverter") DTOConverter roleDTOConverter
+    ) {
+        this.roleDao = roleDao;
+        this.roleDTOConverter = roleDTOConverter;
+    }
 
     @SuppressWarnings("unchecked")
     @Override

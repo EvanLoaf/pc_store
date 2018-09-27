@@ -4,6 +4,7 @@ import com.gmail.evanloafakahaitao.pcstore.service.xml.dto.ItemXMLDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.xml.dto.ItemsXMLDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -11,6 +12,7 @@ import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.util.List;
 
+@Component
 public class XMLParser {
 
     private static final Logger logger = LogManager.getLogger(XMLParser.class);
@@ -25,7 +27,7 @@ public class XMLParser {
             for (ItemXMLDTO xmlItem : xmlItems.getXmlItems()) {
                 logger.info(
                         String.format(
-                        "Item from xml: name - %s, vendor code - %d, description - %s, price - %.2f",
+                        "Item from xml: name - %s, vendor code - %s, description - %s, price - %.2f",
                         xmlItem.getName(), xmlItem.getVendorcode(), xmlItem.getDescription(), xmlItem.getPrice()
                         )
                 );

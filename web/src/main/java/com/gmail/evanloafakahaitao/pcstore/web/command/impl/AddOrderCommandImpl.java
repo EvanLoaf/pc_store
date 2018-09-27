@@ -5,13 +5,17 @@ import com.gmail.evanloafakahaitao.pcstore.config.properties.PageProperties;
 import com.gmail.evanloafakahaitao.pcstore.service.ItemService;
 import com.gmail.evanloafakahaitao.pcstore.service.impl.ItemServiceImpl;
 import com.gmail.evanloafakahaitao.pcstore.web.command.Command;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Component
 public class AddOrderCommandImpl implements Command {
 
-    private ItemService itemService = new ItemServiceImpl();
+    @Autowired
+    private ItemService itemService;
     private ConfigurationManager configurationManager = ConfigurationManager.getInstance();
 
     @Override

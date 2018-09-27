@@ -3,11 +3,13 @@ package com.gmail.evanloafakahaitao.pcstore.dao.impl;
 import com.gmail.evanloafakahaitao.pcstore.dao.UserDao;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
 
-    public UserDaoImpl(Class<User> clazz) {
-        super(clazz);
+    public UserDaoImpl() {
+        super(User.class);
     }
 
     @Override

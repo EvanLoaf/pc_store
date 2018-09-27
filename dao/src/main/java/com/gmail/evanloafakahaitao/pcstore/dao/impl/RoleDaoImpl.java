@@ -3,11 +3,13 @@ package com.gmail.evanloafakahaitao.pcstore.dao.impl;
 import com.gmail.evanloafakahaitao.pcstore.dao.RoleDao;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Role;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class RoleDaoImpl extends GenericDaoImpl<Role> implements RoleDao {
 
-    public RoleDaoImpl(Class<Role> clazz) {
-        super(clazz);
+    public RoleDaoImpl() {
+        super(Role.class);
     }
 
     @Override

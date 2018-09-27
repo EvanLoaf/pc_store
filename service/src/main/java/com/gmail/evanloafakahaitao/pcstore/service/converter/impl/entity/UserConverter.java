@@ -6,7 +6,9 @@ import com.gmail.evanloafakahaitao.pcstore.dao.model.Role;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.UserDTO;
+import org.springframework.stereotype.Component;
 
+@Component("userConverter")
 public class UserConverter implements Converter<UserDTO, User> {
 
     private Converter profileConverter = new ProfileConverter();

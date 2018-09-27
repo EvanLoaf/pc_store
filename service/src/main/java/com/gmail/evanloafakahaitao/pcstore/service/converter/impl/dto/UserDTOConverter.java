@@ -6,7 +6,9 @@ import com.gmail.evanloafakahaitao.pcstore.service.dto.DiscountDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.ProfileDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.RoleDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.UserDTO;
+import org.springframework.stereotype.Component;
 
+@Component("userDTOConverter")
 public class UserDTOConverter implements DTOConverter<UserDTO, User> {
 
     private DTOConverter profileDTOConverter = new ProfileDTOConverter();

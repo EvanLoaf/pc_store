@@ -4,6 +4,7 @@ import com.gmail.evanloafakahaitao.pcstore.dao.GenericDao;
 import com.gmail.evanloafakahaitao.pcstore.dao.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.util.List;
@@ -12,7 +13,9 @@ public abstract class GenericDaoImpl<T extends Serializable> implements GenericD
 
     private Class<T> clazz;
 
-    private SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+    @Autowired
+    private HibernateUtil hibernateUtil;
+    /*private SessionFactory sessionFactory = HibernateUtil.getSessionFactory();*/
 
     public GenericDaoImpl(Class<T> clazz) {
         this.clazz = clazz;
@@ -52,6 +55,6 @@ public abstract class GenericDaoImpl<T extends Serializable> implements GenericD
 
     @Override
     public Session getCurrentSession() {
-        return sessionFactory.getCurrentSession();
+        return hibernateUtil.getSessionFactory().getCurrentSession();
     }
 }

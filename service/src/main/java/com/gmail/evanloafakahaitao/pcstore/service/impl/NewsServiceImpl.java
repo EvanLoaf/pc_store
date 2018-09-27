@@ -16,18 +16,35 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class NewsServiceImpl implements NewsService {
 
     private static final Logger logger = LogManager.getLogger(NewsServiceImpl.class);
 
-    private NewsDao newsDao = new NewsDaoImpl(News.class);
-    private UserDao userDao = new UserDaoImpl(User.class);
-    private Converter newsConverter = new NewsConverter();
-    private DTOConverter newsDTOConverter = new NewsDTOConverter();
+    private final NewsDao newsDao;
+    private final UserDao userDao;
+    private final Converter newsConverter;
+    private final DTOConverter newsDTOConverter;
+
+    @Autowired
+    public NewsServiceImpl(
+            NewsDao newsDao,
+            UserDao userDao,
+            @Qualifier("newsConverter") Converter newsConverter,
+            @Qualifier("newsDTOConverter") DTOConverter newsDTOConverter
+    ) {
+        this.newsDao = newsDao;
+        this.userDao = userDao;
+        this.newsConverter = newsConverter;
+        this.newsDTOConverter = newsDTOConverter;
+    }
 
     @SuppressWarnings("unchecked")
     @Override

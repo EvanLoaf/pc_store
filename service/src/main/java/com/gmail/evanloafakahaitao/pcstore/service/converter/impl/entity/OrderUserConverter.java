@@ -5,7 +5,9 @@ import com.gmail.evanloafakahaitao.pcstore.dao.model.Profile;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.OrderUserDTO;
+import org.springframework.stereotype.Component;
 
+@Component
 public class OrderUserConverter implements Converter<OrderUserDTO, User> {
 
     private Converter profileConverter = new ProfileConverter();

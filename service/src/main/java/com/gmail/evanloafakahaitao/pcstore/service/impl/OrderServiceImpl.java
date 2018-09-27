@@ -22,20 +22,41 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class OrderServiceImpl implements OrderService {
 
     private static final Logger logger = LogManager.getLogger(OrderServiceImpl.class);
 
-    private OrderDao orderDao = new OrderDaoImpl(Order.class);
-    private ItemDao itemDao = new ItemDaoImpl(Item.class);
-    private UserDao userDao = new UserDaoImpl(User.class);
-    private Converter orderConverter = new OrderConverter();
-    private DTOConverter orderDTOConverter = new OrderDTOConverter();
-    private DTOConverter simpleOrderDTOConverter = new SimpleOrderDTOConverter();
+    private final OrderDao orderDao;
+    private final ItemDao itemDao;
+    private final UserDao userDao;
+    private final Converter orderConverter;
+    private final DTOConverter orderDTOConverter;
+    private final DTOConverter simpleOrderDTOConverter;
+
+    @Autowired
+    public OrderServiceImpl(
+            OrderDao orderDao,
+            ItemDao itemDao,
+            UserDao userDao,
+            @Qualifier("orderConverter") Converter orderConverter,
+            @Qualifier("orderDTOConverter") DTOConverter orderDTOConverter,
+            @Qualifier("simpleOrderDTOConverter") DTOConverter simpleOrderDTOConverter
+    ) {
+        this.orderDao = orderDao;
+        this.itemDao = itemDao;
+        this.userDao = userDao;
+        this.orderConverter = orderConverter;
+        this.orderDTOConverter = orderDTOConverter;
+        this.simpleOrderDTOConverter = simpleOrderDTOConverter;
+    }
 
     @SuppressWarnings("unchecked")
     @Override

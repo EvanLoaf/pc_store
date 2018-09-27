@@ -3,7 +3,9 @@ package com.gmail.evanloafakahaitao.pcstore.service.converter.impl.dto;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Role;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.RoleDTO;
+import org.springframework.stereotype.Component;
 
+@Component("roleDTOConverter")
 public class RoleDTOConverter implements DTOConverter<RoleDTO, Role> {
 
     private DTOConverter permissionDTOConverter = new PermissionDTOConverter();

@@ -3,7 +3,9 @@ package com.gmail.evanloafakahaitao.pcstore.service.converter.impl.dto;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Discount;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.DiscountDTO;
+import org.springframework.stereotype.Component;
 
+@Component("discountDTOConverter")
 public class DiscountDTOConverter implements DTOConverter<DiscountDTO, Discount> {
 
     @Override

@@ -20,18 +20,37 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import java.util.Iterator;
 
+@Service
 public class CommentServiceImpl implements CommentService {
 
     private static final Logger logger = LogManager.getLogger(CommentServiceImpl.class);
 
-    private CommentDao commentDao = new CommentDaoImpl(Comment.class);
-    private NewsDao newsDao = new NewsDaoImpl(News.class);
-    private UserDao userDao = new UserDaoImpl(User.class);
-    private Converter commentConverter = new CommentConverter();
-    private DTOConverter commentDTOConverter = new CommentDTOConverter();
+    private final CommentDao commentDao;
+    private final NewsDao newsDao;
+    private final UserDao userDao;
+    private final Converter commentConverter;
+    private final DTOConverter commentDTOConverter;
+
+    @Autowired
+    public CommentServiceImpl(
+            CommentDao commentDao,
+            NewsDao newsDao,
+            UserDao userDao,
+            @Qualifier("commentConverter") Converter commentConverter,
+            @Qualifier("commentDTOConverter") DTOConverter commentDTOConverter
+    ) {
+        this.commentDao = commentDao;
+        this.newsDao = newsDao;
+        this.userDao = userDao;
+        this.commentConverter = commentConverter;
+        this.commentDTOConverter = commentDTOConverter;
+    }
 
     @SuppressWarnings("unchecked")
     @Override

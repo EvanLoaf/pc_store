@@ -15,7 +15,7 @@ public class TestMain {
 
     public static void main(String[] args) {
 
-        Random random = new Random();
+/*        Random random = new Random();
         Logger logger = LogManager.getLogger(TestMain.class);
 
         ItemService itemService = new ItemServiceImpl();
@@ -23,13 +23,13 @@ public class TestMain {
         OrderService orderService = new OrderServiceImpl();
         DiscountService discountService = new DiscountServiceImpl();
 
-        /**
+        *//**
          * Task 1 - created tables, edited entities, converters, methods etc
-         */
+         *//*
 
-        /**
+        *//**
          * Task 2
-         */
+         *//*
         for (int i = 0; i < 30; i++) {
             ItemDTO itemDTO = ItemDTO.newBuilder()
                     .withDescription("Item" + (i + 1))
@@ -41,9 +41,9 @@ public class TestMain {
             logger.info("saved item id: " + itemDTOsaved.getId());
         }
 
-        /**
+        *//**
          * Task 3
-         */
+         *//*
 
         DiscountDTO discountDTOTenPercent = DiscountDTO.newBuilder()
                 .withName("ten")
@@ -72,9 +72,9 @@ public class TestMain {
         DiscountDTO disc3 = discountService.save(discountDTOThirtyPercent);
         logger.info("disc3 id: " + disc3.getId());
 
-        /**
+        *//**
          * Task 4
-         */
+         *//*
 
         List<ItemDTO> itemDTOSCheap = itemService.findInPriceRange(BigDecimal.valueOf(200), BigDecimal.valueOf(299), null, null);
         for (ItemDTO itemDTO : itemDTOSCheap) {
@@ -119,11 +119,11 @@ public class TestMain {
             logger.info("saved item :: price - " + itemDTOsaved.getPrice() + " disc - " + itemDTOsaved.getDiscounts().iterator().next().getPercent());
         }
 
-        /**
+        *//**
          * Task 5 - created method findByDiscount in ItemDaoImpl, you can specify the discount size through
          * the method argument. It will return List of items with the specified size of discount.
          * If the input is 0 or null, the method will return List of items for which there are no discounts at all.
-         */
+         *//*
 
         DiscountDTO discountPercentNull = DiscountDTO.newBuilder()
                 .withPercent(null)
@@ -143,9 +143,9 @@ public class TestMain {
             logger.info("item with " + discountPercentThirty.getPercent() + " discount :: price - " + itemDTO.getPrice());
         }
 
-        /**
+        *//**
          * Task 6
-         */
+         *//*
 
         UserDTO userDTO = UserDTO.newBuilder()
                 .withEmail("my@email.com")
@@ -166,9 +166,9 @@ public class TestMain {
         UserDTO userDTOsaved = userService.save(userDTO);
         logger.info("saved user id: " + userDTOsaved.getId() + " discount : " + userDTOsaved.getDiscount().getPercent() + "%");
 
-        /**
+        *//**
          * Task 7
-         */
+         *//*
 
         UserDTO userDTOupdateData = UserDTO.newBuilder()
                 .withEmail(userDTOsaved.getEmail())
@@ -182,7 +182,7 @@ public class TestMain {
         logger.info("updated user and gave him " + userDTOupdated.getDiscount().getPercent() + "% discount");
 
 
-        /**
+        *//**
          * Task 8 - I could first search for items in price range and then with Java's help pick random ones,
          * but I decided it would be better to count items in given price range first and then just pick 4 of them
          * starting from random position.
@@ -195,23 +195,23 @@ public class TestMain {
          *
          * P.S. if we take a random Item every time to create Order, we might hit the same item twice. This would cause
          * an Error since our implementation of Order with @EmbeddedId restricts users from ordering the same item twice
-         */
+         *//*
 
         Long countOfItems = itemService.findCountInPriceRange(BigDecimal.valueOf(250), BigDecimal.valueOf(450));
         logger.info("Items in 250-450 price range" + countOfItems);
 
-        /*
+        *//*
                +1 since random can return 0 and -3 since I wanna retrieve 4 items, so, for example, if I got 20 items
                and need 4 of them, I can set StartPosition from 1 to 17 to actually get 4. If it becomes 18, theres only
                Item 18,19,20 left.
-         */
+         *//*
         List<ItemDTO> items = itemService.findInPriceRange(BigDecimal.valueOf(250), BigDecimal.valueOf(450), random.nextInt(countOfItems.intValue() - 3) + 1, 4);
         logger.info("items in price range taken : " + items.size());
 
-        /*
+        *//*
               Less than 4 orders will be created if theres less than 4 items in 250-450 price range
               Cant create orders with similar items for single users with our implementation
-         */
+         *//*
 
         for (int i = 0; i < items.size(); i++) {
             OrderDTO orderDTO = OrderDTO.newBuilder()
@@ -236,9 +236,9 @@ public class TestMain {
             logger.info("saved order: " + simpleOrderDTO.getUuid());
         }
 
-        /**
+        *//**
          * Task 9 - Not 100% sure about final price formula, I guess it doesn't matter now
-         */
+         *//*
 
         List<OrderDTO> orders = orderService.findAll();
         logger.info("Order info :: User_name -- Item_name -- Quantity -- Normal price -- Final price (Price with item discount + user discount)");
@@ -253,7 +253,7 @@ public class TestMain {
                             order.getItem().getPrice().multiply(BigDecimal.valueOf(100 - order.getItem().getDiscounts().iterator().next().getPercent()).divide(BigDecimal.valueOf(100L))).multiply(BigDecimal.valueOf(100 - order.getUser().getDiscount().getPercent()).divide(BigDecimal.valueOf(100L)))
                     )
             );
-        }
+        }*/
 
     }
 }

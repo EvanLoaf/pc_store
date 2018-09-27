@@ -21,20 +21,41 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class UserServiceImpl implements UserService {
 
     private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
-    private UserDao userDao = new UserDaoImpl(User.class);
-    private RoleDao roleDao = new RoleDaoImpl(Role.class);
-    private DiscountDao discountDao = new DiscountDaoImpl(Discount.class);
-    private DTOConverter userDTOConverter = new UserDTOConverter();
-    private Converter userConverter = new UserConverter();
-    private DTOConverter simpleUserDTOConverter = new SimpleUserDTOConverter();
+    private final UserDao userDao;
+    private final RoleDao roleDao;
+    private final DiscountDao discountDao;
+    private final DTOConverter userDTOConverter;
+    private final Converter userConverter;
+    private final DTOConverter simpleUserDTOConverter;
+
+    @Autowired
+    public UserServiceImpl(
+            UserDao userDao,
+            RoleDao roleDao,
+            DiscountDao discountDao,
+            @Qualifier("userDTOConverter") DTOConverter userDTOConverter,
+            @Qualifier("userConverter") Converter userConverter,
+            @Qualifier("simpleUserDTOConverter") DTOConverter simpleUserDTOConverter
+    ) {
+        this.userDao = userDao;
+        this.roleDao = roleDao;
+        this.discountDao = discountDao;
+        this.userDTOConverter = userDTOConverter;
+        this.userConverter = userConverter;
+        this.simpleUserDTOConverter = simpleUserDTOConverter;
+    }
 
     @SuppressWarnings("unchecked")
     @Override
