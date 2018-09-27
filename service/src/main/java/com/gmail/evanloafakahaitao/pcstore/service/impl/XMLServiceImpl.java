@@ -8,18 +8,32 @@ import com.gmail.evanloafakahaitao.pcstore.service.xml.util.XMLParser;
 import com.gmail.evanloafakahaitao.pcstore.service.xml.util.XMLValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class XMLServiceImpl implements XMLService {
 
     private static final Logger logger = LogManager.getLogger(XMLServiceImpl.class);
 
-    private XMLDao xmlDao = new XMLDaoImpl();
-    private XMLValidator xmlValidator = new XMLValidator();
-    private XMLParser xmlParserService = new XMLParser();
+    private final XMLDao xmlDao;
+    private final XMLValidator xmlValidator;
+    private final XMLParser xmlParserService;
+
+    @Autowired
+    public XMLServiceImpl(
+            XMLDao xmlDao,
+            XMLValidator xmlValidator,
+            XMLParser xmlParserService
+    ) {
+        this.xmlDao = xmlDao;
+        this.xmlValidator = xmlValidator;
+        this.xmlParserService = xmlParserService;
+    }
 
     @Override
     public List<ItemXMLDTO> getXmlItems(String xmlFilePath, String schemaFilePath) {

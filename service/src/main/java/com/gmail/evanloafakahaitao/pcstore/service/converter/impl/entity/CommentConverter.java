@@ -4,7 +4,9 @@ import com.gmail.evanloafakahaitao.pcstore.dao.model.Comment;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.CommentDTO;
+import org.springframework.stereotype.Component;
 
+@Component("commentConverter")
 public class CommentConverter implements Converter<CommentDTO, Comment> {
 
     private Converter simpleUserConverter = new SimpleUserConverter();

@@ -5,13 +5,17 @@ import com.gmail.evanloafakahaitao.pcstore.service.UserService;
 import com.gmail.evanloafakahaitao.pcstore.service.impl.UserServiceImpl;
 import com.gmail.evanloafakahaitao.pcstore.web.command.Command;
 import com.gmail.evanloafakahaitao.pcstore.web.util.LoginValidator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Component
 public class LoginCommandImpl implements Command {
 
-    private UserService userService = new UserServiceImpl();
+    @Autowired
+    private UserService userService;
     private LoginValidator loginValidator = new LoginValidator();
     private ConfigurationManager configurationManager = ConfigurationManager.getInstance();
 

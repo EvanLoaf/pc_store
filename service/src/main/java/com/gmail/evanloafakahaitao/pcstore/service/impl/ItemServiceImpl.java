@@ -17,21 +17,37 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+@Service
 public class ItemServiceImpl implements ItemService {
 
     private static final Logger logger = LogManager.getLogger(ItemServiceImpl.class);
 
-    private ItemDao itemDao = new ItemDaoImpl(Item.class);
-    private DiscountDao discountDao = new DiscountDaoImpl(Discount.class);
-    private Converter itemConverter = new ItemConverter();
-    private ItemDTOConverter itemDTOConverter = new ItemDTOConverter();
-    private Converter discountConverter = new DiscountConverter();
+    private final ItemDao itemDao;
+    private final DiscountDao discountDao;
+    private final Converter itemConverter;
+    private final ItemDTOConverter itemDTOConverter;
+
+    @Autowired
+    public ItemServiceImpl(
+            ItemDao itemDao,
+            DiscountDao discountDao,
+            @Qualifier("itemConverter") Converter itemConverter,
+            @Qualifier("itemDTOConverter") ItemDTOConverter itemDTOConverter
+    ) {
+        this.itemDao = itemDao;
+        this.discountDao = discountDao;
+        this.itemConverter = itemConverter;
+        this.itemDTOConverter = itemDTOConverter;
+    }
 
     @Override
     public List<ItemDTO> save(List<ItemDTO> itemList) {

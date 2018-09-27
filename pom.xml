@@ -24,6 +24,31 @@
         <mysql.version>8.0.11</mysql.version>
         <servlet.jstl.version>1.2</servlet.jstl.version>
         <servlet-api.version>4.0.1</servlet-api.version>
-        <logger.version>2.2</logger.version>
+        <logger.version>2.11.1</logger.version>
+        <spring.version>5.0.9.RELEASE</spring.version>
+        <slf4j.version>2.11.1</slf4j.version>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${logger.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${logger.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+    </dependencies>
 </project>

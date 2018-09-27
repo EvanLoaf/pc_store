@@ -69,14 +69,14 @@ public class Main {
         /**
          * Order testing
          */
-        OrderService orderService = new OrderServiceImpl();
+        /*OrderService orderService = new OrderServiceImpl();
         OrderDao orderDao = new OrderDaoImpl(Order.class);
         UserDao userDao = new UserDaoImpl(User.class);
         ItemDao itemDao = new ItemDaoImpl(Item.class);
         FeedbackDao feedbackDao = new FeedbackDaoImpl(Feedback.class);
         AuditDao auditDao = new AuditDaoImpl(Audit.class);
         NewsDao newsDao = new NewsDaoImpl(News.class);
-        CommentDao commentDao = new CommentDaoImpl(Comment.class);
+        CommentDao commentDao = new CommentDaoImpl(Comment.class);*/
 
         /*OrderDTO orderDTO = orderService.save(OrderDTO.newBuilder()
                 .withUuid(UUID.randomUUID().toString())
@@ -423,13 +423,13 @@ public class Main {
          * default method test
          */
 
-        Session session = userDao.getCurrentSession();
+        /*Session session = userDao.getCurrentSession();
         try {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive()) {
                 session.beginTransaction();
             }
-
+*/
             /*Set<PermissionDTO> permissionDTOSet = new HashSet<>();
 
             AuditDTO auditDTO = AuditDTO.newBuilder()
@@ -474,7 +474,7 @@ public class Main {
             auditDTOSet.add(auditDTO);
             auditDTOSet.add(auditDTO1);*/
 
-            AuditService auditService = new AuditServiceImpl();
+            /*AuditService auditService = new AuditServiceImpl();
             List<Audit> auditList = auditDao.findAll();
 
             DTOConverter auditDTOConverter = new AuditDTOConverter();
@@ -506,6 +506,6 @@ public class Main {
                 session.getTransaction().rollback();
             }
             logger.error("Failed to use test method", e);
-        }
+        }*/
     }
 }

@@ -3,7 +3,9 @@ package com.gmail.evanloafakahaitao.pcstore.service.converter.impl.entity;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Role;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.RoleDTO;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RoleConverter implements Converter<RoleDTO, Role> {
 
     private Converter permissionConverter = new PermissionConverter();

@@ -3,7 +3,9 @@ package com.gmail.evanloafakahaitao.pcstore.service.converter.impl.dto;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.ItemDTO;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Item;
+import org.springframework.stereotype.Component;
 
+@Component("itemDTOConverter")
 public class ItemDTOConverter implements DTOConverter<ItemDTO, Item> {
 
     private DTOConverter discountDTOConverter = new DiscountDTOConverter();

@@ -32,9 +32,9 @@
                             <th scope="col">Email</th>
                             <th scope="col">First name</th>
                             <th scope="col">Last name</th>
-                            <th scope="col">Phone number</th>
+                            <%--<th scope="col">Phone number</th>
                             <th scope="col">Add info</th>
-                            <th scope="col">Role</th>
+                            <th scope="col">Role</th>--%>
                         </tr>
                         </thead>
                         <tbody>
@@ -47,9 +47,9 @@
                                 <td>${user.email}</td>
                                 <td>${user.firstName}</td>
                                 <td>${user.lastName}</td>
-                                <td>${user.phoneNumber}</td>
+                                <%--<td>${user.phoneNumber}</td>
                                 <td>${user.addInfo}</td>
-                                <td>${user.role}</td>
+                                <td>${user.role}</td>--%>
                             </tr>
                             <c:set var="counter" value="${counter + 1}" scope="page"/>
                         </c:forEach>

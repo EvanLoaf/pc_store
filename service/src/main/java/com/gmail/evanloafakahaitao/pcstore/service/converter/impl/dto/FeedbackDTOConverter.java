@@ -4,7 +4,9 @@ import com.gmail.evanloafakahaitao.pcstore.dao.model.Feedback;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.FeedbackDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleUserDTO;
+import org.springframework.stereotype.Component;
 
+@Component("feedbackDTOConverter")
 public class FeedbackDTOConverter implements DTOConverter<FeedbackDTO, Feedback> {
 
     private DTOConverter simpleUserDTOConverter = new SimpleUserDTOConverter();

@@ -16,18 +16,35 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class FeedbackServiceImpl implements FeedbackService {
 
     private static final Logger logger = LogManager.getLogger(FeedbackServiceImpl.class);
 
-    private FeedbackDao feedbackDao = new FeedbackDaoImpl(Feedback.class);
-    private UserDao userDao = new UserDaoImpl(User.class);
-    private Converter feedbackConverter = new FeedbackConverter();
-    private DTOConverter feedbackDTOConverter = new FeedbackDTOConverter();
+    private final FeedbackDao feedbackDao;
+    private final UserDao userDao;
+    private final Converter feedbackConverter;
+    private final DTOConverter feedbackDTOConverter;
+
+    @Autowired
+    public FeedbackServiceImpl(
+            FeedbackDao feedbackDao,
+            UserDao userDao,
+            @Qualifier("feedbackConverter") Converter feedbackConverter,
+            @Qualifier("feedbackDTOConverter") DTOConverter feedbackDTOConverter
+    ) {
+        this.feedbackDao = feedbackDao;
+        this.userDao = userDao;
+        this.feedbackConverter = feedbackConverter;
+        this.feedbackDTOConverter = feedbackDTOConverter;
+    }
 
     @SuppressWarnings("unchecked")
     @Override

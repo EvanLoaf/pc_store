@@ -4,7 +4,9 @@ import com.gmail.evanloafakahaitao.pcstore.dao.model.News;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleUserDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.NewsDTO;
+import org.springframework.stereotype.Component;
 
+@Component("newsDTOConverter")
 public class NewsDTOConverter implements DTOConverter<NewsDTO, News> {
 
     private DTOConverter simpleUserDTOConverter = new SimpleUserDTOConverter();

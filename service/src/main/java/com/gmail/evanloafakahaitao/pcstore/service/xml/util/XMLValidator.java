@@ -2,6 +2,7 @@ package com.gmail.evanloafakahaitao.pcstore.service.xml.util;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import javax.xml.XMLConstants;
 import javax.xml.transform.stream.StreamSource;
@@ -11,6 +12,7 @@ import javax.xml.validation.Validator;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
+@Component
 public class XMLValidator {
 
     private static final Logger logger = LogManager.getLogger(XMLValidator.class);

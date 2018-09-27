@@ -6,14 +6,19 @@ import com.gmail.evanloafakahaitao.pcstore.service.XMLService;
 import com.gmail.evanloafakahaitao.pcstore.service.impl.ItemServiceImpl;
 import com.gmail.evanloafakahaitao.pcstore.service.impl.XMLServiceImpl;
 import com.gmail.evanloafakahaitao.pcstore.web.command.Command;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Component
 public class LoadItemsCommandImpl implements Command {
 
-    private ItemService itemService = new ItemServiceImpl();
-    private XMLService xmlService = new XMLServiceImpl();
+    @Autowired
+    private ItemService itemService;
+    @Autowired
+    private XMLService xmlService;
     private ConfigurationManager configurationManager = ConfigurationManager.getInstance();
 
     @Override

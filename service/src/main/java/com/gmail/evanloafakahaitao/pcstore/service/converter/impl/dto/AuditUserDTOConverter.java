@@ -4,7 +4,9 @@ import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.AuditUserDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.RoleDTO;
+import org.springframework.stereotype.Component;
 
+@Component
 public class AuditUserDTOConverter implements DTOConverter<AuditUserDTO, User> {
 
     private DTOConverter roleDTOConverter = new RoleDTOConverter();

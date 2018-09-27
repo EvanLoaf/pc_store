@@ -7,15 +7,19 @@ import com.gmail.evanloafakahaitao.pcstore.service.impl.FeedbackServiceImpl;
 import com.gmail.evanloafakahaitao.pcstore.web.command.Command;
 import com.gmail.evanloafakahaitao.pcstore.web.model.UserPrincipal;
 import com.gmail.evanloafakahaitao.pcstore.web.util.FeedbackValidator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+@Component
 public class SubmitFeedbackCommandImpl implements Command {
 
     private ConfigurationManager configurationManager = ConfigurationManager.getInstance();
-    private FeedbackService feedbackService = new FeedbackServiceImpl();
+    @Autowired
+    private FeedbackService feedbackService;
     private FeedbackValidator feedbackValidator = new FeedbackValidator();
 
     @Override

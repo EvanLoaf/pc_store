@@ -3,14 +3,16 @@ package com.gmail.evanloafakahaitao.pcstore.dao.impl;
 import com.gmail.evanloafakahaitao.pcstore.dao.ItemDao;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Item;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.List;
 
+@Repository
 public class ItemDaoImpl extends GenericDaoImpl<Item> implements ItemDao {
 
-    public ItemDaoImpl(Class<Item> clazz) {
-        super(clazz);
+    public ItemDaoImpl() {
+        super(Item.class);
     }
 
     @Override
