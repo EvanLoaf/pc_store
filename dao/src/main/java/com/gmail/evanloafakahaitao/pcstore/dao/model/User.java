@@ -30,28 +30,21 @@ public class User implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "roleId")
     private Role role;
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Profile profile;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "discountId")
+    private Discount discount;
 
     public User() {
     }
 
-    private User(Builder builder) {
-        id = builder.id;
-        setEmail(builder.email);
-        setPassword(builder.password);
-        setFirstName(builder.firstName);
-        setLastName(builder.lastName);
-        setRole(builder.role);
-        setProfile(builder.profile);
-    }
-
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -102,14 +95,52 @@ public class User implements Serializable {
         this.profile = profile;
     }
 
+    public Discount getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Discount discount) {
+        this.discount = discount;
+    }
+
+    private User(Builder builder) {
+        id = builder.id;
+        email = builder.email;
+        password = builder.password;
+        firstName = builder.firstName;
+        lastName = builder.lastName;
+        role = builder.role;
+        profile = builder.profile;
+        discount = builder.discount;
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(email, user.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(email);
+    }
+
     public static final class Builder {
         private Long id;
-        private @NotNull String email;
+        private @NotNull @Email(message = "Not an email") String email;
         private @NotNull String password;
         private @NotNull String firstName;
         private @NotNull String lastName;
         private Role role;
         private Profile profile;
+        private Discount discount;
 
         private Builder() {
         }
@@ -119,7 +150,7 @@ public class User implements Serializable {
             return this;
         }
 
-        public Builder withEmail(@NotNull String val) {
+        public Builder withEmail(@NotNull @Email(message = "Not an email") String val) {
             email = val;
             return this;
         }
@@ -149,21 +180,13 @@ public class User implements Serializable {
             return this;
         }
 
+        public Builder withDiscount(Discount val) {
+            discount = val;
+            return this;
+        }
+
         public User build() {
             return new User(this);
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(email, user.email);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(email);
     }
 }

@@ -5,6 +5,10 @@ import com.gmail.evanloafakahaitao.pcstore.service.dto.ItemDTO;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Item;
 
 public class ItemDTOConverter implements DTOConverter<ItemDTO, Item> {
+
+    private DTOConverter discountDTOConverter = new DiscountDTOConverter();
+
+    @SuppressWarnings("unchecked")
     @Override
     public ItemDTO toDto(Item entity) {
         return ItemDTO.newBuilder()
@@ -13,6 +17,7 @@ public class ItemDTOConverter implements DTOConverter<ItemDTO, Item> {
                 .withName(entity.getName())
                 .withPrice(entity.getPrice())
                 .withVendorCode(entity.getVendorCode())
+                .withDiscounts(discountDTOConverter.toDTOSet(entity.getDiscounts()))
                 .build();
     }
 }

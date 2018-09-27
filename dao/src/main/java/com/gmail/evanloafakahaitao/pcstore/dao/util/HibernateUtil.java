@@ -58,7 +58,8 @@ public class HibernateUtil {
                         .addAnnotatedClass(News.class)
                         .addAnnotatedClass(Comment.class)
                         .addAnnotatedClass(Item.class)
-                        .addAnnotatedClass(Order.class);
+                        .addAnnotatedClass(Order.class)
+                        .addAnnotatedClass(Discount.class);
                 Metadata metadata = sources.getMetadataBuilder().build();
                 sessionFactory = metadata.getSessionFactoryBuilder().build();
                 logger.info("SessionFactory created");

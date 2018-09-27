@@ -12,18 +12,20 @@ public class UserDTO implements Serializable {
     private String lastName;
     private RoleDTO role;
     private ProfileDTO profile;
+    private DiscountDTO discount;
 
     public UserDTO() {
     }
 
     private UserDTO(Builder builder) {
-        id = builder.id;
+        setId(builder.id);
         setEmail(builder.email);
         setPassword(builder.password);
         setFirstName(builder.firstName);
         setLastName(builder.lastName);
         setRole(builder.role);
         setProfile(builder.profile);
+        setDiscount(builder.discount);
     }
 
     public static Builder newBuilder() {
@@ -32,6 +34,10 @@ public class UserDTO implements Serializable {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -82,6 +88,29 @@ public class UserDTO implements Serializable {
         this.profile = profile;
     }
 
+    public DiscountDTO getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(DiscountDTO discount) {
+        this.discount = discount;
+    }
+
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserDTO user = (UserDTO) o;
+        return Objects.equals(email, user.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(email);
+    }
+
     public static final class Builder {
         private Long id;
         private String email;
@@ -90,6 +119,7 @@ public class UserDTO implements Serializable {
         private String lastName;
         private RoleDTO role;
         private ProfileDTO profile;
+        private DiscountDTO discount;
 
         private Builder() {
         }
@@ -129,21 +159,13 @@ public class UserDTO implements Serializable {
             return this;
         }
 
+        public Builder withDiscount(DiscountDTO val) {
+            discount = val;
+            return this;
+        }
+
         public UserDTO build() {
             return new UserDTO(this);
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserDTO user = (UserDTO) o;
-        return Objects.equals(email, user.email);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(email);
     }
 }

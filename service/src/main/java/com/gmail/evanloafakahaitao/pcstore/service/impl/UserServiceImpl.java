@@ -1,9 +1,12 @@
 package com.gmail.evanloafakahaitao.pcstore.service.impl;
 
+import com.gmail.evanloafakahaitao.pcstore.dao.DiscountDao;
 import com.gmail.evanloafakahaitao.pcstore.dao.RoleDao;
 import com.gmail.evanloafakahaitao.pcstore.dao.UserDao;
+import com.gmail.evanloafakahaitao.pcstore.dao.impl.DiscountDaoImpl;
 import com.gmail.evanloafakahaitao.pcstore.dao.impl.RoleDaoImpl;
 import com.gmail.evanloafakahaitao.pcstore.dao.impl.UserDaoImpl;
+import com.gmail.evanloafakahaitao.pcstore.dao.model.Discount;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Role;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
 import com.gmail.evanloafakahaitao.pcstore.service.UserService;
@@ -28,6 +31,7 @@ public class UserServiceImpl implements UserService {
 
     private UserDao userDao = new UserDaoImpl(User.class);
     private RoleDao roleDao = new RoleDaoImpl(Role.class);
+    private DiscountDao discountDao = new DiscountDaoImpl(Discount.class);
     private DTOConverter userDTOConverter = new UserDTOConverter();
     private Converter userConverter = new UserConverter();
     private DTOConverter simpleUserDTOConverter = new SimpleUserDTOConverter();
@@ -43,8 +47,14 @@ public class UserServiceImpl implements UserService {
             }
             User user = (User) userConverter.toEntity(userDTO);
             user.getProfile().setUser(user);
-            Role role = roleDao.findByName(user.getRole().getName());
-            user.setRole(role);
+            /*Role role = roleDao.findByName(user.getRole().getName());
+            user.setRole(role);*/
+            if (userDTO.getDiscount() != null && userDTO.getDiscount().getPercent() != null) {
+                Discount discount = discountDao.findByPercent(userDTO.getDiscount().getPercent());
+                user.setDiscount(discount);
+            } else {
+                user.setDiscount(null);
+            }
             userDao.create(user);
             UserDTO userDTOsaved = (UserDTO) userDTOConverter.toDto(user);
             transaction.commit();
@@ -111,6 +121,10 @@ public class UserServiceImpl implements UserService {
             if (userDTO.getRole() != null) {
                 Role role = roleDao.findByName(userDTO.getRole().getName());
                 user.setRole(role);
+            }
+            if (userDTO.getDiscount() != null && userDTO.getDiscount().getPercent() != null) {
+                Discount discount = discountDao.findByPercent(userDTO.getDiscount().getPercent());
+                user.setDiscount(discount);
             }
             userDao.update(user);
             UserDTO updatedUserDTO = (UserDTO) userDTOConverter.toDto(user);
