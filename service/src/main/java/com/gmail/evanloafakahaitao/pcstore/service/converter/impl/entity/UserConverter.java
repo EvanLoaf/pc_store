@@ -36,8 +36,8 @@ public class UserConverter implements Converter<UserDTO, User> {
                     .withLastName(dto.getLastName())
                     .withEmail(dto.getEmail())
                     .withPassword(dto.getPassword())
-                    .withProfile((Profile) profileConverter.toEntity(dto.getProfile()))
-                    .withDiscount((Discount) discountConverter.toEntity(dto.getDiscount()))
+                    /*.withProfile((Profile) profileConverter.toEntity(dto.getProfile()))
+                    .withDiscount((Discount) discountConverter.toEntity(dto.getDiscount()))*/
                     .build();
         }
     }

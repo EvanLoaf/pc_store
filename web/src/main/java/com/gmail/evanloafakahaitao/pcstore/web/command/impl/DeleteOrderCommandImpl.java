@@ -1,6 +1,5 @@
 package com.gmail.evanloafakahaitao.pcstore.web.command.impl;
 
-import com.gmail.evanloafakahaitao.pcstore.config.ConfigurationManager;
 import com.gmail.evanloafakahaitao.pcstore.service.OrderService;
 import com.gmail.evanloafakahaitao.pcstore.service.impl.OrderServiceImpl;
 import com.gmail.evanloafakahaitao.pcstore.web.command.Command;
@@ -15,7 +14,6 @@ public class DeleteOrderCommandImpl implements Command {
 
     @Autowired
     private OrderService orderService;
-    private ConfigurationManager configurationManager = ConfigurationManager.getInstance();
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {

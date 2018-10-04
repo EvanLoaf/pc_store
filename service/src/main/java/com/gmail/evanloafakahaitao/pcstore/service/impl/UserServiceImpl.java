@@ -24,11 +24,13 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
@@ -67,7 +69,7 @@ public class UserServiceImpl implements UserService {
                 session.beginTransaction();
             }
             User user = (User) userConverter.toEntity(userDTO);
-            user.getProfile().setUser(user);
+            /*user.getProfile().setUser(user);*/
             /*Role role = roleDao.findByName(user.getRole().getName());
             user.setRole(role);*/
             if (userDTO.getDiscount() != null && userDTO.getDiscount().getPercent() != null) {

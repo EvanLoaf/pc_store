@@ -21,7 +21,7 @@
             </c:if>
 
             <form:form action="${app}/users" modelAttribute="user" method="post">
-                <form:errors path="*" cssClass="container-fluid"/>
+                <form:errors path="*" cssClass="container-fluid" element="div"/>
                 <div class="form-group">
                     <form:label path="email">Email address</form:label>
                     <form:input type="email" path="email" class="form-control" id="email"

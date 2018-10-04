@@ -1,9 +1,9 @@
 package com.gmail.evanloafakahaitao.pcstore.web;
 
-import com.gmail.evanloafakahaitao.pcstore.config.ConfigurationManager;
-import com.gmail.evanloafakahaitao.pcstore.config.properties.PageProperties;
+import com.gmail.evanloafakahaitao.pcstore.web.properties.PageProperties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,6 +15,8 @@ import java.io.IOException;
 public class ExceptionServlet extends HttpServlet {
 
     private static final Logger logger = LogManager.getLogger(ExceptionServlet.class);
+    @Autowired
+    private PageProperties pageProperties;
 
     @Override
     public void init() throws ServletException {
@@ -52,8 +54,8 @@ public class ExceptionServlet extends HttpServlet {
 
         req.setAttribute("error", statusCode);
         req.setAttribute("error_desc", "Temporary unavailability, please be patient");
-        ConfigurationManager configurationManager = ConfigurationManager.getInstance();
-        String page = configurationManager.getProperty(PageProperties.ERRORS_PAGE_PATH);
+        //ConfigurationManager configurationManager = ConfigurationManager.getInstance();
+        String page = pageProperties.getErrorsPagePath();
         getServletContext().getRequestDispatcher(page).forward(req, resp);
     }
 }

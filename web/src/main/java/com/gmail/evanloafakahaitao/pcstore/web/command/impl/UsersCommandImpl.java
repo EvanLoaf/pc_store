@@ -1,10 +1,9 @@
 package com.gmail.evanloafakahaitao.pcstore.web.command.impl;
 
-import com.gmail.evanloafakahaitao.pcstore.config.ConfigurationManager;
-import com.gmail.evanloafakahaitao.pcstore.config.properties.PageProperties;
 import com.gmail.evanloafakahaitao.pcstore.service.UserService;
 import com.gmail.evanloafakahaitao.pcstore.service.impl.UserServiceImpl;
 import com.gmail.evanloafakahaitao.pcstore.web.command.Command;
+import com.gmail.evanloafakahaitao.pcstore.web.properties.PageProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,8 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 public class UsersCommandImpl implements Command {
 
     @Autowired
-    UserService userService;
-    ConfigurationManager configurationManager = ConfigurationManager.getInstance();
+    private UserService userService;
+    @Autowired
+    private PageProperties pageProperties;
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -26,6 +26,6 @@ public class UsersCommandImpl implements Command {
         } else {
             request.setAttribute("error", "Error retrieving users");
         }*/
-        return configurationManager.getProperty(PageProperties.USERS_PAGE_PATH);
+        return pageProperties.getUsersPagePath();
     }
 }

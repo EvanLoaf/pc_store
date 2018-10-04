@@ -1,14 +1,14 @@
 package com.gmail.evanloafakahaitao.pcstore.web.filter;
 
-import com.gmail.evanloafakahaitao.pcstore.config.ConfigurationManager;
-import com.gmail.evanloafakahaitao.pcstore.config.properties.PageProperties;
 import com.gmail.evanloafakahaitao.pcstore.web.model.RoleEnum;
 import com.gmail.evanloafakahaitao.pcstore.web.model.AccessMode;
 import com.gmail.evanloafakahaitao.pcstore.web.model.CommandEnum;
 import com.gmail.evanloafakahaitao.pcstore.web.model.RequestEnum;
 import com.gmail.evanloafakahaitao.pcstore.web.model.UserPrincipal;
+import com.gmail.evanloafakahaitao.pcstore.web.properties.PageProperties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -20,9 +20,11 @@ import java.util.Set;
 
 public class AuthenticationFilter implements Filter {
 
+    @Autowired
+    private PageProperties pageProperties;
+
     private static final Logger logger = LogManager.getLogger(AuthenticationFilter.class);
 
-    private static final ConfigurationManager configurationManager = ConfigurationManager.getInstance();
     private static final Set<AccessMode> ADMIN_AVAILABLE = new HashSet<>();
     private static final Set<AccessMode> USER_AVAILABLE = new HashSet<>();
 
@@ -158,7 +160,7 @@ public class AuthenticationFilter implements Filter {
                         .build();
                 if (!USER_AVAILABLE.contains(accessMode) && !ADMIN_AVAILABLE.contains(accessMode)) {
                     session.removeAttribute("user");
-                    resp.sendRedirect(req.getContextPath() + configurationManager.getProperty(PageProperties.LOGIN_PAGE_PATH));
+                    resp.sendRedirect(req.getContextPath() + pageProperties.getLoginPagePath());
                 } else {
                     filterChain.doFilter(servletRequest, servletResponse);
                 }
@@ -171,10 +173,10 @@ public class AuthenticationFilter implements Filter {
             if (CommandEnum.getCommand(command) == CommandEnum.LOGIN) {
                 chain.doFilter(request, response);
             } else {
-                resp.sendRedirect(req.getContextPath() + configurationManager.getProperty(PageProperties.LOGIN_PAGE_PATH));
+                resp.sendRedirect(req.getContextPath() + pageProperties.getLoginPagePath());
             }
         } else {
-            resp.sendRedirect(req.getContextPath() + configurationManager.getProperty(PageProperties.LOGIN_PAGE_PATH));
+            resp.sendRedirect(req.getContextPath() + pageProperties.getLoginPagePath());
         }
     }
 

@@ -1,11 +1,10 @@
 package com.gmail.evanloafakahaitao.pcstore.web.command.impl;
 
-import com.gmail.evanloafakahaitao.pcstore.config.ConfigurationManager;
-import com.gmail.evanloafakahaitao.pcstore.config.properties.PageProperties;
 import com.gmail.evanloafakahaitao.pcstore.service.FeedbackService;
 import com.gmail.evanloafakahaitao.pcstore.service.impl.FeedbackServiceImpl;
 import com.gmail.evanloafakahaitao.pcstore.web.command.Command;
 import com.gmail.evanloafakahaitao.pcstore.web.model.UserPrincipal;
+import com.gmail.evanloafakahaitao.pcstore.web.properties.PageProperties;
 import com.gmail.evanloafakahaitao.pcstore.web.util.FeedbackValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,10 +16,11 @@ import javax.servlet.http.HttpSession;
 @Component
 public class SubmitFeedbackCommandImpl implements Command {
 
-    private ConfigurationManager configurationManager = ConfigurationManager.getInstance();
     @Autowired
     private FeedbackService feedbackService;
     private FeedbackValidator feedbackValidator = new FeedbackValidator();
+    @Autowired
+    private PageProperties pageProperties;
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -29,7 +29,7 @@ public class SubmitFeedbackCommandImpl implements Command {
         if (!feedbackValidation) {
             request.setAttribute("error", "Enter some message up to 200 characters");
             request.setAttribute("feedback", feedback);
-            return configurationManager.getProperty(PageProperties.SEND_FEEDBACK_PAGE_PATH);
+            return pageProperties.getSendFeedbackPagePath();
         }
         HttpSession session = request.getSession();
         UserPrincipal userPrincipal = (UserPrincipal) session.getAttribute("user");

@@ -1,18 +1,19 @@
 package com.gmail.evanloafakahaitao.pcstore.web.command.impl;
 
-import com.gmail.evanloafakahaitao.pcstore.config.ConfigurationManager;
-import com.gmail.evanloafakahaitao.pcstore.config.properties.PageProperties;
 import com.gmail.evanloafakahaitao.pcstore.web.command.Command;
+import com.gmail.evanloafakahaitao.pcstore.web.properties.PageProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class SendFeedbackCommandImpl implements Command {
 
-    private ConfigurationManager configurationManager = ConfigurationManager.getInstance();
+    @Autowired
+    private PageProperties pageProperties;
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return configurationManager.getProperty(PageProperties.SEND_FEEDBACK_PAGE_PATH);
+        return pageProperties.getSendFeedbackPagePath();
     }
 }

@@ -13,9 +13,11 @@ public abstract class GenericDaoImpl<T extends Serializable> implements GenericD
 
     private Class<T> clazz;
 
-    @Autowired
-    private HibernateUtil hibernateUtil;
+    /*@Autowired
+    private HibernateUtil hibernateUtil;*/
     /*private SessionFactory sessionFactory = HibernateUtil.getSessionFactory();*/
+    @Autowired
+    private SessionFactory sessionFactory;
 
     public GenericDaoImpl(Class<T> clazz) {
         this.clazz = clazz;
@@ -53,8 +55,9 @@ public abstract class GenericDaoImpl<T extends Serializable> implements GenericD
         delete(entity);
     }
 
+    //TODO protected postavit
     @Override
     public Session getCurrentSession() {
-        return hibernateUtil.getSessionFactory().getCurrentSession();
+        return sessionFactory.getCurrentSession();
     }
 }

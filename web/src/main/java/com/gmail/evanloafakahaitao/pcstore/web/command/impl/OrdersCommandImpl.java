@@ -1,10 +1,9 @@
 package com.gmail.evanloafakahaitao.pcstore.web.command.impl;
 
-import com.gmail.evanloafakahaitao.pcstore.config.ConfigurationManager;
-import com.gmail.evanloafakahaitao.pcstore.config.properties.PageProperties;
 import com.gmail.evanloafakahaitao.pcstore.service.OrderService;
 import com.gmail.evanloafakahaitao.pcstore.service.impl.OrderServiceImpl;
 import com.gmail.evanloafakahaitao.pcstore.web.command.Command;
+import com.gmail.evanloafakahaitao.pcstore.web.properties.PageProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +15,8 @@ public class OrdersCommandImpl implements Command {
 
     @Autowired
     private OrderService orderService;
-    private ConfigurationManager configurationManager = ConfigurationManager.getInstance();
+    @Autowired
+    private PageProperties pageProperties;
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -29,6 +29,6 @@ public class OrdersCommandImpl implements Command {
         } else {
             request.setAttribute("error", "Error retrieving your orders");
         }*/
-        return configurationManager.getProperty(PageProperties.ORDERS_PAGE_PATH);
+        return pageProperties.getOrdersPagePath();
     }
 }

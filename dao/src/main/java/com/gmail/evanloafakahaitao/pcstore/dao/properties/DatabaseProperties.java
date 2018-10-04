@@ -5,6 +5,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.Objects;
 
 @Component
 public class DatabaseProperties {
@@ -21,6 +22,12 @@ public class DatabaseProperties {
     private String hibernateUseSecondLevelCache;
     private String hibernateCacheRegionFactoryClass;
     private String hibernatePhysicalNamingStrategy;
+    private String dataSourceClass;
+    private Integer maxPoolSize;
+    private String cachePreparedStatements;
+    private Integer cachePreparedStatementsSize;
+    private Integer cachePreparedStatementsSQLLimit;
+    private String useServerPreparedStatements;
 
     @Autowired
     public DatabaseProperties(Environment environment) {
@@ -39,6 +46,12 @@ public class DatabaseProperties {
         this.hibernateUseSecondLevelCache = environment.getProperty("hibernate.cache.use_second_level_cache");
         this.hibernateCacheRegionFactoryClass = environment.getProperty("hibernate.cache.region.factory_class");
         this.hibernatePhysicalNamingStrategy = environment.getProperty("hibernate.physical.naming.strategy");
+        this.dataSourceClass = environment.getProperty("pool.data.source.class");
+        this.maxPoolSize = Integer.valueOf(Objects.requireNonNull(environment.getProperty("pool.max.size")));
+        this.cachePreparedStatements = environment.getProperty("pool.cache.prepared.statements");
+        this.cachePreparedStatementsSize = Integer.valueOf(Objects.requireNonNull(environment.getProperty("pool.cache.prepared.statements.size")));
+        this.cachePreparedStatementsSQLLimit = Integer.valueOf(Objects.requireNonNull(environment.getProperty("pool.cache.prepared.statements.sql.limit")));
+        this.useServerPreparedStatements = environment.getProperty("pool.use.server.prepared.statements");
     }
 
     public String getDatabaseDriverName() {
@@ -79,5 +92,29 @@ public class DatabaseProperties {
 
     public String getHibernatePhysicalNamingStrategy() {
         return hibernatePhysicalNamingStrategy;
+    }
+
+    public String getDataSourceClass() {
+        return dataSourceClass;
+    }
+
+    public Integer getMaxPoolSize() {
+        return maxPoolSize;
+    }
+
+    public String getCachePreparedStatements() {
+        return cachePreparedStatements;
+    }
+
+    public Integer getCachePreparedStatementsSize() {
+        return cachePreparedStatementsSize;
+    }
+
+    public Integer getCachePreparedStatementsSQLLimit() {
+        return cachePreparedStatementsSQLLimit;
+    }
+
+    public String getUseServerPreparedStatements() {
+        return useServerPreparedStatements;
     }
 }

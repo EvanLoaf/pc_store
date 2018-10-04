@@ -1,6 +1,5 @@
 package com.gmail.evanloafakahaitao.pcstore.web.command.impl;
 
-import com.gmail.evanloafakahaitao.pcstore.config.ConfigurationManager;
 import com.gmail.evanloafakahaitao.pcstore.service.ItemService;
 import com.gmail.evanloafakahaitao.pcstore.service.OrderService;
 import com.gmail.evanloafakahaitao.pcstore.service.impl.ItemServiceImpl;
@@ -20,7 +19,6 @@ public class ConfirmOrderCommandImpl implements Command {
     private ItemService itemService;
     @Autowired
     private OrderService orderService;
-    private ConfigurationManager configurationManager = ConfigurationManager.getInstance();
     private OrderValidator orderValidator = new OrderValidator();
 
     @Override

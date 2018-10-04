@@ -1,6 +1,5 @@
 package com.gmail.evanloafakahaitao.pcstore.web.command.impl;
 
-import com.gmail.evanloafakahaitao.pcstore.config.ConfigurationManager;
 import com.gmail.evanloafakahaitao.pcstore.service.ItemService;
 import com.gmail.evanloafakahaitao.pcstore.service.XMLService;
 import com.gmail.evanloafakahaitao.pcstore.service.impl.ItemServiceImpl;
@@ -19,7 +18,7 @@ public class LoadItemsCommandImpl implements Command {
     private ItemService itemService;
     @Autowired
     private XMLService xmlService;
-    private ConfigurationManager configurationManager = ConfigurationManager.getInstance();
+    //TODO tyt bil conf manager i daval property..
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {

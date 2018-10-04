@@ -1,6 +1,5 @@
 package com.gmail.evanloafakahaitao.pcstore.web.command.impl;
 
-import com.gmail.evanloafakahaitao.pcstore.config.ConfigurationManager;
 import com.gmail.evanloafakahaitao.pcstore.service.FeedbackService;
 import com.gmail.evanloafakahaitao.pcstore.service.impl.FeedbackServiceImpl;
 import com.gmail.evanloafakahaitao.pcstore.web.command.Command;
@@ -13,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class ShowFeedbackCommandImpl implements Command {
 
-    private ConfigurationManager configurationManager = ConfigurationManager.getInstance();
     @Autowired
     private FeedbackService feedbackService;
 

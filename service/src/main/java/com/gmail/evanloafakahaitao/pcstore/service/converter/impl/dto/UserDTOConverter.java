@@ -36,13 +36,13 @@ public class UserDTOConverter implements DTOConverter<UserDTO, User> {
                     .withFirstName(entity.getFirstName())
                     .withPassword(entity.getPassword())
                     .withEmail(entity.getEmail())
-                    .withProfile((ProfileDTO) profileDTOConverter.toDto(entity.getProfile()))
-                    .withRole(
+                    .withProfile(new ProfileDTO())
+                    /*.withRole(
                             RoleDTO.newBuilder()
                                     .withName("testrole")
                                     .build()
                     )
-                    .withDiscount((DiscountDTO) discountDTOConverter.toDto(entity.getDiscount()))
+                    .withDiscount((DiscountDTO) discountDTOConverter.toDto(entity.getDiscount()))*/
                     .build();
         }
     }

@@ -1,8 +1,5 @@
 package com.gmail.evanloafakahaitao.pcstore.dao.util;
 
-import com.gmail.evanloafakahaitao.pcstore.config.ConfigurationManager;
-import com.gmail.evanloafakahaitao.pcstore.config.properties.DatabaseProperties;
-import com.gmail.evanloafakahaitao.pcstore.config.properties.HibernateProperties;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

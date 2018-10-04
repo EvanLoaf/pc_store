@@ -1,6 +1,5 @@
 package com.gmail.evanloafakahaitao.pcstore.web.command.impl;
 
-import com.gmail.evanloafakahaitao.pcstore.config.ConfigurationManager;
 import com.gmail.evanloafakahaitao.pcstore.service.UserService;
 import com.gmail.evanloafakahaitao.pcstore.service.impl.UserServiceImpl;
 import com.gmail.evanloafakahaitao.pcstore.web.command.Command;
@@ -17,7 +16,6 @@ public class LoginCommandImpl implements Command {
     @Autowired
     private UserService userService;
     private LoginValidator loginValidator = new LoginValidator();
-    private ConfigurationManager configurationManager = ConfigurationManager.getInstance();
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
