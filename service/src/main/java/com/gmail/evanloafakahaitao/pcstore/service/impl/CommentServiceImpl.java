@@ -10,7 +10,7 @@ import com.gmail.evanloafakahaitao.pcstore.service.CommentService;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.CommentDTO;
-import com.gmail.evanloafakahaitao.pcstore.service.dto.NewsDTO;
+import com.gmail.evanloafakahaitao.pcstore.service.dto.ArticleDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
@@ -51,15 +51,15 @@ public class CommentServiceImpl implements CommentService {
 
     @SuppressWarnings("unchecked")
     @Override
-    public CommentDTO save(NewsDTO newsDTO) {
+    public CommentDTO save(ArticleDTO articleDTO) {
         Session session = commentDao.getCurrentSession();
         try {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive()) {
                 session.beginTransaction();
             }
-            Article article = newsDao.findOne(newsDTO.getId());
-            Comment comment = (Comment) commentConverter.toEntity(newsDTO.getCommentSet().iterator().next());
+            Article article = newsDao.findOne(articleDTO.getId());
+            Comment comment = (Comment) commentConverter.toEntity(articleDTO.getCommentSet().iterator().next());
             User user = userDao.findByEmail(comment.getUser().getEmail());
             comment.setUser(user);
             article.getComments().add(comment);
@@ -77,15 +77,15 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public boolean deleteById(NewsDTO newsDTO) {
+    public boolean deleteById(ArticleDTO articleDTO) {
         Session session = commentDao.getCurrentSession();
         try {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive()) {
                 session.beginTransaction();
             }
-            Long deleteCommentId = newsDTO.getCommentSet().iterator().next().getId();
-            Article article = newsDao.findOne(newsDTO.getId());
+            Long deleteCommentId = articleDTO.getCommentSet().iterator().next().getId();
+            Article article = newsDao.findOne(articleDTO.getId());
             Iterator<Comment> iterator = article.getComments().iterator();
             while (iterator.hasNext()) {
                 if (iterator.next().getId().equals(deleteCommentId)) {

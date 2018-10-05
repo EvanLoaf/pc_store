@@ -1,23 +1,13 @@
 package com.gmail.evanloafakahaitao.pcstore.service.dto;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class SimpleUserDTO {
+public class SimpleUserDTO implements Serializable {
 
     private String name;
     private String email;
-
-    public SimpleUserDTO() {
-    }
-
-    private SimpleUserDTO(Builder builder) {
-        setName(builder.name);
-        setEmail(builder.email);
-    }
-
-    public static Builder newBuilder() {
-        return new Builder();
-    }
+    private RoleDTO role;
 
     public String getName() {
         return name;
@@ -35,26 +25,12 @@ public class SimpleUserDTO {
         this.email = email;
     }
 
-    public static final class Builder {
-        private String name;
-        private String email;
+    public RoleDTO getRole() {
+        return role;
+    }
 
-        private Builder() {
-        }
-
-        public Builder withName(String val) {
-            name = val;
-            return this;
-        }
-
-        public Builder withEmail(String val) {
-            email = val;
-            return this;
-        }
-
-        public SimpleUserDTO build() {
-            return new SimpleUserDTO(this);
-        }
+    public void setRole(RoleDTO role) {
+        this.role = role;
     }
 
     @Override

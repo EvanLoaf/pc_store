@@ -2,14 +2,18 @@ package com.gmail.evanloafakahaitao.pcstore.service.dto;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
-public class CommentDTO implements Serializable {
+public class ArticleDTO implements Serializable {
 
     private Long id;
+    private String title;
     private String content;
     private LocalDateTime created;
     private SimpleUserDTO user;
+    private Set<CommentDTO> comments = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -17,6 +21,14 @@ public class CommentDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getContent() {
@@ -43,17 +55,25 @@ public class CommentDTO implements Serializable {
         this.user = user;
     }
 
+    public Set<CommentDTO> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<CommentDTO> comments) {
+        this.comments = comments;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CommentDTO that = (CommentDTO) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(content, that.content);
+        ArticleDTO articleDTO = (ArticleDTO) o;
+        return Objects.equals(title, articleDTO.title) &&
+                Objects.equals(content, articleDTO.content);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, content);
+        return Objects.hash(title, content);
     }
 }

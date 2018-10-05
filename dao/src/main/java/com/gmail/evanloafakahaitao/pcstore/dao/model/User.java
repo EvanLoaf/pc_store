@@ -10,7 +10,6 @@ import java.util.Objects;
 
 @Entity
 @Table
-@SQLDelete(sql = "update t_user set f_is_deleted = true where id = ?")
 public class User extends DisableEntity implements Serializable {
 
     @Id

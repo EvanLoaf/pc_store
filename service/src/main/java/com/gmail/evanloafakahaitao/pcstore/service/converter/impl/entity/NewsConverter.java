@@ -3,18 +3,18 @@ package com.gmail.evanloafakahaitao.pcstore.service.converter.impl.entity;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Article;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
-import com.gmail.evanloafakahaitao.pcstore.service.dto.NewsDTO;
+import com.gmail.evanloafakahaitao.pcstore.service.dto.ArticleDTO;
 import org.springframework.stereotype.Component;
 
 @Component("newsConverter")
-public class NewsConverter implements Converter<NewsDTO, Article> {
+public class NewsConverter implements Converter<ArticleDTO, Article> {
 
     private Converter simpleUserConverter = new SimpleUserConverter();
     private Converter commentConverter = new CommentConverter();
 
     @SuppressWarnings("unchecked")
     @Override
-    public Article toEntity(NewsDTO dto) {
+    public Article toEntity(ArticleDTO dto) {
         return Article.newBuilder()
                 .withId(dto.getId())
                 .withTitle(dto.getTitle())

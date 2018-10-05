@@ -3,7 +3,6 @@ package com.gmail.evanloafakahaitao.pcstore.service.converter.impl.dto;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Audit;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.AuditDTO;
-import com.gmail.evanloafakahaitao.pcstore.service.dto.AuditUserDTO;
 import org.springframework.stereotype.Component;
 
 @Component("auditDTOConverter")

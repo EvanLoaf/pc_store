@@ -63,8 +63,9 @@ public class DatabaseConfig {
         factoryBean.setPhysicalNamingStrategy(new StorePhysicalNamingStrategy());
         Properties properties = new Properties();
         //TODO dialect
-        properties.put(DIALECT, "");
+        properties.put(DIALECT, databaseProperties.getHibernateDialect());
         properties.put(SHOW_SQL, databaseProperties.getHibernateShowSQL());
+        properties.put(FORMAT_SQL, databaseProperties.getHibernateFormatSQL());
         properties.put(HBM2DDL_AUTO, databaseProperties.getHibernateHBM2DDLAuto());
         properties.put(USE_SECOND_LEVEL_CACHE, databaseProperties.getHibernateUseSecondLevelCache());
         properties.put(CACHE_REGION_FACTORY, databaseProperties.getHibernateCacheRegionFactoryClass());

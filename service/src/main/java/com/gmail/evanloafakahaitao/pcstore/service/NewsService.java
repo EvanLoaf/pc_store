@@ -1,16 +1,16 @@
 package com.gmail.evanloafakahaitao.pcstore.service;
 
-import com.gmail.evanloafakahaitao.pcstore.service.dto.NewsDTO;
+import com.gmail.evanloafakahaitao.pcstore.service.dto.ArticleDTO;
 
 import java.util.List;
 
 public interface NewsService {
 
-    NewsDTO save(NewsDTO newsDTO);
+    ArticleDTO save(ArticleDTO articleDTO);
 
-    boolean deleteById(NewsDTO newsDTO);
+    boolean deleteById(ArticleDTO articleDTO);
 
-    NewsDTO update(NewsDTO newsDTO);
+    ArticleDTO update(ArticleDTO articleDTO);
 
-    List<NewsDTO> findAll();
+    List<ArticleDTO> findAll();
 }

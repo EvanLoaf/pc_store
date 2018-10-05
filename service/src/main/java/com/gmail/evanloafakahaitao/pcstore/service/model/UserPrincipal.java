@@ -59,7 +59,7 @@ public class UserPrincipal implements UserDetails {
         return isDisabled;
     }
 
-    //TODO enabled functionality
+    //TODO isEnabled principal
     @Override
     public boolean isEnabled() {
         return !isDisabled;

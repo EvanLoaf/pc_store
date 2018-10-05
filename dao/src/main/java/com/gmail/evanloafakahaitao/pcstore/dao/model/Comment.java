@@ -27,7 +27,6 @@ public class Comment extends SoftDeleteEntity implements Serializable {
     private LocalDateTime created;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
-    @Where(clause = "1 = 1")
     private User user;
 
     public Long getId() {

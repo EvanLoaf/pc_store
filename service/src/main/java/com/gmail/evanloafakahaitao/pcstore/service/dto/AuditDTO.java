@@ -9,24 +9,14 @@ public class AuditDTO implements Serializable {
     private Long id;
     private String eventType;
     private LocalDateTime created;
-    private AuditUserDTO user;
-
-    public AuditDTO() {
-    }
-
-    private AuditDTO(Builder builder) {
-        id = builder.id;
-        setEventType(builder.eventType);
-        setCreated(builder.created);
-        setUser(builder.user);
-    }
-
-    public static Builder newBuilder() {
-        return new Builder();
-    }
+    private SimpleUserDTO user;
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getEventType() {
@@ -45,46 +35,12 @@ public class AuditDTO implements Serializable {
         this.created = created;
     }
 
-    public AuditUserDTO getUser() {
+    public SimpleUserDTO getUser() {
         return user;
     }
 
-    public void setUser(AuditUserDTO user) {
+    public void setUser(SimpleUserDTO user) {
         this.user = user;
-    }
-
-    public static final class Builder {
-        private Long id;
-        private String eventType;
-        private LocalDateTime created;
-        private AuditUserDTO user;
-
-        private Builder() {
-        }
-
-        public Builder withId(Long val) {
-            id = val;
-            return this;
-        }
-
-        public Builder withEventType(String val) {
-            eventType = val;
-            return this;
-        }
-
-        public Builder withCreated(LocalDateTime val) {
-            created = val;
-            return this;
-        }
-
-        public Builder withUser(AuditUserDTO val) {
-            user = val;
-            return this;
-        }
-
-        public AuditDTO build() {
-            return new AuditDTO(this);
-        }
     }
 
     @Override

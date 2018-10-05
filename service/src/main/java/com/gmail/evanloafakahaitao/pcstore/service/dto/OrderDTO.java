@@ -3,6 +3,7 @@ package com.gmail.evanloafakahaitao.pcstore.service.dto;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.OrderStatusEnum;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -11,25 +12,10 @@ public class OrderDTO implements Serializable {
     private String uuid;
     private LocalDateTime created;
     private Integer quantity;
+    private BigDecimal totalPrice;
     private OrderStatusEnum status;
     private OrderUserDTO user;
     private ItemDTO item;
-
-    public OrderDTO() {
-    }
-
-    private OrderDTO(Builder builder) {
-        setUuid(builder.uuid);
-        setCreated(builder.created);
-        setQuantity(builder.quantity);
-        setStatus(builder.status);
-        setUser(builder.user);
-        setItem(builder.item);
-    }
-
-    public static Builder newBuilder() {
-        return new Builder();
-    }
 
     public String getUuid() {
         return uuid;
@@ -55,6 +41,14 @@ public class OrderDTO implements Serializable {
         this.quantity = quantity;
     }
 
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
     public OrderStatusEnum getStatus() {
         return status;
     }
@@ -77,52 +71,6 @@ public class OrderDTO implements Serializable {
 
     public void setItem(ItemDTO item) {
         this.item = item;
-    }
-
-    public static final class Builder {
-        private String uuid;
-        private LocalDateTime created;
-        private Integer quantity;
-        private OrderStatusEnum status;
-        private OrderUserDTO user;
-        private ItemDTO item;
-
-        private Builder() {
-        }
-
-        public Builder withUuid(String val) {
-            uuid = val;
-            return this;
-        }
-
-        public Builder withCreated(LocalDateTime val) {
-            created = val;
-            return this;
-        }
-
-        public Builder withQuantity(Integer val) {
-            quantity = val;
-            return this;
-        }
-
-        public Builder withStatus(OrderStatusEnum val) {
-            status = val;
-            return this;
-        }
-
-        public Builder withUser(OrderUserDTO val) {
-            user = val;
-            return this;
-        }
-
-        public Builder withItem(ItemDTO val) {
-            item = val;
-            return this;
-        }
-
-        public OrderDTO build() {
-            return new OrderDTO(this);
-        }
     }
 
     @Override

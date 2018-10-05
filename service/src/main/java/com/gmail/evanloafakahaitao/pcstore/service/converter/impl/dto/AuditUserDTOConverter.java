@@ -2,7 +2,6 @@ package com.gmail.evanloafakahaitao.pcstore.service.converter.impl.dto;
 
 import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
-import com.gmail.evanloafakahaitao.pcstore.service.dto.AuditUserDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.RoleDTO;
 import org.springframework.stereotype.Component;
 

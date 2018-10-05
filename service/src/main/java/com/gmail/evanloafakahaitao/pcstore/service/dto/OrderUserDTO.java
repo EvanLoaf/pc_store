@@ -9,20 +9,6 @@ public class OrderUserDTO {
     private ProfileDTO profile;
     private DiscountDTO discount;
 
-    public OrderUserDTO() {
-    }
-
-    private OrderUserDTO(Builder builder) {
-        setEmail(builder.email);
-        setName(builder.name);
-        setProfile(builder.profile);
-        setDiscount(builder.discount);
-    }
-
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
     public String getEmail() {
         return email;
     }
@@ -53,40 +39,6 @@ public class OrderUserDTO {
 
     public void setDiscount(DiscountDTO discount) {
         this.discount = discount;
-    }
-
-    public static final class Builder {
-        private String email;
-        private String name;
-        private ProfileDTO profile;
-        private DiscountDTO discount;
-
-        private Builder() {
-        }
-
-        public Builder withEmail(String val) {
-            email = val;
-            return this;
-        }
-
-        public Builder withName(String val) {
-            name = val;
-            return this;
-        }
-
-        public Builder withProfile(ProfileDTO val) {
-            profile = val;
-            return this;
-        }
-
-        public Builder withDiscount(DiscountDTO val) {
-            discount = val;
-            return this;
-        }
-
-        public OrderUserDTO build() {
-            return new OrderUserDTO(this);
-        }
     }
 
     @Override

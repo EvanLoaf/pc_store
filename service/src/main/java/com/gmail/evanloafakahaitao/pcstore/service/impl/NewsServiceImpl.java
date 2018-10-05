@@ -7,7 +7,7 @@ import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
 import com.gmail.evanloafakahaitao.pcstore.service.NewsService;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
-import com.gmail.evanloafakahaitao.pcstore.service.dto.NewsDTO;
+import com.gmail.evanloafakahaitao.pcstore.service.dto.ArticleDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
@@ -46,20 +46,20 @@ public class NewsServiceImpl implements NewsService {
 
     @SuppressWarnings("unchecked")
     @Override
-    public NewsDTO save(NewsDTO newsDTO) {
+    public ArticleDTO save(ArticleDTO articleDTO) {
         Session session = newsDao.getCurrentSession();
         try {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive()) {
                 session.beginTransaction();
             }
-            User user = userDao.findByEmail(newsDTO.getUser().getEmail());
-            Article article = (Article) newsConverter.toEntity(newsDTO);
+            User user = userDao.findByEmail(articleDTO.getUser().getEmail());
+            Article article = (Article) newsConverter.toEntity(articleDTO);
             article.setUser(user);
             newsDao.create(article);
-            NewsDTO newsDTOsaved = (NewsDTO) newsDTOConverter.toDto(article);
+            ArticleDTO articleDTOsaved = (ArticleDTO) newsDTOConverter.toDto(article);
             transaction.commit();
-            return newsDTOsaved;
+            return articleDTOsaved;
         } catch (Exception e) {
             if (session.getTransaction().isActive()) {
                 session.getTransaction().rollback();
@@ -70,14 +70,14 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public boolean deleteById(NewsDTO newsDTO) {
+    public boolean deleteById(ArticleDTO articleDTO) {
         Session session = newsDao.getCurrentSession();
         try {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive()) {
                 session.beginTransaction();
             }
-            newsDao.deleteById(newsDTO.getId());
+            newsDao.deleteById(articleDTO.getId());
             transaction.commit();
             return true;
         } catch (Exception e) {
@@ -91,24 +91,24 @@ public class NewsServiceImpl implements NewsService {
 
     @SuppressWarnings("unchecked")
     @Override
-    public NewsDTO update(NewsDTO newsDTO) {
+    public ArticleDTO update(ArticleDTO articleDTO) {
         Session session = newsDao.getCurrentSession();
         try {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive()) {
                 session.beginTransaction();
             }
-            Article article = newsDao.findOne(newsDTO.getId());
-            if (newsDTO.getContent() != null) {
-                article.setContent(newsDTO.getContent());
+            Article article = newsDao.findOne(articleDTO.getId());
+            if (articleDTO.getContent() != null) {
+                article.setContent(articleDTO.getContent());
             }
-            if (newsDTO.getTitle() != null) {
-                article.setTitle(newsDTO.getTitle());
+            if (articleDTO.getTitle() != null) {
+                article.setTitle(articleDTO.getTitle());
             }
             newsDao.update(article);
-            NewsDTO updatedNewsDTO = (NewsDTO) newsDTOConverter.toDto(article);
+            ArticleDTO updatedArticleDTO = (ArticleDTO) newsDTOConverter.toDto(article);
             transaction.commit();
-            return updatedNewsDTO;
+            return updatedArticleDTO;
         } catch (Exception e) {
             if (session.getTransaction().isActive()) {
                 session.getTransaction().rollback();
@@ -120,24 +120,24 @@ public class NewsServiceImpl implements NewsService {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<NewsDTO> findAll() {
+    public List<ArticleDTO> findAll() {
         Session session = newsDao.getCurrentSession();
-        List<NewsDTO> newsDTOS = new ArrayList<>();
+        List<ArticleDTO> articleDTOS = new ArrayList<>();
         try {
             Transaction transaction = session.getTransaction();
             if (!transaction.isActive()) {
                 session.beginTransaction();
             }
-            List<Article> articleCollection = newsDao.findAll();
-            newsDTOS = newsDTOConverter.toDTOList(articleCollection);
+            List<Article> articles = newsDao.findAll();
+            articleDTOS = newsDTOConverter.toDTOList(articles);
             transaction.commit();
-            return newsDTOS;
+            return articleDTOS;
         } catch (Exception e) {
             if (session.getTransaction().isActive()) {
                 session.getTransaction().rollback();
             }
             logger.error("Failed to find all news", e);
         }
-        return newsDTOS;
+        return articleDTOS;
     }
 }

@@ -32,10 +32,10 @@ public class Article extends SoftDeleteEntity implements Serializable {
     private LocalDateTime created;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
-    @Where(clause = "1 = 1")
     private User user;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "newsId", nullable = false)
+    @Where(clause = "1 = 1")
     private Set<Comment> comments = new HashSet<>();
 
     public Long getId() {

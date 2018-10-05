@@ -19,6 +19,8 @@ public class DatabaseProperties {
     private String hibernateCurrentSessionContextClass;
     private String hibernateHBM2DDLAuto;
     private String hibernateShowSQL;
+    private String hibernateDialect;
+    private String hibernateFormatSQL;
     private String hibernateUseSecondLevelCache;
     private String hibernateCacheRegionFactoryClass;
     private String hibernatePhysicalNamingStrategy;
@@ -43,6 +45,8 @@ public class DatabaseProperties {
         this.hibernateCurrentSessionContextClass = environment.getProperty("hibernate.current_session_context_class");
         this.hibernateHBM2DDLAuto = environment.getProperty("hibernate.hbm2ddl.auto");
         this.hibernateShowSQL = environment.getProperty("hibernate.show_sql");
+        this.hibernateDialect = environment.getProperty("hibernate.dialect");
+        this.hibernateFormatSQL = environment.getProperty("hibernate.format_sql");
         this.hibernateUseSecondLevelCache = environment.getProperty("hibernate.cache.use_second_level_cache");
         this.hibernateCacheRegionFactoryClass = environment.getProperty("hibernate.cache.region.factory_class");
         this.hibernatePhysicalNamingStrategy = environment.getProperty("hibernate.physical.naming.strategy");
@@ -100,6 +104,14 @@ public class DatabaseProperties {
 
     public Integer getMaxPoolSize() {
         return maxPoolSize;
+    }
+
+    public String getHibernateDialect() {
+        return hibernateDialect;
+    }
+
+    public String getHibernateFormatSQL() {
+        return hibernateFormatSQL;
     }
 
     public String getCachePreparedStatements() {

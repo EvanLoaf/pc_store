@@ -15,7 +15,7 @@ public class Permission implements Serializable {
     private Long id;
     @NotNull
     @Column
-    private String name;
+    private PermissionEnum name;
 
     public Long getId() {
         return id;
@@ -25,11 +25,11 @@ public class Permission implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
+    public PermissionEnum getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(PermissionEnum name) {
         this.name = name;
     }
 
