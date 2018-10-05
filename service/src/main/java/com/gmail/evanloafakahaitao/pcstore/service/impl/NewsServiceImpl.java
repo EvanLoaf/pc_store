@@ -2,15 +2,11 @@ package com.gmail.evanloafakahaitao.pcstore.service.impl;
 
 import com.gmail.evanloafakahaitao.pcstore.dao.NewsDao;
 import com.gmail.evanloafakahaitao.pcstore.dao.UserDao;
-import com.gmail.evanloafakahaitao.pcstore.dao.impl.NewsDaoImpl;
-import com.gmail.evanloafakahaitao.pcstore.dao.impl.UserDaoImpl;
-import com.gmail.evanloafakahaitao.pcstore.dao.model.News;
+import com.gmail.evanloafakahaitao.pcstore.dao.model.Article;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
 import com.gmail.evanloafakahaitao.pcstore.service.NewsService;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
-import com.gmail.evanloafakahaitao.pcstore.service.converter.impl.entity.NewsConverter;
-import com.gmail.evanloafakahaitao.pcstore.service.converter.impl.dto.NewsDTOConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.NewsDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -58,17 +54,17 @@ public class NewsServiceImpl implements NewsService {
                 session.beginTransaction();
             }
             User user = userDao.findByEmail(newsDTO.getUser().getEmail());
-            News news = (News) newsConverter.toEntity(newsDTO);
-            news.setUser(user);
-            newsDao.create(news);
-            NewsDTO newsDTOsaved = (NewsDTO) newsDTOConverter.toDto(news);
+            Article article = (Article) newsConverter.toEntity(newsDTO);
+            article.setUser(user);
+            newsDao.create(article);
+            NewsDTO newsDTOsaved = (NewsDTO) newsDTOConverter.toDto(article);
             transaction.commit();
             return newsDTOsaved;
         } catch (Exception e) {
             if (session.getTransaction().isActive()) {
                 session.getTransaction().rollback();
             }
-            logger.error("Failed to save News", e);
+            logger.error("Failed to save Article", e);
         }
         return null;
     }
@@ -102,15 +98,15 @@ public class NewsServiceImpl implements NewsService {
             if (!transaction.isActive()) {
                 session.beginTransaction();
             }
-            News news = newsDao.findOne(newsDTO.getId());
+            Article article = newsDao.findOne(newsDTO.getId());
             if (newsDTO.getContent() != null) {
-                news.setContent(newsDTO.getContent());
+                article.setContent(newsDTO.getContent());
             }
             if (newsDTO.getTitle() != null) {
-                news.setTitle(newsDTO.getTitle());
+                article.setTitle(newsDTO.getTitle());
             }
-            newsDao.update(news);
-            NewsDTO updatedNewsDTO = (NewsDTO) newsDTOConverter.toDto(news);
+            newsDao.update(article);
+            NewsDTO updatedNewsDTO = (NewsDTO) newsDTOConverter.toDto(article);
             transaction.commit();
             return updatedNewsDTO;
         } catch (Exception e) {
@@ -132,8 +128,8 @@ public class NewsServiceImpl implements NewsService {
             if (!transaction.isActive()) {
                 session.beginTransaction();
             }
-            List<News> newsCollection = newsDao.findAll();
-            newsDTOS = newsDTOConverter.toDTOList(newsCollection);
+            List<Article> articleCollection = newsDao.findAll();
+            newsDTOS = newsDTOConverter.toDTOList(articleCollection);
             transaction.commit();
             return newsDTOS;
         } catch (Exception e) {

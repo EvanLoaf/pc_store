@@ -2,7 +2,7 @@ package com.gmail.evanloafakahaitao.pcstore.service.impl;
 
 import com.gmail.evanloafakahaitao.pcstore.dao.UserDao;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
-import com.gmail.evanloafakahaitao.pcstore.service.model.UserPrincipalSpring;
+import com.gmail.evanloafakahaitao.pcstore.service.model.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,12 +21,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) {
         User user = userDao.findByEmail(username);
-        UserPrincipalSpring userPrincipal;
+        UserPrincipal userPrincipal;
         if (user != null) {
-            userPrincipal = new UserPrincipalSpring(user);
+            userPrincipal = new UserPrincipal(user);
         } else {
             throw new UsernameNotFoundException("User not found");
         }

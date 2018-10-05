@@ -24,22 +24,12 @@ public class Audit implements Serializable {
     @JoinColumn(name = "userId")
     private User user;
 
-    public Audit() {
-    }
-
-    private Audit(Builder builder) {
-        id = builder.id;
-        setEventType(builder.eventType);
-        setCreated(builder.created);
-        setUser(builder.user);
-    }
-
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getEventType() {
@@ -64,40 +54,6 @@ public class Audit implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public static final class Builder {
-        private Long id;
-        private @NotNull String eventType;
-        private @NotNull LocalDateTime created;
-        private User user;
-
-        private Builder() {
-        }
-
-        public Builder withId(Long val) {
-            id = val;
-            return this;
-        }
-
-        public Builder withEventType(@NotNull String val) {
-            eventType = val;
-            return this;
-        }
-
-        public Builder withCreated(@NotNull LocalDateTime val) {
-            created = val;
-            return this;
-        }
-
-        public Builder withUser(User val) {
-            user = val;
-            return this;
-        }
-
-        public Audit build() {
-            return new Audit(this);
-        }
     }
 
     @Override

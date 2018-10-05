@@ -20,21 +20,12 @@ public class Feedback implements Serializable {
     @JoinColumn(name = "userId")
     private User user;
 
-    public Feedback() {
-    }
-
-    private Feedback(Builder builder) {
-        id = builder.id;
-        setMessage(builder.message);
-        setUser(builder.user);
-    }
-
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getMessage() {
@@ -51,34 +42,6 @@ public class Feedback implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public static final class Builder {
-        private Long id;
-        private @NotNull String message;
-        private User user;
-
-        private Builder() {
-        }
-
-        public Builder withId(Long val) {
-            id = val;
-            return this;
-        }
-
-        public Builder withMessage(@NotNull String val) {
-            message = val;
-            return this;
-        }
-
-        public Builder withUser(User val) {
-            user = val;
-            return this;
-        }
-
-        public Feedback build() {
-            return new Feedback(this);
-        }
     }
 
     @Override

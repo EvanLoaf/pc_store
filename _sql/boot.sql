@@ -35,13 +35,15 @@ create table if not exists t_discount (
 );
 
 create table if not exists t_user (
-  f_id          bigint(19) unsigned auto_increment not null,
-  f_email       varchar(30)                        not null,
-  f_first_name  varchar(20)                        not null,
-  f_last_name   varchar(20)                        not null,
-  f_password    varchar(20)                        not null,
-  f_role_id     bigint(19) unsigned                not null,
-  f_discount_id bigint(19) unsigned,
+  f_id            bigint(19) unsigned auto_increment not null,
+  f_email         varchar(30)                        not null,
+  f_first_name    varchar(20)                        not null,
+  f_last_name     varchar(20)                        not null,
+  f_password      varchar(20)                        not null,
+  f_is_disabled    boolean                            not null,
+  f_disabled_until datetime default now(),
+  f_role_id       bigint(19) unsigned                not null,
+  f_discount_id   bigint(19) unsigned,
   primary key (f_id),
   unique (f_email),
   foreign key (f_role_id) references t_role (f_id)
@@ -54,8 +56,8 @@ create table if not exists t_user (
 
 create table if not exists t_profile (
   f_user_id      bigint(19) unsigned auto_increment not null,
-  f_address      varchar(90)                        not null,
-  f_phone_number varchar(20)                        not null,
+  f_address      varchar(90) default '',
+  f_phone_number varchar(20) default '',
   primary key (f_user_id),
   foreign key (f_user_id) references t_user (f_id)
     on update cascade
@@ -68,17 +70,19 @@ create table if not exists t_item (
   f_vendor_code varchar(20) unique                 not null,
   f_description varchar(100)                       not null,
   f_price       decimal(10, 5) unsigned            not null,
+  f_is_deleted  boolean                            not null,
   primary key (f_id),
   index (f_vendor_code)
 );
 
 create table if not exists t_order (
-  f_user_id  bigint(19) unsigned                not null,
-  f_item_id  bigint(19) unsigned                not null,
-  f_uuid     varchar(36)                        not null,
-  f_created  datetime default now()             not null,
-  f_quantity int unsigned                       not null,
-  f_status   varchar(20)                        not null,
+  f_user_id     bigint(19) unsigned                not null,
+  f_item_id     bigint(19) unsigned                not null,
+  f_uuid        varchar(36)                        not null,
+  f_created     datetime default now()             not null,
+  f_total_price decimal(10, 5) unsigned            not null,
+  f_quantity    int unsigned                       not null,
+  f_status      varchar(20)                        not null,
   primary key (f_user_id, f_item_id),
   foreign key (f_user_id) references t_user (f_id)
     on update cascade
@@ -110,11 +114,12 @@ create table if not exists t_audit (
 );
 
 create table if not exists t_news (
-  f_id      bigint(19) unsigned auto_increment not null,
-  f_title   varchar(40)                        not null,
-  f_content varchar(500)                       not null,
-  f_created datetime default now()             not null,
-  f_user_id bigint(19) unsigned                not null,
+  f_id         bigint(19) unsigned auto_increment not null,
+  f_title      varchar(40)                        not null,
+  f_content    varchar(500)                       not null,
+  f_created    datetime default now()             not null,
+  f_is_deleted boolean                            not null,
+  f_user_id    bigint(19) unsigned                not null,
   primary key (f_id),
   foreign key (f_user_id) references t_user (f_id)
     on update cascade
@@ -122,11 +127,12 @@ create table if not exists t_news (
 );
 
 create table if not exists t_comment (
-  f_id      bigint(19) unsigned auto_increment not null,
-  f_content varchar(180)                       not null,
-  f_created datetime default now()             not null,
-  f_user_id bigint(19) unsigned                not null,
-  f_news_id bigint(19) unsigned                not null,
+  f_id         bigint(19) unsigned auto_increment not null,
+  f_content    varchar(180)                       not null,
+  f_created    datetime default now()             not null,
+  f_is_deleted boolean                            not null,
+  f_user_id    bigint(19) unsigned                not null,
+  f_news_id    bigint(19) unsigned                not null,
   primary key (f_id),
   foreign key (f_user_id) references t_user (f_id)
     on update cascade

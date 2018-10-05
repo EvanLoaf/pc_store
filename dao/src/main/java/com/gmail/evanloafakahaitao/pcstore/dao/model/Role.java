@@ -24,23 +24,14 @@ public class Role implements Serializable {
             joinColumns = @JoinColumn(name = "roleId", nullable = false, updatable = false),
             inverseJoinColumns = @JoinColumn(name = "permissionId", nullable = false, updatable = false)
     )
-    private Set<Permission> permissionSet = new HashSet<>();
-
-    public Role() {
-    }
-
-    private Role(Builder builder) {
-        id = builder.id;
-        setName(builder.name);
-        setPermissionSet(builder.permissionSet);
-    }
-
-    public static Builder newBuilder() {
-        return new Builder();
-    }
+    private Set<Permission> permissions = new HashSet<>();
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -51,40 +42,12 @@ public class Role implements Serializable {
         this.name = name;
     }
 
-    public Set<Permission> getPermissionSet() {
-        return permissionSet;
+    public Set<Permission> getPermissions() {
+        return permissions;
     }
 
-    public void setPermissionSet(Set<Permission> permissionSet) {
-        this.permissionSet = permissionSet;
-    }
-
-    public static final class Builder {
-        private Long id;
-        private @NotNull String name;
-        private Set<Permission> permissionSet = new HashSet<>();
-
-        private Builder() {
-        }
-
-        public Builder withId(Long val) {
-            id = val;
-            return this;
-        }
-
-        public Builder withName(@NotNull String val) {
-            name = val;
-            return this;
-        }
-
-        public Builder withPermissionSet(Set<Permission> val) {
-            permissionSet = val;
-            return this;
-        }
-
-        public Role build() {
-            return new Role(this);
-        }
+    public void setPermissions(Set<Permission> permissions) {
+        this.permissions = permissions;
     }
 
     @Override

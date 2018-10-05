@@ -75,7 +75,7 @@ public class DatabaseConfig {
                 Discount.class,
                 Feedback.class,
                 Item.class,
-                News.class,
+                Article.class,
                 Order.class,
                 OrderId.class,
                 Permission.class,

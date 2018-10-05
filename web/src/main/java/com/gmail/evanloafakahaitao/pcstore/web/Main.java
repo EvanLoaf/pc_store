@@ -75,7 +75,7 @@ public class Main {
         ItemDao itemDao = new ItemDaoImpl(Item.class);
         FeedbackDao feedbackDao = new FeedbackDaoImpl(Feedback.class);
         AuditDao auditDao = new AuditDaoImpl(Audit.class);
-        NewsDao newsDao = new NewsDaoImpl(News.class);
+        NewsDao newsDao = new NewsDaoImpl(Article.class);
         CommentDao commentDao = new CommentDaoImpl(Comment.class);*/
 
         /*OrderDTO orderDTO = orderService.save(OrderDTO.newBuilder()
@@ -201,7 +201,7 @@ public class Main {
             User user = userDao.findByEmail("root@user");
             logger.info("user with mail root@user role: " + user.getRole().getName());
 
-            for (Permission permission : user.getRole().getPermissionSet()) {
+            for (Permission permission : user.getRole().getPermissions()) {
                 logger.info("user with mail root@user permissions: " + permission.getName());
             }*/
 
@@ -326,7 +326,7 @@ public class Main {
 
 
         /**
-         * News and Comments testing
+         * Article and Comments testing
          */
 
         /*Session session = userDao.getCurrentSession();
@@ -338,7 +338,7 @@ public class Main {
 
             *//*User user = userDao.findOne(2L);
 
-            News news = News.newBuilder()
+            Article news = Article.newBuilder()
                     .withTitle("first title")
                     .withContent("superinterestingnewsarticle")
                     .withCreated(LocalDateTime.now())
@@ -348,10 +348,10 @@ public class Main {
             newsDao.create(news);
             logger.info("news saved with title: " + news.getTitle() + " with ID: " + news.getId());*//*
 
-            News news = newsDao.findOne(3L);
+            Article news = newsDao.findOne(3L);
             *//*User user = userDao.findOne(1L);*//*
 
-         *//*News news = News.newBuilder()
+         *//*Article news = Article.newBuilder()
                     .withTitle("second title")
                     .withContent("superinterestingnewsarticle")
                     .withCreated(LocalDateTime.now())
@@ -376,9 +376,9 @@ public class Main {
                     .withContent("third comment")
                     .build();
 
-            news.getCommentSet().add(comment1);
-            news.getCommentSet().add(comment2);
-            news.getCommentSet().add(comment3);
+            news.getComments().add(comment1);
+            news.getComments().add(comment2);
+            news.getComments().add(comment3);
 
             newsDao.create(news);*//*
 
@@ -406,7 +406,7 @@ public class Main {
                 logger.info(comment.getUser().getEmail());
                 logger.info(comment.getUser().getProfile().getAddress());
                 logger.info(comment.getUser().getRole().getName());
-                for (Permission permission : comment.getUser().getRole().getPermissionSet()) {
+                for (Permission permission : comment.getUser().getRole().getPermissions()) {
                     logger.info(permission.getName());
                 }
             }

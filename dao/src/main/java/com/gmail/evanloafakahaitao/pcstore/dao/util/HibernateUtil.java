@@ -59,7 +59,7 @@ public class HibernateUtil {
                         .addAnnotatedClass(Feedback.class)
                         .addAnnotatedClass(Audit.class)
                         .addAnnotatedClass(Profile.class)
-                        .addAnnotatedClass(News.class)
+                        .addAnnotatedClass(Article.class)
                         .addAnnotatedClass(Comment.class)
                         .addAnnotatedClass(Item.class)
                         .addAnnotatedClass(Order.class)

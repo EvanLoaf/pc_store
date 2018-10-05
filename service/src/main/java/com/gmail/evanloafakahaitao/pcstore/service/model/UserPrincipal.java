@@ -9,21 +9,23 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-public class UserPrincipalSpring implements UserDetails {
+public class UserPrincipal implements UserDetails {
 
     private Long id;
     private String name;
     private String username;
     private String password;
+    private boolean isDisabled;
     private List<GrantedAuthority> authorities;
 
-    public UserPrincipalSpring(User user) {
+    public UserPrincipal(User user) {
         this.id = user.getId();
         this.name = user.getFirstName() + " " + user.getLastName();
         this.username = user.getEmail();
         this.password = user.getPassword();
+        this.isDisabled = user.isDisabled();
         String[] authorityList = user.getRole()
-                .getPermissionSet()
+                .getPermissions()
                 .stream()
                 .map(Permission::getName)
                 .toArray(String[]::new);
@@ -53,10 +55,14 @@ public class UserPrincipalSpring implements UserDetails {
         return username;
     }
 
+    public boolean isDisabled() {
+        return isDisabled;
+    }
+
     //TODO enabled functionality
     @Override
     public boolean isEnabled() {
-        return false;
+        return !isDisabled;
     }
 
     @Override

@@ -7,13 +7,15 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
+@Table(name = "news")
 @Entity
-@Table
-@SQLDelete(sql = "update t_comment set f_is_deleted = true where id = ?")
+@SQLDelete(sql = "update t_news set f_is_deleted = true where id = ?")
 @Where(clause = "f_is_deleted = false")
-public class Comment extends SoftDeleteEntity implements Serializable {
+public class Article extends SoftDeleteEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,14 +23,20 @@ public class Comment extends SoftDeleteEntity implements Serializable {
     private Long id;
     @NotNull
     @Column
+    private String title;
+    @NotNull
+    @Column
     private String content;
     @NotNull
     @Column
     private LocalDateTime created;
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     @Where(clause = "1 = 1")
     private User user;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "newsId", nullable = false)
+    private Set<Comment> comments = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -36,6 +44,14 @@ public class Comment extends SoftDeleteEntity implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getContent() {
@@ -62,17 +78,25 @@ public class Comment extends SoftDeleteEntity implements Serializable {
         this.user = user;
     }
 
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Comment comment = (Comment) o;
-        return Objects.equals(id, comment.id) &&
-                Objects.equals(content, comment.content);
+        Article article = (Article) o;
+        return Objects.equals(title, article.title) &&
+                Objects.equals(content, article.content);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, content);
+        return Objects.hash(title, content);
     }
 }

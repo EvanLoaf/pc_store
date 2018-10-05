@@ -48,7 +48,8 @@ public class ItemDaoImpl extends GenericDaoImpl<Item> implements ItemDao {
             query.setParameter("percent", percent);
             return query.getResultList();
         } else {
-            String hql = "from Item as i where i.id not in (select i.id from Item as i inner join i.discounts as d) order by i.price desc";
+            //String hql = "from Item as i where i.id not in (select i.id from Item as i inner join i.discounts as d) order by i.price desc";
+            String hql = "from Item as i where i.discounts is empty order by i.price desc";
             Query query = getCurrentSession().createQuery(hql);
             return query.getResultList();
         }

@@ -16,7 +16,7 @@ public class RoleDTOConverter implements DTOConverter<RoleDTO, Role> {
         return RoleDTO.newBuilder()
                 .withId(entity.getId())
                 .withName(entity.getName())
-                .withPermissionSet(permissionDTOConverter.toDTOSet(entity.getPermissionSet()))
+                .withPermissionSet(permissionDTOConverter.toDTOSet(entity.getPermissions()))
                 .build();
     }
 }

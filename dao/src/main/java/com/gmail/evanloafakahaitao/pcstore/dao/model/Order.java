@@ -3,6 +3,7 @@ package com.gmail.evanloafakahaitao.pcstore.dao.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -11,7 +12,7 @@ import java.util.Objects;
 public class Order implements Serializable {
 
     @EmbeddedId
-    private OrderId id = OrderId.newBuilder().build();
+    private OrderId id = new OrderId();
     @NotNull
     @Column
     private String uuid;
@@ -22,6 +23,9 @@ public class Order implements Serializable {
     @Column
     private Integer quantity;
     @NotNull
+    @Column
+    private BigDecimal totalPrice;
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column
     private OrderStatusEnum status;
@@ -31,23 +35,6 @@ public class Order implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("itemId")
     private Item item;
-
-    public Order() {
-    }
-
-    private Order(Builder builder) {
-        setId(builder.id);
-        setUuid(builder.uuid);
-        setCreated(builder.created);
-        setQuantity(builder.quantity);
-        setStatus(builder.status);
-        setUser(builder.user);
-        setItem(builder.item);
-    }
-
-    public static Builder newBuilder() {
-        return new Builder();
-    }
 
     public OrderId getId() {
         return id;
@@ -81,6 +68,14 @@ public class Order implements Serializable {
         this.quantity = quantity;
     }
 
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
     public OrderStatusEnum getStatus() {
         return status;
     }
@@ -103,58 +98,6 @@ public class Order implements Serializable {
 
     public void setItem(Item item) {
         this.item = item;
-    }
-
-    public static final class Builder {
-        private OrderId id = OrderId.newBuilder().build();
-        private @NotNull String uuid;
-        private @NotNull LocalDateTime created;
-        private @NotNull Integer quantity;
-        private @NotNull OrderStatusEnum status;
-        private User user;
-        private Item item;
-
-        private Builder() {
-        }
-
-        public Builder withId(OrderId val) {
-            id = val;
-            return this;
-        }
-
-        public Builder withUuid(@NotNull String val) {
-            uuid = val;
-            return this;
-        }
-
-        public Builder withCreated(@NotNull LocalDateTime val) {
-            created = val;
-            return this;
-        }
-
-        public Builder withQuantity(@NotNull Integer val) {
-            quantity = val;
-            return this;
-        }
-
-        public Builder withStatus(@NotNull OrderStatusEnum val) {
-            status = val;
-            return this;
-        }
-
-        public Builder withUser(User val) {
-            user = val;
-            return this;
-        }
-
-        public Builder withItem(Item val) {
-            item = val;
-            return this;
-        }
-
-        public Order build() {
-            return new Order(this);
-        }
     }
 
     @Override

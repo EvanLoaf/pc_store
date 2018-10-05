@@ -16,54 +16,20 @@ public class OrderId implements Serializable {
     @Column
     private Long itemId;
 
-    public OrderId() {
-    }
-
-    private OrderId(Builder builder) {
-        setfUserId(builder.userId);
-        setfItemId(builder.itemId);
-    }
-
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
-    public Long getfUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setfUserId(Long fUserId) {
-        this.userId = fUserId;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public Long getfItemId() {
+    public Long getItemId() {
         return itemId;
     }
 
-    public void setfItemId(Long fItemId) {
-        this.itemId = fItemId;
-    }
-
-    public static final class Builder {
-        private Long userId;
-        private Long itemId;
-
-        private Builder() {
-        }
-
-        public Builder withUserId(Long val) {
-            userId = val;
-            return this;
-        }
-
-        public Builder withItemId(Long val) {
-            itemId = val;
-            return this;
-        }
-
-        public OrderId build() {
-            return new OrderId(this);
-        }
+    public void setItemId(Long itemId) {
+        this.itemId = itemId;
     }
 
     @Override

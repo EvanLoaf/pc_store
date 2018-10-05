@@ -1,5 +1,7 @@
 package com.gmail.evanloafakahaitao.pcstore.dao.model;
 
+import org.hibernate.annotations.SQLDelete;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -8,7 +10,8 @@ import java.util.Objects;
 
 @Entity
 @Table
-public class User implements Serializable {
+@SQLDelete(sql = "update t_user set f_is_deleted = true where id = ?")
+public class User extends DisableEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +31,7 @@ public class User implements Serializable {
     @Column
     private String lastName;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "roleId")
+    @JoinColumn(name = "roleId", nullable = false)
     private Role role;
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Profile profile;
@@ -189,4 +192,6 @@ public class User implements Serializable {
             return new User(this);
         }
     }
+
+
 }

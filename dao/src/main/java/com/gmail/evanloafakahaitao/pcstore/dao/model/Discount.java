@@ -24,15 +24,6 @@ public class Discount implements Serializable {
     @Column
     private LocalDateTime finishDate;
 
-    public Discount() {
-    }
-
-    public Discount(@NotNull String name, @NotNull Integer percent, @NotNull LocalDateTime finishDate) {
-        this.name = name;
-        this.percent = percent;
-        this.finishDate = finishDate;
-    }
-
     public Long getId() {
         return id;
     }

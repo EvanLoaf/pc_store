@@ -1,5 +1,8 @@
 package com.gmail.evanloafakahaitao.pcstore.dao.model;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -10,7 +13,9 @@ import java.util.Set;
 
 @Entity
 @Table
-public class Item implements Serializable {
+@SQLDelete(sql = "update t_item set f_is_deleted = true where id = ?")
+@Where(clause = "f_is_deleted = false")
+public class Item extends SoftDeleteEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,22 +40,6 @@ public class Item implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "discountId", nullable = false, updatable = false)
     )
     private Set<Discount> discounts = new HashSet<>();
-
-    public Item() {
-    }
-
-    private Item(Builder builder) {
-        setId(builder.id);
-        setName(builder.name);
-        setVendorCode(builder.vendorCode);
-        setDescription(builder.description);
-        setPrice(builder.price);
-        setDiscounts(builder.discounts);
-    }
-
-    public static Builder newBuilder() {
-        return new Builder();
-    }
 
     public Long getId() {
         return id;
@@ -100,8 +89,6 @@ public class Item implements Serializable {
         this.discounts = discounts;
     }
 
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -113,51 +100,5 @@ public class Item implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(vendorCode);
-    }
-
-    public static final class Builder {
-        private Long id;
-        private @NotNull String name;
-        private @NotNull String vendorCode;
-        private @NotNull String description;
-        private @NotNull BigDecimal price;
-        private Set<Discount> discounts;
-
-        private Builder() {
-        }
-
-        public Builder withId(Long val) {
-            id = val;
-            return this;
-        }
-
-        public Builder withName(@NotNull String val) {
-            name = val;
-            return this;
-        }
-
-        public Builder withVendorCode(@NotNull String val) {
-            vendorCode = val;
-            return this;
-        }
-
-        public Builder withDescription(@NotNull String val) {
-            description = val;
-            return this;
-        }
-
-        public Builder withPrice(@NotNull BigDecimal val) {
-            price = val;
-            return this;
-        }
-
-        public Builder withDiscounts(Set<Discount> val) {
-            discounts = val;
-            return this;
-        }
-
-        public Item build() {
-            return new Item(this);
-        }
     }
 }

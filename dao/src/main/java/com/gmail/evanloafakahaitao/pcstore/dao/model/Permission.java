@@ -17,20 +17,12 @@ public class Permission implements Serializable {
     @Column
     private String name;
 
-    public Permission() {
-    }
-
-    private Permission(Builder builder) {
-        id = builder.id;
-        setName(builder.name);
-    }
-
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -39,28 +31,6 @@ public class Permission implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public static final class Builder {
-        private Long id;
-        private @NotNull String name;
-
-        private Builder() {
-        }
-
-        public Builder withId(Long val) {
-            id = val;
-            return this;
-        }
-
-        public Builder withName(@NotNull String val) {
-            name = val;
-            return this;
-        }
-
-        public Permission build() {
-            return new Permission(this);
-        }
     }
 
     @Override
