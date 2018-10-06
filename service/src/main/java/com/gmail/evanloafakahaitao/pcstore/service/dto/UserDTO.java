@@ -14,24 +14,6 @@ public class UserDTO implements Serializable {
     private ProfileDTO profile;
     private DiscountDTO discount;
 
-    public UserDTO() {
-    }
-
-    private UserDTO(Builder builder) {
-        setId(builder.id);
-        setEmail(builder.email);
-        setPassword(builder.password);
-        setFirstName(builder.firstName);
-        setLastName(builder.lastName);
-        setRole(builder.role);
-        setProfile(builder.profile);
-        setDiscount(builder.discount);
-    }
-
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
     public Long getId() {
         return id;
     }
@@ -96,8 +78,6 @@ public class UserDTO implements Serializable {
         this.discount = discount;
     }
 
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -109,63 +89,5 @@ public class UserDTO implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(email);
-    }
-
-    public static final class Builder {
-        private Long id;
-        private String email;
-        private String password;
-        private String firstName;
-        private String lastName;
-        private RoleDTO role;
-        private ProfileDTO profile;
-        private DiscountDTO discount;
-
-        private Builder() {
-        }
-
-        public Builder withId(Long val) {
-            id = val;
-            return this;
-        }
-
-        public Builder withEmail(String val) {
-            email = val;
-            return this;
-        }
-
-        public Builder withPassword(String val) {
-            password = val;
-            return this;
-        }
-
-        public Builder withFirstName(String val) {
-            firstName = val;
-            return this;
-        }
-
-        public Builder withLastName(String val) {
-            lastName = val;
-            return this;
-        }
-
-        public Builder withRole(RoleDTO val) {
-            role = val;
-            return this;
-        }
-
-        public Builder withProfile(ProfileDTO val) {
-            profile = val;
-            return this;
-        }
-
-        public Builder withDiscount(DiscountDTO val) {
-            discount = val;
-            return this;
-        }
-
-        public UserDTO build() {
-            return new UserDTO(this);
-        }
     }
 }

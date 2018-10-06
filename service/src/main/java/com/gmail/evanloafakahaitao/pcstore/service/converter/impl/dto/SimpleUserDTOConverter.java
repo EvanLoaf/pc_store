@@ -7,11 +7,13 @@ import org.springframework.stereotype.Component;
 
 @Component("simpleUserDTOConverter")
 public class SimpleUserDTOConverter implements DTOConverter<SimpleUserDTO, User> {
+
     @Override
     public SimpleUserDTO toDto(User entity) {
-        return SimpleUserDTO.newBuilder()
-                .withEmail(entity.getEmail())
-                .withName(entity.getFirstName() + " " + entity.getLastName())
-                .build();
+        SimpleUserDTO user = new SimpleUserDTO();
+        user.setId(entity.getId());
+        user.setEmail(entity.getEmail());
+        user.setName(entity.getFirstName() + " " + entity.getLastName());
+        return user;
     }
 }

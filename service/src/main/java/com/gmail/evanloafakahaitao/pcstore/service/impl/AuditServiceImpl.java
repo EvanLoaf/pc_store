@@ -2,18 +2,12 @@ package com.gmail.evanloafakahaitao.pcstore.service.impl;
 
 import com.gmail.evanloafakahaitao.pcstore.dao.AuditDao;
 import com.gmail.evanloafakahaitao.pcstore.dao.UserDao;
-import com.gmail.evanloafakahaitao.pcstore.dao.impl.AuditDaoImpl;
-import com.gmail.evanloafakahaitao.pcstore.dao.impl.UserDaoImpl;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Audit;
-import com.gmail.evanloafakahaitao.pcstore.dao.model.Item;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
 import com.gmail.evanloafakahaitao.pcstore.service.AuditService;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
-import com.gmail.evanloafakahaitao.pcstore.service.converter.impl.dto.AuditDTOConverter;
-import com.gmail.evanloafakahaitao.pcstore.service.converter.impl.entity.AuditUserConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.AuditDTO;
-import com.gmail.evanloafakahaitao.pcstore.service.dto.ItemDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;

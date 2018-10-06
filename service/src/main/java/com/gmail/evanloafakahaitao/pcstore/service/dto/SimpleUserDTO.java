@@ -5,9 +5,17 @@ import java.util.Objects;
 
 public class SimpleUserDTO implements Serializable {
 
+    private Long id;
     private String name;
     private String email;
-    private RoleDTO role;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -23,14 +31,6 @@ public class SimpleUserDTO implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public RoleDTO getRole() {
-        return role;
-    }
-
-    public void setRole(RoleDTO role) {
-        this.role = role;
     }
 
     @Override

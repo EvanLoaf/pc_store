@@ -5,13 +5,14 @@ import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.PermissionDTO;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("permissionDTOConverter")
 public class PermissionDTOConverter implements DTOConverter<PermissionDTO, Permission> {
+
     @Override
     public PermissionDTO toDto(Permission entity) {
-        return PermissionDTO.newBuilder()
-                .withId(entity.getId())
-                .withName(entity.getName())
-                .build();
+        PermissionDTO permission = new PermissionDTO();
+        permission.setId(entity.getId());
+        permission.setName(entity.getName());
+        return permission;
     }
 }

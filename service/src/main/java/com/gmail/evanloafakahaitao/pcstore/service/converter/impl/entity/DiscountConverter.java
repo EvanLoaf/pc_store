@@ -10,16 +10,13 @@ public class DiscountConverter implements Converter<DiscountDTO, Discount> {
 
     @Override
     public Discount toEntity(DiscountDTO dto) {
-        if (dto != null) {
-            return new Discount(
-                    dto.getName(),
-                    dto.getPercent(),
-                    dto.getFinishDate()
-            );
-        } else {
-            Discount discount = new Discount();
-            discount.setPercent(0);
-            return discount;
+        Discount discount = new Discount();
+        discount.setName(discount.getName());
+        discount.setPercent(dto.getPercent());
+        discount.setFinishDate(dto.getFinishDate());
+        if (discount.getId() != null) {
+            discount.setId(dto.getId());
         }
+        return discount;
     }
 }

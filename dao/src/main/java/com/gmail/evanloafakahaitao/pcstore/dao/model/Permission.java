@@ -14,6 +14,7 @@ public class Permission implements Serializable {
     @Column(updatable = false, nullable = false)
     private Long id;
     @NotNull
+    @Enumerated(EnumType.STRING)
     @Column
     private PermissionEnum name;
 

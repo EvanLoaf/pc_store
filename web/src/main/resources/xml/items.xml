@@ -4,67 +4,67 @@
        xsi:schemaLocation="https://gmail.com/evanloafakahaitao items_schema.xsd">
     <item>
         <name>Computer 1</name>
-        <vendorcode>0000001001</vendorcode>
+        <vendorCode>0000001001</vendorCode>
         <description>Entry level gaming solution with best price to performance ratio</description>
         <price>499.99</price>
     </item>
     <item>
         <name>Computer 2</name>
-        <vendorcode>0000001002</vendorcode>
+        <vendorCode>0000001002</vendorCode>
         <description>Entry level gaming solution with best price to performance ratio</description>
         <price>549.99</price>
     </item>
     <item>
         <name>Computer 3</name>
-        <vendorcode>0000002001</vendorcode>
+        <vendorCode>0000002001</vendorCode>
         <description>Optimal pc for fullHD gaming</description>
         <price>799.99</price>
     </item>
     <item>
         <name>Computer 4</name>
-        <vendorcode>0000002002</vendorcode>
+        <vendorCode>0000002002</vendorCode>
         <description>Optimal for newest releases in fullHD</description>
         <price>1199.99</price>
     </item>
     <item>
         <name>Computer 5</name>
-        <vendorcode>0000002003</vendorcode>
+        <vendorCode>0000002003</vendorCode>
         <description>Buy once and game for years without upgrades</description>
         <price>1299.99</price>
     </item>
     <item>
         <name>Computer 6</name>
-        <vendorcode>0000002004</vendorcode>
+        <vendorCode>0000002004</vendorCode>
         <description>Buy once and game for years without upgrades</description>
         <price>1399.99</price>
     </item>
     <item>
         <name>Computer 7</name>
-        <vendorcode>0000002005</vendorcode>
+        <vendorCode>0000002005</vendorCode>
         <description>When every single fps can give you an edge</description>
         <price>1499.99</price>
     </item>
     <item>
         <name>Computer 8</name>
-        <vendorcode>0000002006</vendorcode>
+        <vendorCode>0000002006</vendorCode>
         <description>Ultimate gaming power with hydro cooling system</description>
         <price>1999.99</price>
     </item>
     <item>
         <name>Computer 9</name>
-        <vendorcode>0000003001</vendorcode>
+        <vendorCode>0000003001</vendorCode>
         <description>Professional solution for gpaphics and video editing</description>
         <price>1799.99</price>
     </item>
     <item>
         <name>Computer 10</name>
-        <vendorcode>0000003002</vendorcode>
+        <vendorCode>0000003002</vendorCode>
         <description>Professional solution for any purposes and challenges</description>
         <price>4999.99</price>
     </item>
     <item>
         <name>Computer 11</name>
-        <vendorcode>0000009000</vendorcode>
+        <vendorCode>0000009000</vendorCode>
         <description>Ultimate workstation for your projects</description>
         <price>14999.99</price>
     </item>

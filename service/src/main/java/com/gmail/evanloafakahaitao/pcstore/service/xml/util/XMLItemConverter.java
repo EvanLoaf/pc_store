@@ -17,17 +17,16 @@ public class XMLItemConverter {
         if (xmlItemsList != null && !xmlItemsList.isEmpty()) {
             itemsList = new ArrayList<>();
             for (ItemXMLDTO itemXMLDTO : xmlItemsList) {
-                Item item = Item.newBuilder()
-                        .withName(itemXMLDTO.getName())
-                        .withVendorCode(itemXMLDTO.getVendorcode())
-                        .withDescription(itemXMLDTO.getDescription())
-                        .withPrice(itemXMLDTO.getPrice())
-                        .build();
+                Item item = new Item();
+                item.setName(itemXMLDTO.getName());
+                item.setVendorCode(itemXMLDTO.getVendorCode());
+                item.setDescription(itemXMLDTO.getDescription());
+                item.setPrice(itemXMLDTO.getPrice());
                 itemsList.add(item);
             }
             logger.info("Xml items converted to Items");
         } else {
-            logger.info("No xml Items in the List");
+            logger.info("No xml Items in the List from File");
         }
         return itemsList;
     }

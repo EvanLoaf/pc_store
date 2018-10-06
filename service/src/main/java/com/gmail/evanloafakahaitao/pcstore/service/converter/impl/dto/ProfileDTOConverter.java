@@ -5,13 +5,18 @@ import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.ProfileDTO;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("profileDTOConverter")
 public class ProfileDTOConverter implements DTOConverter<ProfileDTO, Profile> {
+
     @Override
     public ProfileDTO toDto(Profile entity) {
-        return ProfileDTO.newBuilder()
-                .withAddress(entity.getAddress())
-                .withPhoneNumber(entity.getPhoneNumber())
-                .build();
+        ProfileDTO profile = new ProfileDTO();
+        if (entity.getAddress() != null) {
+            profile.setAddress(entity.getAddress());
+        }
+        if (entity.getPhoneNumber() != null) {
+            profile.setPhoneNumber(entity.getPhoneNumber());
+        }
+        return profile;
     }
 }

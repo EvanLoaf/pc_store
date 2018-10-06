@@ -12,8 +12,6 @@ import java.util.Objects;
 
 @Entity
 @Table
-@SQLDelete(sql = "update t_profile set f_is_deleted = true where id = ?")
-@Where(clause = "f_is_deleted = false")
 public class Profile implements Serializable {
 
     @GenericGenerator(

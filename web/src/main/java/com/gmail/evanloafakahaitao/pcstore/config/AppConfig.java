@@ -12,7 +12,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
         "com.gmail.evanloafakahaitao.pcstore.dao",
         "com.gmail.evanloafakahaitao.pcstore.service",
         "com.gmail.evanloafakahaitao.pcstore.config",
-        "com.gmail.evanloafakahaitao.pcstore.web"
+        "com.gmail.evanloafakahaitao.pcstore.controller"
 })
 public class AppConfig {
 

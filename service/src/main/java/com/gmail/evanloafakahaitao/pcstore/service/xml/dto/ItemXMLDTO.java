@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 public class ItemXMLDTO {
 
     private String name;
-    private String vendorcode;
+    private String vendorCode;
     private String description;
     private BigDecimal price;
 
@@ -19,13 +19,13 @@ public class ItemXMLDTO {
         this.name = name;
     }
 
-    public String getVendorcode() {
-        return vendorcode;
+    public String getVendorCode() {
+        return vendorCode;
     }
 
     @XmlElement
-    public void setVendorcode(String vendorcode) {
-        this.vendorcode = vendorcode;
+    public void setVendorCode(String vendorCode) {
+        this.vendorCode = vendorCode;
     }
 
     public String getDescription() {

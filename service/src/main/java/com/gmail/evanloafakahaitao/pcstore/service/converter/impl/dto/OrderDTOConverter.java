@@ -1,28 +1,43 @@
 package com.gmail.evanloafakahaitao.pcstore.service.converter.impl.dto;
 
+import com.gmail.evanloafakahaitao.pcstore.dao.model.Item;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Order;
+import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.ItemDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.OrderDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.OrderUserDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+
+import java.math.RoundingMode;
 
 @Component("orderDTOConverter")
 public class OrderDTOConverter implements DTOConverter<OrderDTO, Order> {
 
-    private DTOConverter orderUserDTOConverter = new OrderUserDTOConverter();
-    private DTOConverter itemDTOConverter = new ItemDTOConverter();
+    private final DTOConverter<OrderUserDTO, User> orderUserDTOConverter;
+    private final DTOConverter<ItemDTO, Item> itemDTOConverter;
 
-    @SuppressWarnings("unchecked")
+    @Autowired
+    public OrderDTOConverter(
+            @Qualifier("orderUserDTOConverter") DTOConverter<OrderUserDTO, User> orderUserDTOConverter,
+            @Qualifier("itemDTOConverter") DTOConverter<ItemDTO, Item> itemDTOConverter
+    ) {
+        this.orderUserDTOConverter = orderUserDTOConverter;
+        this.itemDTOConverter = itemDTOConverter;
+    }
+
     @Override
     public OrderDTO toDto(Order entity) {
-        return OrderDTO.newBuilder()
-                .withUuid(entity.getUuid())
-                .withCreated(entity.getCreated())
-                .withStatus(entity.getStatus())
-                .withQuantity(entity.getQuantity())
-                .withItem((ItemDTO) itemDTOConverter.toDto(entity.getItem()))
-                .withUser((OrderUserDTO) orderUserDTOConverter.toDto(entity.getUser()))
-                .build();
+        OrderDTO order = new OrderDTO();
+        order.setUuid(entity.getUuid());
+        order.setCreated(entity.getCreated());
+        order.setStatus(entity.getStatus());
+        order.setQuantity(entity.getQuantity());
+        order.setTotalPrice(entity.getTotalPrice().setScale(2, RoundingMode.CEILING));
+        order.setUser(orderUserDTOConverter.toDto(entity.getUser()));
+        order.setItem(itemDTOConverter.toDto(entity.getItem()));
+        return order;
     }
 }

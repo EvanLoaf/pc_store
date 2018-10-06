@@ -3,23 +3,35 @@ package com.gmail.evanloafakahaitao.pcstore.service.converter.impl.entity;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Item;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Order;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
+import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleItemDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleOrderDTO;
+import net.sf.ehcache.search.expression.Or;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("simpleOrderConverter")
 public class SimpleOrderConverter implements Converter<SimpleOrderDTO, Order> {
 
-    private Converter itemConverter = new ItemConverter();
+    private final Converter<SimpleItemDTO, Item> simpleItemConverter;
 
-    @SuppressWarnings("unchecked")
+    @Autowired
+    public SimpleOrderConverter(
+            @Qualifier("simpleItemConverter") Converter<SimpleItemDTO, Item> simpleItemConverter
+    ) {
+        this.simpleItemConverter = simpleItemConverter;
+    }
+
     @Override
     public Order toEntity(SimpleOrderDTO dto) {
-        return Order.newBuilder()
-                .withUuid(dto.getUuid())
-                .withCreated(dto.getCreated())
-                .withStatus(dto.getStatus())
-                .withQuantity(dto.getQuantity())
-                .withItem((Item) itemConverter.toEntity(dto.getItem()))
-                .build();
+        //TODO might be probs here, not sure yet
+        Order order = new Order();
+        order.setUuid(dto.getUuid());
+        order.setCreated(dto.getCreated());
+        order.setStatus(dto.getStatus());
+        order.setTotalPrice(dto.getTotalPrice());
+        order.setQuantity(dto.getQuantity());
+        order.setItem(simpleItemConverter.toEntity(dto.getItem()));
+        return order;
     }
 }

@@ -1,12 +1,14 @@
 package com.gmail.evanloafakahaitao.pcstore.service.dto;
 
+import com.gmail.evanloafakahaitao.pcstore.dao.model.PermissionEnum;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 public class PermissionDTO implements Serializable {
 
     private Long id;
-    private String name;
+    private PermissionEnum name;
 
     public Long getId() {
         return id;
@@ -16,11 +18,11 @@ public class PermissionDTO implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
+    public PermissionEnum getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(PermissionEnum name) {
         this.name = name;
     }
 

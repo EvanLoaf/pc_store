@@ -1,24 +1,33 @@
 package com.gmail.evanloafakahaitao.pcstore.service.converter.impl.dto;
 
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Comment;
+import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.CommentDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleUserDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component("commentDTOConverter")
 public class CommentDTOConverter implements DTOConverter<CommentDTO, Comment> {
 
-    private DTOConverter simpleUserDTOConverter = new SimpleUserDTOConverter();
+    private final DTOConverter<SimpleUserDTO, User> simpleUserDTOConverter;
 
-    @SuppressWarnings("unchecked")
+    @Autowired
+    public CommentDTOConverter(
+            @Qualifier("simpleUserDTOConverter") DTOConverter<SimpleUserDTO, User> simpleUserDTOConverter
+    ) {
+        this.simpleUserDTOConverter = simpleUserDTOConverter;
+    }
+
     @Override
     public CommentDTO toDto(Comment entity) {
-        return CommentDTO.newBuilder()
-                .withId(entity.getId())
-                .withContent(entity.getContent())
-                .withCreated(entity.getCreated())
-                .withUser((SimpleUserDTO) simpleUserDTOConverter.toDto(entity.getUser()))
-                .build();
+        CommentDTO comment = new CommentDTO();
+        comment.setId(entity.getId());
+        comment.setContent(entity.getContent());
+        comment.setCreated(entity.getCreated());
+        comment.setUser(simpleUserDTOConverter.toDto(entity.getUser()));
+        return comment;
     }
 }

@@ -12,7 +12,7 @@
     <xs:complexType name="itemType">
         <xs:sequence>
             <xs:element name="name" type="nameType"/>
-            <xs:element name="vendorcode" type="vendorcodeType"/>
+            <xs:element name="vendorCode" type="vendorCodeType"/>
             <xs:element name="description" type="descriptionType"/>
             <xs:element name="price" type="priceType"/>
         </xs:sequence>
@@ -22,7 +22,7 @@
             <xs:pattern value="[a-zA-Z]+[a-zA-Z0-9 ]{0,19}"/>
         </xs:restriction>
     </xs:simpleType>
-    <xs:simpleType name="vendorcodeType">
+    <xs:simpleType name="vendorCodeType">
         <xs:restriction base="xs:integer">
             <xs:pattern value="[0-9]{10}"/>
         </xs:restriction>

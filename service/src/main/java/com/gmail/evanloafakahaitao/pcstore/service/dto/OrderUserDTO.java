@@ -1,8 +1,9 @@
 package com.gmail.evanloafakahaitao.pcstore.service.dto;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class OrderUserDTO {
+public class OrderUserDTO implements Serializable {
 
     private String email;
     private String name;

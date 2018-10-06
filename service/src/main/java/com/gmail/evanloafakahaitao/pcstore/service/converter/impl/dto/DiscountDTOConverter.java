@@ -10,17 +10,11 @@ public class DiscountDTOConverter implements DTOConverter<DiscountDTO, Discount>
 
     @Override
     public DiscountDTO toDto(Discount entity) {
-        if (entity != null) {
-            return DiscountDTO.newBuilder()
-                    .withId(entity.getId())
-                    .withFinishDate(entity.getFinishDate())
-                    .withName(entity.getName())
-                    .withPercent(entity.getPercent())
-                    .build();
-        } else {
-            return DiscountDTO.newBuilder()
-                    .withPercent(0)
-                    .build();
-        }
+        DiscountDTO discount = new DiscountDTO();
+        discount.setId(entity.getId());
+        discount.setName(entity.getName());
+        discount.setPercent(entity.getPercent());
+        discount.setFinishDate(entity.getFinishDate());
+        return discount;
     }
 }

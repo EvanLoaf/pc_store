@@ -11,8 +11,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-@Table(name = "news")
-@Entity
+@Table(name = "News")
+@Entity(name = "News")
 @SQLDelete(sql = "update t_news set f_is_deleted = true where id = ?")
 @Where(clause = "f_is_deleted = false")
 public class Article extends SoftDeleteEntity implements Serializable {
@@ -35,7 +35,6 @@ public class Article extends SoftDeleteEntity implements Serializable {
     private User user;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "newsId", nullable = false)
-    @Where(clause = "1 = 1")
     private Set<Comment> comments = new HashSet<>();
 
     public Long getId() {

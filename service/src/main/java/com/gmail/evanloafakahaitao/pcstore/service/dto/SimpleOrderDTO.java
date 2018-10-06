@@ -13,7 +13,7 @@ public class SimpleOrderDTO {
     private Integer quantity;
     private BigDecimal totalPrice;
     private OrderStatusEnum status;
-    private ItemDTO item;
+    private SimpleItemDTO item;
 
     public String getUuid() {
         return uuid;
@@ -55,11 +55,11 @@ public class SimpleOrderDTO {
         this.status = status;
     }
 
-    public ItemDTO getItem() {
+    public SimpleItemDTO getItem() {
         return item;
     }
 
-    public void setItem(ItemDTO item) {
+    public void setItem(SimpleItemDTO item) {
         this.item = item;
     }
 
