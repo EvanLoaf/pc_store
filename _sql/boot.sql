@@ -4,13 +4,13 @@ use computer_store;
 
 create table if not exists t_role (
   f_id   bigint(19) unsigned auto_increment not null,
-  f_name varchar(15)                        not null,
+  f_name varchar(20)                        not null,
   primary key (f_id)
 );
 
 create table if not exists t_permission (
   f_id   bigint(19) unsigned auto_increment not null,
-  f_name varchar(30)                        not null,
+  f_name varchar(40)                        not null,
   primary key (f_id)
 );
 
@@ -35,15 +35,14 @@ create table if not exists t_discount (
 );
 
 create table if not exists t_user (
-  f_id             bigint(19) unsigned auto_increment             not null,
-  f_email          varchar(30)                                    not null,
-  f_first_name     varchar(20)                                    not null,
-  f_last_name      varchar(20)                                    not null,
-  f_password       varchar(40)                                    not null,
-  f_is_disabled    boolean default false                          not null,
-  f_disabled_until datetime default now(),
-  f_role_id        bigint(19) unsigned                            not null,
-  f_discount_id    bigint(19) unsigned,
+  f_id          bigint(19) unsigned auto_increment             not null,
+  f_email       varchar(30)                                    not null,
+  f_first_name  varchar(20)                                    not null,
+  f_last_name   varchar(20)                                    not null,
+  f_password    varchar(70)                                    not null,
+  f_is_disabled boolean default false                          not null,
+  f_role_id     bigint(19) unsigned                            not null,
+  f_discount_id bigint(19) unsigned,
   primary key (f_id),
   unique (f_email),
   foreign key (f_role_id) references t_role (f_id)
@@ -245,4 +244,39 @@ insert into t_discount (f_id, f_name, f_percent, f_finish_date)
 values (1, 'ten_percent', 10, now() + interval 365 day),
        (2, 'twenty_percent', 20, now() + interval 365 day),
        (3, 'thirty_percent', 30, now() + interval 365 day)
+on duplicate key update f_id = f_id;
+
+insert into t_user (f_id, f_email, f_first_name, f_last_name, f_password, f_is_disabled, f_role_id, f_discount_id)
+values (1,
+        'security@pcst.by',
+        'security',
+        'admin',
+        '$2y$04$RKa4VWVKsl7ZlCTm5zEo/ePftabLjuPgy5qwVPX8nhoivbZxas9kK',
+        false,
+        (select r.f_id from t_role r where r.f_name = 'security_admin'),
+        null),
+       (2,
+        'sales@pcst.by',
+        'sales',
+        'admin',
+        '$2y$04$0wadQHuVWc0xbOFTTTyPbuEETKyiwuPmA5hbVYXvBShtWfMquDrae',
+        false,
+        (select r.f_id from t_role r where r.f_name = 'sales_admin'),
+        null),
+       (3,
+        'api@pcst.by',
+        'api',
+        'admin',
+        '$2y$04$VOHrSUaVjmEh3wzvJCKnxONijs.bnCF55UDoVAYWxayDEzOa6.VpO',
+        false,
+        (select r.f_id from t_role r where r.f_name = 'api_admin'),
+        null),
+       (4,
+        'user@pcst.by',
+        'user',
+        'default',
+        '$2y$04$L63EAi1vz9lJBXGPwNBvqOSEUBHo5GzgEVhmRO2/V.JdHNn3tLovq',
+        false,
+        (select r.f_id from t_role r where r.f_name = 'user'),
+        null)
 on duplicate key update f_id = f_id;

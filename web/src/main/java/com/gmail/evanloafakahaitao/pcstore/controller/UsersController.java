@@ -36,7 +36,7 @@ public class UsersController {
 
     @GetMapping
     public String getUsers(ModelMap modelMap) {
-        List<UserDTO> users = userService.findAll();
+        List<UserDTO> users = userService.findAll(0, pageProperties.getPaginationMaxResults());
         modelMap.addAttribute("users", users);
         return pageProperties.getUsersPagePath();
     }
