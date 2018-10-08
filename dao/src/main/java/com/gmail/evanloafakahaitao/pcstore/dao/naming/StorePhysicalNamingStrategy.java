@@ -1,4 +1,4 @@
-package com.gmail.evanloafakahaitao.pcstore.dao.util;
+package com.gmail.evanloafakahaitao.pcstore.dao.naming;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.hibernate.boot.model.naming.Identifier;

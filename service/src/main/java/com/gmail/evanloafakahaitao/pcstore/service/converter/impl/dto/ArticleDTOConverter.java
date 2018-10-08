@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-@Component("newsDTOConverter")
+@Component("articleDTOConverter")
 public class ArticleDTOConverter implements DTOConverter<ArticleDTO, Article> {
 
     private final DTOConverter<SimpleUserDTO, User> simpleUserDTOConverter;

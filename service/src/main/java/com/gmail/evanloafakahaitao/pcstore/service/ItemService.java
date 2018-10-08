@@ -10,7 +10,7 @@ public interface ItemService {
 
     List<ItemDTO> save(List<ItemDTO> itemList);
 
-    List<ItemDTO> findAll();
+    List<ItemDTO> findAll(Integer startPosition, Integer maxResults);
 
     ItemDTO findByVendorCode(ItemDTO itemDTO);
 
@@ -22,7 +22,7 @@ public interface ItemService {
 
     ItemDTO updateDiscount(ItemDTO itemDTO);
 
-    List<ItemDTO> findByDiscount(DiscountDTO discountDTO);
+    /*List<ItemDTO> findByDiscount(DiscountDTO discountDTO);
 
-    Long findCountInPriceRange(BigDecimal minPrice, BigDecimal maxPrice);
+    Long findCountInPriceRange(BigDecimal minPrice, BigDecimal maxPrice);*/
 }

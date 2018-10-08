@@ -1,13 +1,13 @@
 package com.gmail.evanloafakahaitao.pcstore.dao.impl;
 
-import com.gmail.evanloafakahaitao.pcstore.dao.NewsDao;
+import com.gmail.evanloafakahaitao.pcstore.dao.ArticleDao;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Article;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class NewsDaoImpl extends GenericDaoImpl<Article> implements NewsDao {
+public class ArticleDaoImpl extends GenericDaoImpl<Article> implements ArticleDao {
 
-    public NewsDaoImpl() {
+    public ArticleDaoImpl() {
         super(Article.class);
     }
 }

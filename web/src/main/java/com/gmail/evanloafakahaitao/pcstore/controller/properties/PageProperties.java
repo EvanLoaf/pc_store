@@ -5,6 +5,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.Objects;
 
 @Component
 public class PageProperties {
@@ -20,6 +21,7 @@ public class PageProperties {
     private String sendFeedbackPagePath;
     private String showFeedbackPagePath;
     private String registerPagePath;
+    private Integer paginationMaxResults;
 
     @Autowired
     public PageProperties(Environment environment) {
@@ -37,6 +39,7 @@ public class PageProperties {
         this.sendFeedbackPagePath = environment.getProperty("send.feedback.page.path");
         this.showFeedbackPagePath = environment.getProperty("show.feedback.page.path");
         this.registerPagePath = environment.getProperty("register.page.path");
+        this.paginationMaxResults = Integer.valueOf(Objects.requireNonNull(environment.getProperty("pagination.max.results")));
     }
 
     public String getLoginPagePath() {
@@ -73,5 +76,9 @@ public class PageProperties {
 
     public String getRegisterPagePath() {
         return registerPagePath;
+    }
+
+    public Integer getPaginationMaxResults() {
+        return paginationMaxResults;
     }
 }

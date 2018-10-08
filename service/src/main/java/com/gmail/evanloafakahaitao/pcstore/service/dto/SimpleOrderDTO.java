@@ -13,6 +13,7 @@ public class SimpleOrderDTO {
     private Integer quantity;
     private BigDecimal totalPrice;
     private OrderStatusEnum status;
+    private Long countOfOrdersFromUser;
     private SimpleItemDTO item;
 
     public String getUuid() {
@@ -61,6 +62,14 @@ public class SimpleOrderDTO {
 
     public void setItem(SimpleItemDTO item) {
         this.item = item;
+    }
+
+    public Long getCountOfOrdersFromUser() {
+        return countOfOrdersFromUser;
+    }
+
+    public void setCountOfOrdersFromUser(Long countOfOrdersFromUser) {
+        this.countOfOrdersFromUser = countOfOrdersFromUser;
     }
 
     @Override

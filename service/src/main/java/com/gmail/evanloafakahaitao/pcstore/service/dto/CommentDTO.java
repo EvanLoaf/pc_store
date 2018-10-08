@@ -9,6 +9,7 @@ public class CommentDTO implements Serializable {
     private Long id;
     private String content;
     private LocalDateTime created;
+    private Long countOfComments;
     private SimpleUserDTO user;
 
     public Long getId() {
@@ -41,6 +42,14 @@ public class CommentDTO implements Serializable {
 
     public void setUser(SimpleUserDTO user) {
         this.user = user;
+    }
+
+    public Long getCountOfComments() {
+        return countOfComments;
+    }
+
+    public void setCountOfComments(Long countOfComments) {
+        this.countOfComments = countOfComments;
     }
 
     @Override

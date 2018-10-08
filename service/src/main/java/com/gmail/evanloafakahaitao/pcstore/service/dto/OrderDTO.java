@@ -14,6 +14,7 @@ public class OrderDTO implements Serializable {
     private Integer quantity;
     private BigDecimal totalPrice;
     private OrderStatusEnum status;
+    private Long countOfOrders;
     private OrderUserDTO user;
     private ItemDTO item;
 
@@ -71,6 +72,14 @@ public class OrderDTO implements Serializable {
 
     public void setItem(ItemDTO item) {
         this.item = item;
+    }
+
+    public Long getCountOfOrders() {
+        return countOfOrders;
+    }
+
+    public void setCountOfOrders(Long countOfOrders) {
+        this.countOfOrders = countOfOrders;
     }
 
     @Override

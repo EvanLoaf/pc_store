@@ -1,22 +1,20 @@
 package com.gmail.evanloafakahaitao.pcstore.service;
 
-import com.gmail.evanloafakahaitao.pcstore.service.dto.OrderDTO;
-import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleOrderDTO;
-import com.gmail.evanloafakahaitao.pcstore.service.dto.UserDTO;
+import com.gmail.evanloafakahaitao.pcstore.service.dto.*;
 
 import java.util.List;
 
 public interface OrderService {
 
-    SimpleOrderDTO save(OrderDTO orderDTO);
+    SimpleOrderDTO save(DataOrderDTO dataOrderDTO);
 
-    List<SimpleOrderDTO> findByUserId(UserDTO userDTO);
+    List<SimpleOrderDTO> findByUserId(SimpleUserDTO simpleUserDTO);
 
-    SimpleOrderDTO findByUuid(OrderDTO orderDTO);
+    SimpleOrderDTO findByUuid(DataOrderDTO dataOrderDTO);
 
-    OrderDTO update(OrderDTO orderDTO);
+    SimpleOrderDTO update(SimpleOrderDTO orderDTO);
 
-    Integer deleteByUuid(OrderDTO orderDTO);
+    SimpleOrderDTO deleteByUuid(SimpleOrderDTO simpleOrderDTO);
 
-    List<OrderDTO> findAll();
+    List<OrderDTO> findAll(Integer startPosition, Integer maxResults);
 }

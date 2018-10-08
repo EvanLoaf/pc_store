@@ -9,7 +9,7 @@ public interface UserService {
 
     UserDTO save(UserDTO userDTO);
 
-    List<UserDTO> findAll();
+    List<UserDTO> findAll(Integer startPosition, Integer maxResults);
 
     UserDTO update(UserDTO userDTO);
 

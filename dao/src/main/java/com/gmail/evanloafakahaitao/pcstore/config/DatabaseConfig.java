@@ -2,7 +2,7 @@ package com.gmail.evanloafakahaitao.pcstore.config;
 
 import com.gmail.evanloafakahaitao.pcstore.dao.model.*;
 import com.gmail.evanloafakahaitao.pcstore.dao.properties.DatabaseProperties;
-import com.gmail.evanloafakahaitao.pcstore.dao.util.StorePhysicalNamingStrategy;
+import com.gmail.evanloafakahaitao.pcstore.dao.naming.StorePhysicalNamingStrategy;
 import com.zaxxer.hikari.HikariDataSource;
 import liquibase.integration.spring.SpringLiquibase;
 import org.hibernate.SessionFactory;
@@ -70,18 +70,21 @@ public class DatabaseConfig {
         properties.put(USE_SECOND_LEVEL_CACHE, databaseProperties.getHibernateUseSecondLevelCache());
         properties.put(CACHE_REGION_FACTORY, databaseProperties.getHibernateCacheRegionFactoryClass());
         factoryBean.setHibernateProperties(properties);
+        //TODO need to include disable/soft delete classes?
         factoryBean.setAnnotatedClasses(
+                Article.class,
                 Audit.class,
                 Comment.class,
+                DisableEntity.class,
                 Discount.class,
                 Feedback.class,
                 Item.class,
-                Article.class,
                 Order.class,
                 OrderId.class,
                 Permission.class,
                 Profile.class,
                 Role.class,
+                SoftDeleteEntity.class,
                 User.class
         );
         return factoryBean;

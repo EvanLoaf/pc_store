@@ -11,4 +11,6 @@ public interface OrderDao extends GenericDao<Order> {
     Order findByUuid(String uuid);
 
     int deleteByUuid(String uuid);
+
+    List<Order> findByItemId(Long id);
 }

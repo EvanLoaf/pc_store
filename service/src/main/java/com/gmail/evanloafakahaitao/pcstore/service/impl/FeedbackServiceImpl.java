@@ -19,28 +19,30 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Transactional
+@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.REPEATABLE_READ)
 public class FeedbackServiceImpl implements FeedbackService {
 
     private static final Logger logger = LogManager.getLogger(FeedbackServiceImpl.class);
 
     private final FeedbackDao feedbackDao;
     private final UserDao userDao;
-    private final Converter feedbackConverter;
-    private final DTOConverter feedbackDTOConverter;
+    private final Converter<FeedbackDTO, Feedback> feedbackConverter;
+    private final DTOConverter<FeedbackDTO, Feedback> feedbackDTOConverter;
 
     @Autowired
     public FeedbackServiceImpl(
             FeedbackDao feedbackDao,
             UserDao userDao,
-            @Qualifier("feedbackConverter") Converter feedbackConverter,
-            @Qualifier("feedbackDTOConverter") DTOConverter feedbackDTOConverter
+            @Qualifier("feedbackConverter") Converter<FeedbackDTO, Feedback> feedbackConverter,
+            @Qualifier("feedbackDTOConverter") DTOConverter<FeedbackDTO, Feedback> feedbackDTOConverter
     ) {
         this.feedbackDao = feedbackDao;
         this.userDao = userDao;
@@ -48,71 +50,31 @@ public class FeedbackServiceImpl implements FeedbackService {
         this.feedbackDTOConverter = feedbackDTOConverter;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public FeedbackDTO save(FeedbackDTO feedbackDTO) {
-        Session session = feedbackDao.getCurrentSession();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive()) {
-                session.beginTransaction();
-            }
-            Feedback feedback = (Feedback) feedbackConverter.toEntity(feedbackDTO);
-            User user = userDao.findByEmail(feedbackDTO.getUser().getEmail());
+        logger.info("Saving Feedback");
+        if (feedbackDTO.getUser().getId() != null) {
+            Feedback feedback = feedbackConverter.toEntity(feedbackDTO);
+            User user = userDao.findOne(feedbackDTO.getUser().getId());
             feedback.setUser(user);
             feedbackDao.create(feedback);
-            FeedbackDTO feedbackDTOsaved = (FeedbackDTO) feedbackDTOConverter.toDto(feedback);
-            transaction.commit();
-            return feedbackDTOsaved;
-        } catch (Exception e) {
-            if (session.getTransaction().isActive()) {
-                session.getTransaction().rollback();
-            }
-            logger.error("Failed to save Feedback", e);
+            return feedbackDTOConverter.toDto(feedback);
+        } else {
+            return null;
         }
-        return null;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public List<FeedbackDTO> findAll() {
-        Session session = feedbackDao.getCurrentSession();
-        List<FeedbackDTO> feedbackDTOS = new ArrayList<>();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive()) {
-                session.beginTransaction();
-            }
-            List<Feedback> feedbackCollection = feedbackDao.findAll();
-            feedbackDTOS = feedbackDTOConverter.toDTOList(feedbackCollection);
-            transaction.commit();
-            return feedbackDTOS;
-        } catch (Exception e) {
-            if (session.getTransaction().isActive()) {
-                session.getTransaction().rollback();
-            }
-            logger.error("Failed to retrieve Feedback", e);
-        }
-        return feedbackDTOS;
     }
 
     @Override
-    public boolean deleteById(FeedbackDTO feedbackDTO) {
-        Session session = feedbackDao.getCurrentSession();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive()) {
-                session.beginTransaction();
-            }
+    public List<FeedbackDTO> findAll(Integer startPosition, Integer maxResults) {
+        logger.info("Retrieving all Feedback");
+        List<Feedback> feedbacks = feedbackDao.findAll(startPosition, maxResults);
+        return feedbackDTOConverter.toDTOList(feedbacks);
+    }
+
+    @Override
+    public FeedbackDTO deleteById(FeedbackDTO feedbackDTO) {
+            logger.info("Deleting Feedback by Id");
             feedbackDao.deleteById(feedbackDTO.getId());
-            transaction.commit();
-            return true;
-        } catch (Exception e) {
-            if (session.getTransaction().isActive()) {
-                session.getTransaction().rollback();
-            }
-            logger.error("Failed to delete feedback by id", e);
-        }
-        return false;
+            return feedbackDTO;
     }
 }

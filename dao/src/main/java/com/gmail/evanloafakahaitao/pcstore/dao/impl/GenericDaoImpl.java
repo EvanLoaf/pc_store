@@ -1,9 +1,9 @@
 package com.gmail.evanloafakahaitao.pcstore.dao.impl;
 
 import com.gmail.evanloafakahaitao.pcstore.dao.GenericDao;
-import com.gmail.evanloafakahaitao.pcstore.dao.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
@@ -13,9 +13,6 @@ public abstract class GenericDaoImpl<T extends Serializable> implements GenericD
 
     private Class<T> clazz;
 
-    /*@Autowired
-    private HibernateUtil hibernateUtil;*/
-    /*private SessionFactory sessionFactory = HibernateUtil.getSessionFactory();*/
     @Autowired
     private SessionFactory sessionFactory;
 
@@ -30,8 +27,16 @@ public abstract class GenericDaoImpl<T extends Serializable> implements GenericD
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<T> findAll() {
-        return getCurrentSession().createQuery("from " + clazz.getSimpleName()).list();
+    public List<T> findAll(Integer startPosition, Integer maxResults) {
+        Query query = getCurrentSession().createQuery("from " + clazz.getSimpleName());
+        query.setFirstResult(startPosition);
+        query.setMaxResults(maxResults);
+        return query.getResultList();
+    }
+
+    @Override
+    public Long countAll() {
+        return (Long) getCurrentSession().createQuery("select count(*) from " + clazz.getSimpleName()).getSingleResult();
     }
 
     @Override
@@ -56,8 +61,7 @@ public abstract class GenericDaoImpl<T extends Serializable> implements GenericD
     }
 
     //TODO protected postavit
-    @Override
-    public Session getCurrentSession() {
+    protected Session getCurrentSession() {
         return sessionFactory.getCurrentSession();
     }
 }

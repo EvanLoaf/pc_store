@@ -8,7 +8,7 @@ public interface AuditService {
 
     AuditDTO save(AuditDTO auditDTO);
 
-    List<AuditDTO> findAll();
+    List<AuditDTO> findAll(Integer startPosition, Integer maxResults);
 
-    boolean deleteById(AuditDTO auditDTO);
+    AuditDTO deleteById(AuditDTO auditDTO);
 }

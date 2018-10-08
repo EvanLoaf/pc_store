@@ -9,6 +9,7 @@ public class AuditDTO implements Serializable {
     private Long id;
     private String eventType;
     private LocalDateTime created;
+    private Long countOfAudit;
     private SimpleUserDTO user;
 
     public Long getId() {
@@ -41,6 +42,14 @@ public class AuditDTO implements Serializable {
 
     public void setUser(SimpleUserDTO user) {
         this.user = user;
+    }
+
+    public Long getCountOfAudit() {
+        return countOfAudit;
+    }
+
+    public void setCountOfAudit(Long countOfAudit) {
+        this.countOfAudit = countOfAudit;
     }
 
     @Override

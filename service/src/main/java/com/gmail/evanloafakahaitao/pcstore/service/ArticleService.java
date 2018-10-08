@@ -4,13 +4,13 @@ import com.gmail.evanloafakahaitao.pcstore.service.dto.ArticleDTO;
 
 import java.util.List;
 
-public interface NewsService {
+public interface ArticleService {
 
     ArticleDTO save(ArticleDTO articleDTO);
 
-    boolean deleteById(ArticleDTO articleDTO);
+    ArticleDTO deleteById(ArticleDTO articleDTO);
 
     ArticleDTO update(ArticleDTO articleDTO);
 
-    List<ArticleDTO> findAll();
+    List<ArticleDTO> findAll(Integer startPosition, Integer maxResults);
 }

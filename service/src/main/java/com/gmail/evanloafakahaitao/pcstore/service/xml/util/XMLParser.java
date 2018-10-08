@@ -27,8 +27,8 @@ public class XMLParser {
             for (ItemXMLDTO xmlItem : xmlItems.getXmlItems()) {
                 logger.info(
                         String.format(
-                        "Item from xml: name - %s, vendor code - %s, description - %s, price - %.2f",
-                        xmlItem.getName(), xmlItem.getVendorcode(), xmlItem.getDescription(), xmlItem.getPrice()
+                                "Item from xml: name - %s, vendor code - %s, description - %s, price - %.2f",
+                                xmlItem.getName(), xmlItem.getVendorCode(), xmlItem.getDescription(), xmlItem.getPrice()
                         )
                 );
             }

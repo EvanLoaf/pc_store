@@ -11,7 +11,9 @@ public class SimpleUserConverter implements Converter<SimpleUserDTO, User> {
     @Override
     public User toEntity(SimpleUserDTO dto) {
         User user = new User();
-        user.setId(dto.getId());
+        if (dto.getId() != null) {
+            user.setId(dto.getId());
+        }
         if (dto.getEmail() != null) {
             user.setEmail(dto.getEmail());
         }

@@ -14,45 +14,32 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
+@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED)
 public class RoleServiceImpl implements RoleService {
 
     private static final Logger logger = LogManager.getLogger(RoleServiceImpl.class);
 
     private final RoleDao roleDao;
-    private final DTOConverter roleDTOConverter;
+    private final DTOConverter<RoleDTO, Role> roleDTOConverter;
 
     @Autowired
     public RoleServiceImpl(
             RoleDao roleDao,
-            @Qualifier("roleDTOConverter") DTOConverter roleDTOConverter
+            @Qualifier("roleDTOConverter") DTOConverter<RoleDTO, Role> roleDTOConverter
     ) {
         this.roleDao = roleDao;
         this.roleDTOConverter = roleDTOConverter;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public RoleDTO findByName(RoleDTO roleDTO) {
-        Session session = roleDao.getCurrentSession();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive()) {
-                session.beginTransaction();
-            }
-            Role role = roleDao.findByName(roleDTO.getName());
-            RoleDTO foundRoleDTO = (RoleDTO) roleDTOConverter.toDto(role);
-            transaction.commit();
-            return foundRoleDTO;
-        } catch (Exception e) {
-            if (session.getTransaction().isActive()) {
-                session.getTransaction().rollback();
-            }
-            logger.error("Failed to find Role by name", e);
-        }
-        return null;
+        logger.info("Retrieving Role by Name");
+        Role role = roleDao.findByName(roleDTO.getName());
+        return roleDTOConverter.toDto(role);
     }
 }

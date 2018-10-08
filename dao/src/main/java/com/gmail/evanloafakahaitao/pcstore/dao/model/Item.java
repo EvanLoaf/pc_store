@@ -1,6 +1,5 @@
 package com.gmail.evanloafakahaitao.pcstore.dao.model;
 
-import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
@@ -13,7 +12,6 @@ import java.util.Set;
 
 @Entity
 @Table
-@SQLDelete(sql = "update t_item set f_is_deleted = true where id = ?")
 @Where(clause = "f_is_deleted = false")
 public class Item extends SoftDeleteEntity implements Serializable {
 

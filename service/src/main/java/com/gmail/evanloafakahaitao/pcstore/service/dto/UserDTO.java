@@ -10,6 +10,8 @@ public class UserDTO implements Serializable {
     private String password;
     private String firstName;
     private String lastName;
+    private Long countOfUsers;
+    private Boolean isDisabled;
     private RoleDTO role;
     private ProfileDTO profile;
     private DiscountDTO discount;
@@ -52,6 +54,22 @@ public class UserDTO implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Long getCountOfUsers() {
+        return countOfUsers;
+    }
+
+    public void setCountOfUsers(Long countOfUsers) {
+        this.countOfUsers = countOfUsers;
+    }
+
+    public Boolean isDisabled() {
+        return isDisabled;
+    }
+
+    public void setDisabled(Boolean disabled) {
+        isDisabled = disabled;
     }
 
     public RoleDTO getRole() {

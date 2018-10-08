@@ -7,5 +7,5 @@ public interface CommentService {
 
     CommentDTO save(ArticleDTO articleDTO);
 
-    boolean deleteById(ArticleDTO articleDTO);
+    ArticleDTO deleteById(ArticleDTO articleDTO);
 }

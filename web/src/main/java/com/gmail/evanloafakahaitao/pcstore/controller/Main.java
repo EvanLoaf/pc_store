@@ -61,7 +61,7 @@ public class Main {
         ItemDao itemDao = new ItemDaoImpl(Item.class);
         FeedbackDao feedbackDao = new FeedbackDaoImpl(Feedback.class);
         AuditDao auditDao = new AuditDaoImpl(Audit.class);
-        NewsDao newsDao = new NewsDaoImpl(Article.class);
+        ArticleDao newsDao = new ArticleDaoImpl(Article.class);
         CommentDao commentDao = new CommentDaoImpl(Comment.class);*/
 
         /*OrderDTO orderDTO = orderService.save(OrderDTO.newBuilder()

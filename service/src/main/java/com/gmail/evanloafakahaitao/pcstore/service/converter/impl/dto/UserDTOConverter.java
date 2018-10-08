@@ -40,6 +40,7 @@ public class UserDTOConverter implements DTOConverter<UserDTO, User> {
         user.setLastName(entity.getLastName());
         user.setRole(roleDTOConverter.toDto(entity.getRole()));
         user.setProfile(profileDTOConverter.toDto(entity.getProfile()));
+        user.setDisabled(entity.isDisabled());
         if (entity.getDiscount() != null) {
             user.setDiscount(discountDTOConverter.toDto(entity.getDiscount()));
         }

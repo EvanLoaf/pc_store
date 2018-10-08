@@ -9,6 +9,7 @@ public class SimpleArticleDTO implements Serializable {
     private Long id;
     private String title;
     private LocalDateTime created;
+    private Long countOfArticles;
 
     public Long getId() {
         return id;
@@ -32,6 +33,14 @@ public class SimpleArticleDTO implements Serializable {
 
     public void setCreated(LocalDateTime created) {
         this.created = created;
+    }
+
+    public Long getCountOfArticles() {
+        return countOfArticles;
+    }
+
+    public void setCountOfArticles(Long countOfArticles) {
+        this.countOfArticles = countOfArticles;
     }
 
     @Override

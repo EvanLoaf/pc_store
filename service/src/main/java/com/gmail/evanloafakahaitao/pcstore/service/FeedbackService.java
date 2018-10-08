@@ -8,7 +8,7 @@ public interface FeedbackService {
 
     FeedbackDTO save(FeedbackDTO feedbackDTO);
 
-    List<FeedbackDTO> findAll();
+    List<FeedbackDTO> findAll(Integer startPosition, Integer maxResults);
 
-    boolean deleteById(FeedbackDTO feedbackDTO);
+    FeedbackDTO deleteById(FeedbackDTO feedbackDTO);
 }

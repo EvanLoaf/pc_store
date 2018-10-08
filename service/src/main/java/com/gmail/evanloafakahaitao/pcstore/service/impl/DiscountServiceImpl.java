@@ -16,71 +16,43 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
+@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED)
 public class DiscountServiceImpl implements DiscountService {
 
     private static final Logger logger = LogManager.getLogger(DiscountServiceImpl.class);
 
     private final DiscountDao discountDao;
-    private final Converter discountConverter;
-    private final DTOConverter discountDTOConverter;
+    private final Converter<DiscountDTO, Discount> discountConverter;
+    private final DTOConverter<DiscountDTO, Discount> discountDTOConverter;
 
     @Autowired
     public DiscountServiceImpl(
             DiscountDao discountDao,
-            @Qualifier("discountConverter") Converter discountConverter,
-            @Qualifier("discountDTOConverter") DTOConverter discountDTOConverter
+            @Qualifier("discountConverter") Converter<DiscountDTO, Discount> discountConverter,
+            @Qualifier("discountDTOConverter") DTOConverter<DiscountDTO, Discount> discountDTOConverter
     ) {
         this.discountDao = discountDao;
         this.discountConverter = discountConverter;
         this.discountDTOConverter = discountDTOConverter;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public DiscountDTO save(DiscountDTO discountDTO) {
-        Session session = discountDao.getCurrentSession();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive()) {
-                session.beginTransaction();
-            }
-            Discount discount = (Discount) discountConverter.toEntity(discountDTO);
-            discountDao.create(discount);
-            DiscountDTO discountDTOsaved = (DiscountDTO) discountDTOConverter.toDto(discount);
-            transaction.commit();
-            return discountDTOsaved;
-        } catch (Exception e) {
-            if (session.getTransaction().isActive()) {
-                session.getTransaction().rollback();
-            }
-            logger.error("Failed to save Discount", e);
-        }
-        return null;
+        logger.info("Saving Discount");
+        Discount discount = discountConverter.toEntity(discountDTO);
+        discountDao.create(discount);
+        return discountDTOConverter.toDto(discount);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public DiscountDTO findByPercent(DiscountDTO discountDTO) {
-        Session session = discountDao.getCurrentSession();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive()) {
-                session.beginTransaction();
-            }
-            Discount discount = discountDao.findByPercent(discountDTO.getPercent());
-            DiscountDTO discountDTOfound = (DiscountDTO) discountDTOConverter.toDto(discount);
-            transaction.commit();
-            return discountDTOfound;
-        } catch (Exception e) {
-            if (session.getTransaction().isActive()) {
-                session.getTransaction().rollback();
-            }
-            logger.error("Failed to find Discount by percent", e);
-        }
-        return null;
+        logger.info("Retrieving Discount by Percent");
+        Discount discount = discountDao.findByPercent(discountDTO.getPercent());
+        return discountDTOConverter.toDto(discount);
     }
 }

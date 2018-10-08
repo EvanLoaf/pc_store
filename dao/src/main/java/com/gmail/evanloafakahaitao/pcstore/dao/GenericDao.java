@@ -9,7 +9,9 @@ public interface GenericDao<T extends Serializable> {
 
     T findOne(final long entityId);
 
-    List<T> findAll();
+    List<T> findAll(Integer startPosition, Integer maxResults);
+
+    Long countAll();
 
     void create(final T entity);
 
@@ -19,5 +21,6 @@ public interface GenericDao<T extends Serializable> {
 
     void deleteById(final long entityId);
 
-    Session getCurrentSession();
+    //TODO deleted method from interface to make it protected..
+    //Session getCurrentSession();
 }

@@ -1,7 +1,7 @@
 package com.gmail.evanloafakahaitao.pcstore.service.impl;
 
+import com.gmail.evanloafakahaitao.pcstore.dao.ArticleDao;
 import com.gmail.evanloafakahaitao.pcstore.dao.CommentDao;
-import com.gmail.evanloafakahaitao.pcstore.dao.NewsDao;
 import com.gmail.evanloafakahaitao.pcstore.dao.UserDao;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Article;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Comment;
@@ -9,6 +9,7 @@ import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
 import com.gmail.evanloafakahaitao.pcstore.service.CommentService;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
+import com.gmail.evanloafakahaitao.pcstore.service.converter.impl.dto.ArticleDTOConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.CommentDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.ArticleDTO;
 import org.apache.logging.log4j.LogManager;
@@ -18,90 +19,73 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Iterator;
 
 @Service
-@Transactional
+@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.REPEATABLE_READ)
 public class CommentServiceImpl implements CommentService {
 
     private static final Logger logger = LogManager.getLogger(CommentServiceImpl.class);
 
     private final CommentDao commentDao;
-    private final NewsDao newsDao;
+    private final ArticleDao articleDao;
     private final UserDao userDao;
-    private final Converter commentConverter;
-    private final DTOConverter commentDTOConverter;
+    private final Converter<CommentDTO, Comment> commentConverter;
+    private final DTOConverter<CommentDTO, Comment> commentDTOConverter;
+    private final DTOConverter<ArticleDTO, Article> articleDTOConverter;
 
     @Autowired
     public CommentServiceImpl(
             CommentDao commentDao,
-            NewsDao newsDao,
+            ArticleDao articleDao,
             UserDao userDao,
-            @Qualifier("commentConverter") Converter commentConverter,
-            @Qualifier("commentDTOConverter") DTOConverter commentDTOConverter
+            @Qualifier("commentConverter") Converter<CommentDTO, Comment> commentConverter,
+            @Qualifier("commentDTOConverter") DTOConverter<CommentDTO, Comment> commentDTOConverter,
+            @Qualifier("articleDTOConverter") DTOConverter<ArticleDTO, Article> articleDTOConverter
     ) {
         this.commentDao = commentDao;
-        this.newsDao = newsDao;
+        this.articleDao = articleDao;
         this.userDao = userDao;
         this.commentConverter = commentConverter;
         this.commentDTOConverter = commentDTOConverter;
+        this.articleDTOConverter = articleDTOConverter;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public CommentDTO save(ArticleDTO articleDTO) {
-        Session session = commentDao.getCurrentSession();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive()) {
-                session.beginTransaction();
-            }
-            Article article = newsDao.findOne(articleDTO.getId());
-            Comment comment = (Comment) commentConverter.toEntity(articleDTO.getCommentSet().iterator().next());
+        logger.info("Saving comment for article : " + articleDTO.getId());
+        if (!articleDTO.getComments().isEmpty()) {
+            Article article = articleDao.findOne(articleDTO.getId());
+            Comment comment = commentConverter.toEntity(articleDTO.getComments().iterator().next());
             User user = userDao.findByEmail(comment.getUser().getEmail());
+            if (comment.getCreated() == null) {
+                comment.setCreated(LocalDateTime.now());
+            }
             comment.setUser(user);
             article.getComments().add(comment);
-            newsDao.update(article);
-            CommentDTO commentDTOsaved = (CommentDTO) commentDTOConverter.toDto(comment);
-            transaction.commit();
-            return commentDTOsaved;
-        } catch (Exception e) {
-            if (session.getTransaction().isActive()) {
-                session.getTransaction().rollback();
-            }
-            logger.error("Failed to save Comment", e);
+            articleDao.update(article);
+            return commentDTOConverter.toDto(comment);
+        } else {
+            return null;
         }
-        return null;
     }
 
     @Override
-    public boolean deleteById(ArticleDTO articleDTO) {
-        Session session = commentDao.getCurrentSession();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive()) {
-                session.beginTransaction();
-            }
-            Long deleteCommentId = articleDTO.getCommentSet().iterator().next().getId();
-            Article article = newsDao.findOne(articleDTO.getId());
-            Iterator<Comment> iterator = article.getComments().iterator();
-            while (iterator.hasNext()) {
-                if (iterator.next().getId().equals(deleteCommentId)) {
-                    iterator.remove();
-                    break;
-                }
-            }
-            newsDao.update(article);
-            transaction.commit();
-            return true;
-        } catch (Exception e) {
-            if (session.getTransaction().isActive()) {
-                session.getTransaction().rollback();
-            }
-            logger.error("Failed to delete comment by id", e);
+    public ArticleDTO deleteById(ArticleDTO articleDTO) {
+        logger.info("Deleting Comment by Id");
+        if (!articleDTO.getComments().isEmpty()) {
+            Article article = articleDao.findOne(articleDTO.getId());
+            Comment comment = commentDao.findOne(articleDTO.getComments().iterator().next().getId());
+            article.getComments().remove(comment);
+            articleDao.update(article);
+            return articleDTOConverter.toDto(article);
+        } else {
+            return articleDTO;
         }
-        return false;
     }
 }

@@ -15,28 +15,31 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Transactional
+@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.REPEATABLE_READ)
 public class AuditServiceImpl implements AuditService {
 
     private static final Logger logger = LogManager.getLogger(AuditServiceImpl.class);
 
     private final AuditDao auditDao;
     private final UserDao userDao;
-    private final Converter auditConverter;
-    private final DTOConverter auditDTOConverter;
+    private final Converter<AuditDTO, Audit> auditConverter;
+    private final DTOConverter<AuditDTO, Audit> auditDTOConverter;
 
     @Autowired
     public AuditServiceImpl(
             AuditDao auditDao,
             UserDao userDao,
-            @Qualifier("auditConverter") Converter auditConverter,
-            @Qualifier("auditDTOConverter") DTOConverter auditDTOConverter
+            @Qualifier("auditConverter") Converter<AuditDTO, Audit> auditConverter,
+            @Qualifier("auditDTOConverter") DTOConverter<AuditDTO, Audit> auditDTOConverter
     ) {
         this.auditDao = auditDao;
         this.userDao = userDao;
@@ -44,71 +47,34 @@ public class AuditServiceImpl implements AuditService {
         this.auditDTOConverter = auditDTOConverter;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public AuditDTO save(AuditDTO auditDTO) {
-        Session session = auditDao.getCurrentSession();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive()) {
-                session.beginTransaction();
+        logger.info("Saving Audit");
+        if (auditDTO.getUser().getEmail() != null) {
+            Audit audit = auditConverter.toEntity(auditDTO);
+            if (audit.getCreated() == null) {
+                audit.setCreated(LocalDateTime.now());
             }
-            Audit audit = (Audit) auditConverter.toEntity(auditDTO);
             User user = userDao.findByEmail(auditDTO.getUser().getEmail());
             audit.setUser(user);
             auditDao.create(audit);
-            AuditDTO auditDTOsaved = (AuditDTO) auditDTOConverter.toDto(audit);
-            transaction.commit();
-            return auditDTOsaved;
-        } catch (Exception e) {
-            if (session.getTransaction().isActive()) {
-                session.getTransaction().rollback();
-            }
-            logger.error("Failed to save Audit", e);
+            return auditDTOConverter.toDto(audit);
+        } else {
+            return null;
         }
-        return null;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public List<AuditDTO> findAll() {
-        Session session = auditDao.getCurrentSession();
-        List<AuditDTO> auditDTOS = new ArrayList<>();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive()) {
-                session.beginTransaction();
-            }
-            List<Audit> audits = auditDao.findAll();
-            auditDTOS = auditDTOConverter.toDTOList(audits);
-            transaction.commit();
-            return auditDTOS;
-        } catch (Exception e) {
-            if (session.getTransaction().isActive()) {
-                session.getTransaction().rollback();
-            }
-            logger.error("Failed to retrieve Audit", e);
-        }
-        return auditDTOS;
     }
 
     @Override
-    public boolean deleteById(AuditDTO auditDTO) {
-        Session session = auditDao.getCurrentSession();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive()) {
-                session.beginTransaction();
-            }
-            auditDao.deleteById(auditDTO.getId());
-            transaction.commit();
-            return true;
-        } catch (Exception e) {
-            if (session.getTransaction().isActive()) {
-                session.getTransaction().rollback();
-            }
-            logger.error("Failed to delete audit by id", e);
-        }
-        return false;
+    public List<AuditDTO> findAll(Integer startPosition, Integer maxResults) {
+        logger.info("Retrieving all Audit");
+        List<Audit> audits = auditDao.findAll(startPosition, maxResults);
+        return auditDTOConverter.toDTOList(audits);
+    }
+
+    @Override
+    public AuditDTO deleteById(AuditDTO auditDTO) {
+        logger.info("Deleting Audit by Id");
+        auditDao.deleteById(auditDTO.getId());
+        return auditDTO;
     }
 }

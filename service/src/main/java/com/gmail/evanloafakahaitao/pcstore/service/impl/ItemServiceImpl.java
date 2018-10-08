@@ -5,6 +5,7 @@ import com.gmail.evanloafakahaitao.pcstore.dao.ItemDao;
 import com.gmail.evanloafakahaitao.pcstore.dao.impl.DiscountDaoImpl;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Discount;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
+import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.impl.entity.DiscountConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.impl.entity.ItemConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.impl.dto.ItemDTOConverter;
@@ -20,6 +21,8 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -28,22 +31,22 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-@Transactional
+@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
 public class ItemServiceImpl implements ItemService {
 
     private static final Logger logger = LogManager.getLogger(ItemServiceImpl.class);
 
     private final ItemDao itemDao;
     private final DiscountDao discountDao;
-    private final Converter itemConverter;
-    private final ItemDTOConverter itemDTOConverter;
+    private final Converter<ItemDTO, Item> itemConverter;
+    private final DTOConverter<ItemDTO, Item> itemDTOConverter;
 
     @Autowired
     public ItemServiceImpl(
             ItemDao itemDao,
             DiscountDao discountDao,
-            @Qualifier("itemConverter") Converter itemConverter,
-            @Qualifier("itemDTOConverter") ItemDTOConverter itemDTOConverter
+            @Qualifier("itemConverter") Converter<ItemDTO, Item> itemConverter,
+            @Qualifier("itemDTOConverter") DTOConverter<ItemDTO, Item> itemDTOConverter
     ) {
         this.itemDao = itemDao;
         this.discountDao = discountDao;
@@ -51,168 +54,74 @@ public class ItemServiceImpl implements ItemService {
         this.itemDTOConverter = itemDTOConverter;
     }
 
+    //TODO most likely delete this method
     @Override
     public List<ItemDTO> save(List<ItemDTO> itemList) {
-        Session session = itemDao.getCurrentSession();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive()) {
-                session.beginTransaction();
-            }
-            List<Item> savedItems = new ArrayList<>();
-            for (ItemDTO itemDTO : itemList) {
-                Item item = (Item) itemConverter.toEntity(itemDTO);
-                itemDao.create(item);
-                savedItems.add(item);
-            }
-            List<ItemDTO> itemDTOSsaved = itemDTOConverter.toDTOList(savedItems);
-            transaction.commit();
-            return itemDTOSsaved;
-        } catch (Exception e) {
-            if (session.getTransaction().isActive()) {
-                session.getTransaction().rollback();
-            }
-            logger.error("Failed to save List of Items", e);
+        logger.info("Saving List of Items");
+        List<Item> savedItems = new ArrayList<>();
+        for (ItemDTO itemDTO : itemList) {
+            Item item = itemConverter.toEntity(itemDTO);
+            itemDao.create(item);
+            savedItems.add(item);
         }
-        return null;
+        return itemDTOConverter.toDTOList(savedItems);
     }
 
     @Override
-    public List<ItemDTO> findAll() {
-        Session session = itemDao.getCurrentSession();
-        List<ItemDTO> itemDTOS = new ArrayList<>();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive()) {
-                session.beginTransaction();
-            }
-            List<Item> items = itemDao.findAll();
-            itemDTOS = itemDTOConverter.toDTOList(items);
-            transaction.commit();
-            return itemDTOS;
-        } catch (Exception e) {
-            if (session.getTransaction().isActive()) {
-                session.getTransaction().rollback();
-            }
-            logger.error("Failed to retrieve Items", e);
-        }
-        return itemDTOS;
+    public List<ItemDTO> findAll(Integer startPosition, Integer maxResults) {
+        logger.info("Retrieving all Items");
+        List<Item> items = itemDao.findAll(startPosition, maxResults);
+        return itemDTOConverter.toDTOList(items);
     }
 
     @Override
     public ItemDTO findByVendorCode(ItemDTO itemDTO) {
-        Session session = itemDao.getCurrentSession();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive()) {
-                session.beginTransaction();
-            }
-            Item item = itemDao.findByVendorCode(itemDTO.getVendorCode());
-            ItemDTO itemDTOfound = itemDTOConverter.toDto(item);
-            transaction.commit();
-            return itemDTOfound;
-        } catch (Exception e) {
-            if (session.getTransaction().isActive()) {
-                session.getTransaction().rollback();
-            }
-            logger.error("Failed to retrieve Item by vendor code", e);
-        }
-        return null;
+        logger.info("Retrieving Item by VendorCode");
+        Item item = itemDao.findByVendorCode(itemDTO.getVendorCode());
+        return itemDTOConverter.toDto(item);
     }
 
     @Override
     public ItemDTO findById(ItemDTO itemDTO) {
-        Session session = itemDao.getCurrentSession();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive()) {
-                session.beginTransaction();
-            }
-            Item item = itemDao.findOne(itemDTO.getId());
-            ItemDTO itemDTOfound = itemDTOConverter.toDto(item);
-            transaction.commit();
-            return itemDTOfound;
-        } catch (Exception e) {
-            if (session.getTransaction().isActive()) {
-                session.getTransaction().rollback();
-            }
-            logger.error("Failed to retrieve Item by id", e);
-        }
-        return null;
+        logger.info("Retrieving Item by Id");
+        Item item = itemDao.findOne(itemDTO.getId());
+        return itemDTOConverter.toDto(item);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public ItemDTO save(ItemDTO itemDTO) {
-        Session session = itemDao.getCurrentSession();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive()) {
-                session.beginTransaction();
-            }
-            Item item = (Item) itemConverter.toEntity(itemDTO);
-            itemDao.create(item);
-            ItemDTO itemDTOsaved = itemDTOConverter.toDto(item);
-            transaction.commit();
-            return itemDTOsaved;
-        } catch (Exception e) {
-            if (session.getTransaction().isActive()) {
-                session.getTransaction().rollback();
-            }
-            logger.error("Failed to save Item", e);
-        }
-        return null;
+        logger.info("Saving Item");
+        Item item = itemConverter.toEntity(itemDTO);
+        itemDao.create(item);
+        return itemDTOConverter.toDto(item);
     }
 
+    //TODO might need to set disc for price range (Remove start pos, max res if so) ___ or Delete this Method
     @Override
     public List<ItemDTO> findInPriceRange(BigDecimal minPrice, BigDecimal maxPrice, Integer startPos, Integer maxResults) {
-        Session session = itemDao.getCurrentSession();
-        List<ItemDTO> itemDTOS = new ArrayList<>();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive()) {
-                session.beginTransaction();
-            }
-            List<Item> items = itemDao.findInPriceRange(minPrice, maxPrice, startPos, maxResults);
-            List<ItemDTO> itemDTOfound = itemDTOConverter.toDTOList(items);
-            transaction.commit();
-            return itemDTOfound;
-        } catch (Exception e) {
-            if (session.getTransaction().isActive()) {
-                session.getTransaction().rollback();
-            }
-            logger.error("Failed to retrieve Items in price range", e);
-        }
-        return itemDTOS;
+        logger.info("Retrieving Items in price range");
+        List<Item> items = itemDao.findInPriceRange(minPrice, maxPrice, startPos, maxResults);
+        return itemDTOConverter.toDTOList(items);
     }
 
-    @SuppressWarnings("unchecked")
+    //TODO it clears all the existing discount, although we got a set there.. if that's okay
     @Override
     public ItemDTO updateDiscount(ItemDTO itemDTO) {
-        Session session = itemDao.getCurrentSession();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive()) {
-                session.beginTransaction();
-            }
+        logger.info("Updating Item Discount");
+        if (!itemDTO.getDiscounts().isEmpty()) {
             Item item = itemDao.findByVendorCode(itemDTO.getVendorCode());
             Discount discount = discountDao.findByPercent(itemDTO.getDiscounts().iterator().next().getPercent());
             item.getDiscounts().clear();
             item.getDiscounts().add(discount);
             itemDao.update(item);
-            ItemDTO itemDTOupdated = (ItemDTO) itemDTOConverter.toDto(item);
-            transaction.commit();
-            return itemDTOupdated;
-        } catch (Exception e) {
-            if (session.getTransaction().isActive()) {
-                session.getTransaction().rollback();
-            }
-            logger.error("Failed to update Item", e);
+            return itemDTOConverter.toDto(item);
+        } else {
+            return null;
         }
-        return null;
     }
 
-    @Override
+    //TODO most likely wont need these methods... DEL
+    /*@Override
     public List<ItemDTO> findByDiscount(DiscountDTO discountDTO) {
         Session session = itemDao.getCurrentSession();
         try {
@@ -251,5 +160,5 @@ public class ItemServiceImpl implements ItemService {
             logger.error("Failed to retrieve Item count", e);
         }
         return null;
-    }
+    }*/
 }

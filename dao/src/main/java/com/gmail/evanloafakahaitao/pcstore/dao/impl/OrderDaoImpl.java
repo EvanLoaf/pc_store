@@ -38,4 +38,13 @@ public class OrderDaoImpl extends GenericDaoImpl<Order> implements OrderDao {
         query.setParameter("uuid", uuid);
         return query.executeUpdate();
     }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Order> findByItemId(Long id) {
+        String hql = "from Order as o where o.item.id=:id";
+        Query query = getCurrentSession().createQuery(hql);
+        query.setParameter("id", id);
+        return query.getResultList();
+    }
 }
