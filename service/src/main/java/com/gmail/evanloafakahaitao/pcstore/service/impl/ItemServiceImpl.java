@@ -14,6 +14,7 @@ import com.gmail.evanloafakahaitao.pcstore.service.dto.DiscountDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.ItemDTO;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Item;
 import com.gmail.evanloafakahaitao.pcstore.service.ItemService;
+import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleItemDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
@@ -92,6 +93,7 @@ public class ItemServiceImpl implements ItemService {
     public ItemDTO save(ItemDTO itemDTO) {
         logger.info("Saving Item");
         Item item = itemConverter.toEntity(itemDTO);
+        item.setDeleted(false);
         itemDao.create(item);
         return itemDTOConverter.toDto(item);
     }
@@ -118,6 +120,13 @@ public class ItemServiceImpl implements ItemService {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public SimpleItemDTO softDelete(SimpleItemDTO simpleItemDTO) {
+        logger.info("Soft Deleting Item");
+        itemDao.softDelete(simpleItemDTO.getId());
+        return simpleItemDTO;
     }
 
     //TODO most likely wont need these methods... DEL

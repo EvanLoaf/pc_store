@@ -558,7 +558,7 @@
             <column name="f_email" value="security@pcst.by"/>
             <column name="f_first_name" value="security"/>
             <column name="f_last_name" value="admin"/>
-            <column name="f_password" value="$2y$04$RKa4VWVKsl7ZlCTm5zEo/ePftabLjuPgy5qwVPX8nhoivbZxas9kK"/>
+            <column name="f_password" value="$2a$10$WxYXpJ.3QQY.lH70qEOlxOKJCpagWe6K1Wx7QZnZZlBslZ9zCZmEu"/>
             <column name="f_is_disabled" valueBoolean="false"/>
             <column name="f_role_id" valueNumeric="1"/>
             <column name="f_discount_id"/>
@@ -568,7 +568,7 @@
             <column name="f_email" value="sales@pcst.by"/>
             <column name="f_first_name" value="sales"/>
             <column name="f_last_name" value="admin"/>
-            <column name="f_password" value="$2y$04$0wadQHuVWc0xbOFTTTyPbuEETKyiwuPmA5hbVYXvBShtWfMquDrae"/>
+            <column name="f_password" value="$2a$10$JILIv/OPU/ow6N.hTTwwk.twbv7it1QN0bBqe8VoD9uujLvi2JW3W"/>
             <column name="f_is_disabled" valueBoolean="false"/>
             <column name="f_role_id" valueNumeric="2"/>
             <column name="f_discount_id"/>
@@ -578,7 +578,7 @@
             <column name="f_email" value="api@pcst.by"/>
             <column name="f_first_name" value="api"/>
             <column name="f_last_name" value="admin"/>
-            <column name="f_password" value="$2y$04$VOHrSUaVjmEh3wzvJCKnxONijs.bnCF55UDoVAYWxayDEzOa6.VpO"/>
+            <column name="f_password" value="$2a$10$W6NToJt9EjwJmDl46ZgETuVZIL82ZBJ3Qxybmt7SZxMDCufXze/6K"/>
             <column name="f_is_disabled" valueBoolean="false"/>
             <column name="f_role_id" valueNumeric="3"/>
             <column name="f_discount_id"/>
@@ -588,7 +588,7 @@
             <column name="f_email" value="user@pcst.by"/>
             <column name="f_first_name" value="user"/>
             <column name="f_last_name" value="default"/>
-            <column name="f_password" value="$2y$04$L63EAi1vz9lJBXGPwNBvqOSEUBHo5GzgEVhmRO2/V.JdHNn3tLovq"/>
+            <column name="f_password" value="$2a$10$iagP8E0o8HtnAH4GegPoSObK3uQrqS6.POCk69ZHuzpjYmZyt3/Zi"/>
             <column name="f_is_disabled" valueBoolean="false"/>
             <column name="f_role_id" valueNumeric="4"/>
             <column name="f_discount_id"/>

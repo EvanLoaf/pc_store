@@ -2,13 +2,14 @@ package com.gmail.evanloafakahaitao.pcstore.service;
 
 import com.gmail.evanloafakahaitao.pcstore.service.dto.DiscountDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.ItemDTO;
+import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleItemDTO;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 public interface ItemService {
 
-    List<ItemDTO> save(List<ItemDTO> itemList);
+    List<ItemDTO> save(List<ItemDTO> items);
 
     List<ItemDTO> findAll(Integer startPosition, Integer maxResults);
 
@@ -21,6 +22,8 @@ public interface ItemService {
     List<ItemDTO> findInPriceRange(BigDecimal minPrice, BigDecimal maxPrice, Integer startPos, Integer maxResults);
 
     ItemDTO updateDiscount(ItemDTO itemDTO);
+
+    SimpleItemDTO softDelete(SimpleItemDTO simpleItemDTO);
 
     /*List<ItemDTO> findByDiscount(DiscountDTO discountDTO);
 

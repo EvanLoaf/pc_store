@@ -67,6 +67,7 @@ public class DatabaseConfig {
         properties.put(SHOW_SQL, databaseProperties.getHibernateShowSQL());
         properties.put(FORMAT_SQL, databaseProperties.getHibernateFormatSQL());
         properties.put(HBM2DDL_AUTO, databaseProperties.getHibernateHBM2DDLAuto());
+        properties.put(CURRENT_SESSION_CONTEXT_CLASS, databaseProperties.getHibernateCurrentSessionContextClass());
         properties.put(USE_SECOND_LEVEL_CACHE, databaseProperties.getHibernateUseSecondLevelCache());
         properties.put(CACHE_REGION_FACTORY, databaseProperties.getHibernateCacheRegionFactoryClass());
         factoryBean.setHibernateProperties(properties);

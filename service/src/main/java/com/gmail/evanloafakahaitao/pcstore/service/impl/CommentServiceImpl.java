@@ -66,6 +66,7 @@ public class CommentServiceImpl implements CommentService {
             if (comment.getCreated() == null) {
                 comment.setCreated(LocalDateTime.now());
             }
+            comment.setDeleted(false);
             comment.setUser(user);
             article.getComments().add(comment);
             articleDao.update(article);

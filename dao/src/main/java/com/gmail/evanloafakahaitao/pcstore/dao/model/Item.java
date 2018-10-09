@@ -1,5 +1,6 @@
 package com.gmail.evanloafakahaitao.pcstore.dao.model;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
@@ -12,6 +13,8 @@ import java.util.Set;
 
 @Entity
 @Table
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Where(clause = "f_is_deleted = false")
 public class Item extends SoftDeleteEntity implements Serializable {
 

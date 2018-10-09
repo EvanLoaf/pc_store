@@ -1,6 +1,6 @@
 package com.gmail.evanloafakahaitao.pcstore.config;
 
-import com.gmail.evanloafakahaitao.pcstore.controller.AppAuthenticationSuccessHandler;
+import com.gmail.evanloafakahaitao.pcstore.controller.filter.AppAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -36,7 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                    .antMatchers("/","/login**", "/register**").permitAll()
+                    .antMatchers("/web", "/web/login**").permitAll()
                     .antMatchers("/resources/**").permitAll()
                     .antMatchers("/web/**").fullyAuthenticated()
                 .and()

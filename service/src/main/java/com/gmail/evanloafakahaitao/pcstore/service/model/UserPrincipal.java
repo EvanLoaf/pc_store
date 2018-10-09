@@ -1,6 +1,7 @@
 package com.gmail.evanloafakahaitao.pcstore.service.model;
 
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Permission;
+import com.gmail.evanloafakahaitao.pcstore.dao.model.PermissionEnum;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -28,6 +29,7 @@ public class UserPrincipal implements UserDetails {
                 .getPermissions()
                 .stream()
                 .map(Permission::getName)
+                .map(PermissionEnum::toString)
                 .toArray(String[]::new);
         this.authorities = AuthorityUtils.createAuthorityList(authorityList);
     }

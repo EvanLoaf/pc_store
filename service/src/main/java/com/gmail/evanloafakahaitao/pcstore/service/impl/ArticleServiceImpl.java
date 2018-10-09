@@ -56,6 +56,7 @@ public class ArticleServiceImpl implements ArticleService {
             if (article.getCreated() == null) {
                 article.setCreated(LocalDateTime.now());
             }
+            article.setDeleted(false);
             article.setUser(user);
             articleDao.create(article);
             return articleDTOConverter.toDto(article);

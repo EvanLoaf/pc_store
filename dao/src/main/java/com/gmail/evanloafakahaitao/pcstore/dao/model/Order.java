@@ -1,5 +1,6 @@
 package com.gmail.evanloafakahaitao.pcstore.dao.model;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
@@ -11,6 +12,8 @@ import java.util.Objects;
 
 @Entity
 @Table
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Order implements Serializable {
 
     @EmbeddedId

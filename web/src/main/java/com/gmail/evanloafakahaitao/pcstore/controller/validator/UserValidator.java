@@ -18,10 +18,10 @@ public class UserValidator implements Validator {
 
     @Override
     public void validate(Object obj, Errors err) {
-        ValidationUtils.rejectIfEmpty(err, "firstName", "user.name.empty");
-        ValidationUtils.rejectIfEmpty(err, "lastName", "user.name.empty");
         ValidationUtils.rejectIfEmpty(err, "email", "user.email.empty");
         ValidationUtils.rejectIfEmpty(err, "password", "user.password.empty");
+        ValidationUtils.rejectIfEmpty(err, "firstName", "user.name.empty");
+        ValidationUtils.rejectIfEmpty(err, "lastName", "user.name.empty");
 
         UserDTO user = (UserDTO) obj;
 
