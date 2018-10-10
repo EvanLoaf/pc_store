@@ -17,7 +17,11 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
         String hql = "from User as u where u.email=:email";
         Query query = getCurrentSession().createQuery(hql);
         query.setParameter("email", email);
-        return (User) query.getSingleResult();
+        if (query.getResultList().isEmpty()) {
+            return null;
+        } else {
+            return (User) query.getSingleResult();
+        }
     }
 
     @Override

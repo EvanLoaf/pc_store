@@ -9,6 +9,8 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+import java.util.regex.Pattern;
+
 @Component
 public class ItemValidator implements Validator {
 
@@ -50,6 +52,15 @@ public class ItemValidator implements Validator {
                     err.rejectValue("vendorCode", "item.vendorcode.exists");
                 }
             }
+            if (item.getPrice() != null) {
+                Pattern pattern = Pattern.compile(
+                        "^-?\\d+\\.?\\d*$",
+                        Pattern.CASE_INSENSITIVE
+                );
+                if (!(pattern.matcher(item.getPrice().toString()).matches())) {
+                    err.rejectValue("price", "item.price.invalid");
+                }
+            }
         } else {
             if (item.getVendorCode() != null && item.getVendorCode().length() > 20) {
                 err.rejectValue("vendorCode", "item.vendorcode.length");
@@ -59,6 +70,15 @@ public class ItemValidator implements Validator {
             }
             if (item.getDescription() != null && item.getDescription().length() > 100) {
                 err.rejectValue("description", "item.description.length");
+            }
+            if (item.getPrice() != null) {
+                Pattern pattern = Pattern.compile(
+                        "^-?\\d+\\.?\\d*$",
+                        Pattern.CASE_INSENSITIVE
+                );
+                if (!(pattern.matcher(item.getPrice().toString()).matches())) {
+                    err.rejectValue("price", "item.price.invalid");
+                }
             }
         }
     }

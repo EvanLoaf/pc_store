@@ -26,6 +26,6 @@ public class AddOrderCommandImpl implements Command {
         } else {
             request.setAttribute("item", item);
         }*/
-        return pageProperties.getAddOrderPagePath();
+        return pageProperties.getOrderCreatePagePath();
     }
 }

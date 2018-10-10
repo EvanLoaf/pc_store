@@ -20,7 +20,11 @@ public class ItemDaoImpl extends GenericDaoImpl<Item> implements ItemDao {
         String hql = "from Item as i where i.vendorCode=:vendorCode";
         Query query = getCurrentSession().createQuery(hql);
         query.setParameter("vendorCode", vendorCode);
-        return (Item) query.getSingleResult();
+        if (query.getResultList().isEmpty()) {
+            return null;
+        } else {
+            return (Item) query.getSingleResult();
+        }
     }
 
     @SuppressWarnings("unchecked")

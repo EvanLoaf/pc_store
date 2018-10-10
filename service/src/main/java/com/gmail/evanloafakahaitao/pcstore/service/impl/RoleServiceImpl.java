@@ -18,6 +18,8 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED)
 public class RoleServiceImpl implements RoleService {
@@ -41,5 +43,12 @@ public class RoleServiceImpl implements RoleService {
         logger.info("Retrieving Role by Name");
         Role role = roleDao.findByName(roleDTO.getName());
         return roleDTOConverter.toDto(role);
+    }
+
+    @Override
+    public List<RoleDTO> findAll(Integer startPosition, Integer maxResults) {
+       logger.info("Retrieving all Roles");
+       List<Role> roles = roleDao.findAll(startPosition, maxResults);
+       return roleDTOConverter.toDTOList(roles);
     }
 }

@@ -134,7 +134,8 @@ public class UserServiceImpl implements UserService {
                 }
             }
             if (userDTO.getRole() != null) {
-                Role role = roleDao.findByName(userDTO.getRole().getName());
+                /*Role role = roleDao.findByName(userDTO.getRole().getName());*/
+                Role role = roleDao.findOne(userDTO.getRole().getId());
                 user.setRole(role);
             }
             if (userDTO.getDiscount() != null && userDTO.getDiscount().getPercent() != null) {
@@ -150,7 +151,11 @@ public class UserServiceImpl implements UserService {
     public SimpleUserDTO findByEmail(SimpleUserDTO userDTO) {
         logger.info("Retrieving User by Email");
         User user = userDao.findByEmail(userDTO.getEmail());
-        return simpleUserDTOConverter.toDto(user);
+        if (user != null) {
+            return simpleUserDTOConverter.toDto(user);
+        } else {
+            return userDTO;
+        }
     }
 
     @Override

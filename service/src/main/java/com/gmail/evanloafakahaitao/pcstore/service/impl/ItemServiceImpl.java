@@ -82,7 +82,11 @@ public class ItemServiceImpl implements ItemService {
     public ItemDTO findByVendorCode(ItemDTO itemDTO) {
         logger.info("Retrieving Item by VendorCode");
         Item item = itemDao.findByVendorCode(itemDTO.getVendorCode());
-        return itemDTOConverter.toDto(item);
+        if (item != null) {
+            return itemDTOConverter.toDto(item);
+        } else {
+            return itemDTO;
+        }
     }
 
     @Override

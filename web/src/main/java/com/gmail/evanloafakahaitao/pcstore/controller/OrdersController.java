@@ -45,7 +45,7 @@ public class OrdersController {
     @GetMapping
     @PreAuthorize("hasAnyAuthority('view_orders_all', 'view_orders_self')")
     public String getOrders(
-            @RequestParam("page") Integer page,
+            @RequestParam(value = "page", required = false) Integer page,
             ModelMap modelMap
     ) {
         if (page == null) {
@@ -69,7 +69,7 @@ public class OrdersController {
     @PostMapping
     @PreAuthorize("hasAuthority('create_order')")
     public String createOrder(
-            @ModelAttribute DataOrderDTO order,
+            @ModelAttribute("order") DataOrderDTO order,
             BindingResult result,
             ModelMap modelMap
     ) {
@@ -87,6 +87,8 @@ public class OrdersController {
             modelMap.addAttribute("order", new DataOrderDTO());
             return pageProperties.getOrderCreatePagePath();
         } else {
+            //TODO temp
+            System.out.println(order.getQuantity() + " " + order.getItem().getVendorCode() + " " + order.getUser().getEmail());
             orderService.save(order);
             return pageProperties.getOrdersPagePath();
         }
@@ -107,8 +109,14 @@ public class OrdersController {
         userDTO.setId(userId);
         UserDTO user = userService.findById(userDTO);
         modelMap.addAttribute("user", user);
-        DataOrderDTO dataOrderDTO = new DataOrderDTO();
-        modelMap.addAttribute("order", new DataOrderDTO());
+        DataOrderDTO order = new DataOrderDTO();
+        SimpleUserDTO simpleUserDTO = new SimpleUserDTO();
+        simpleUserDTO.setEmail(user.getEmail());
+        order.setUser(simpleUserDTO);
+        SimpleItemDTO simpleItemDTO = new SimpleItemDTO();
+        simpleItemDTO.setVendorCode(item.getVendorCode());
+        order.setItem(simpleItemDTO);
+        modelMap.addAttribute("order", order);
         return pageProperties.getOrderCreatePagePath();
     }
 
@@ -125,16 +133,27 @@ public class OrdersController {
         return pageProperties.getOrdersPagePath();
     }
 
-    @GetMapping(value = "/delete")
+    /*@GetMapping(value = "/{uuid}/update")
+    @PreAuthorize("hasAuthority('update_order_status')")
+    public String updateOrderPage(
+            @PathVariable("uuid") String uuid,
+            ModelMap modelMap
+    ) {
+        DataOrderDTO orderDTO = new DataOrderDTO();
+        orderDTO.setUuid(uuid);
+        SimpleOrderDTO order = orderService.findByUuid(orderDTO);
+        modelMap.addAttribute("order", order);
+        return pageProperties.g
+    }*/
+
+    @GetMapping(value = "/{uuid}/delete")
     @PreAuthorize("hasAuthority('delete_order_self')")
     public String deleteOrder(
-            @RequestParam("uuids") String[] uuids
+            @PathVariable("uuid") String uuid
     ) {
-        for (String uuid : uuids) {
-            SimpleOrderDTO order = new SimpleOrderDTO();
-            order.setUuid(uuid);
-            orderService.deleteByUuid(order);
-        }
+        SimpleOrderDTO order = new SimpleOrderDTO();
+        order.setUuid(uuid);
+        orderService.deleteByUuid(order);
         return pageProperties.getOrdersPagePath();
     }
 }

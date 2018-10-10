@@ -45,7 +45,7 @@ public class ItemsController {
     @GetMapping
     @PreAuthorize("hasAuthority('view_items')")
     public String getItems(
-            @RequestParam("page") Integer page,
+            @RequestParam(value = "page", required = false) Integer page,
             ModelMap modelMap
     ) {
         if (page == null) {
@@ -60,7 +60,7 @@ public class ItemsController {
     @PostMapping
     @PreAuthorize("hasAuthority('create_item')")
     public String createItem(
-            @ModelAttribute ItemDTO item,
+            @ModelAttribute("order") ItemDTO item,
             BindingResult result,
             ModelMap modelMap
     ) {
@@ -72,6 +72,13 @@ public class ItemsController {
             itemService.save(item);
             return pageProperties.getItemsPagePath();
         }
+    }
+
+    @GetMapping(value = "/create")
+    @PreAuthorize("hasAuthority('create_item')")
+    public String createItemPage(ModelMap modelMap) {
+        modelMap.addAttribute("item", new ItemDTO());
+        return pageProperties.getItemCreatePagePath();
     }
 
     @GetMapping(value = "/upload")
@@ -100,7 +107,7 @@ public class ItemsController {
         return pageProperties.getItemsPagePath();
     }
 
-    @GetMapping(value = "/${id}/delete")
+    @GetMapping(value = "/{id}/delete")
     @PreAuthorize("hasAuthority('remove_item')")
     public String deleteItem(
             @PathVariable("id") Long id
@@ -111,7 +118,7 @@ public class ItemsController {
         return pageProperties.getItemsPagePath();
     }
 
-    @GetMapping(value = "/${id}/copy")
+    @GetMapping(value = "/{id}/copy")
     @PreAuthorize("hasAuthority('copy_item')")
     public String copyItem(
             @PathVariable("id") Long id

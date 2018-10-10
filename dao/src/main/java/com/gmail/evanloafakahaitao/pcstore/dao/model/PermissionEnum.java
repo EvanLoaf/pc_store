@@ -13,7 +13,7 @@ public enum PermissionEnum {
     VIEW_ORDERS_SELF,
     CREATE_ORDER,
     DELETE_ORDER_SELF,
-    VIEW_PROFILE,
+    VIEW_USER_SELF,
     UPDATE_USER_SELF,
     CREATE_FEEDBACK,
     VIEW_NEWS,
@@ -22,6 +22,7 @@ public enum PermissionEnum {
     UPDATE_USERS_ALL,
     DISABLE_USER,
     DELETE_USER,
+    CREATE_USER,
     VIEW_AUDIT,
     VIEW_ORDERS_ALL,
     UPDATE_ORDER_STATUS,
@@ -39,8 +40,7 @@ public enum PermissionEnum {
     VIEW_ITEMS_API,
     CREATE_ITEM_API,
     UPDATE_ITEM_API,
-    REMOVE_ITEM_API,
-    DELETE_ITEMS_IF_NOT_IN_ORDER_API;
+    DELETE_ITEM_API;
 
     private static final Logger logger = LogManager.getLogger(PermissionEnum.class);
 

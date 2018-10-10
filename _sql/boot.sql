@@ -281,20 +281,17 @@ values (1,
         null)
 on duplicate key update f_id = f_id;
 
-(5,
-'user1@pcst.by',
-'user',
-'default',
-'password',
-false,
-(select r.f_id from t_role r where r.f_name = 'user'),
-    null)
+insert into t_item (f_id, f_name, f_vendor_code, f_description, f_price, f_is_deleted)
+values (1, 'pc1', 'vc1', 'desc1', 111.00, false),
+       (2, 'pc2', 'vc2', 'desc2', 111.00, false),
+       (3, 'pc3', 'vc3', 'desc3', 111.00, false),
+       (4, 'pc4', 'vc4', 'desc4', 111.00, false),
+       (5, 'pc5', 'vc5', 'desc5', 111.00, false),
+       (6, 'pc6', 'vc6', 'desc6', 111.00, false),
+       (7, 'pc7', 'vc7', 'desc7', 111.00, false),
+       (8, 'pc8', 'vc8', 'desc8', 111.00, false)
+on duplicate key update f_id = f_id;
 
-(5,
-'api1@pcst.by',
-'api',
-'admin',
-'password',
-false,
-(select r.f_id from t_role r where r.f_name = 'api_admin'),
-    null)
+(5, 'user1@pcst.by', 'user', 'default', 'password', false, (select r.f_id from t_role r where r.f_name = 'user'), null)
+
+(5, 'api1@pcst.by', 'api', 'admin', 'password', false, (select r.f_id from t_role r where r.f_name = 'api_admin'), null)

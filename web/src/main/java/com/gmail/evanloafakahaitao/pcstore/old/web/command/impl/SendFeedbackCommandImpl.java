@@ -14,6 +14,6 @@ public class SendFeedbackCommandImpl implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return pageProperties.getSendFeedbackPagePath();
+        return pageProperties.getFeedbackCreatePagePath();
     }
 }

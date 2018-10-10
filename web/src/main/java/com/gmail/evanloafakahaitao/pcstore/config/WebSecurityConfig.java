@@ -36,7 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                    .antMatchers("/web", "/web/login**").permitAll()
+                    .antMatchers("/web/register**", "/web/login**", "/web/users").permitAll()
                     .antMatchers("/resources/**").permitAll()
                     .antMatchers("/web/**").fullyAuthenticated()
                 .and()

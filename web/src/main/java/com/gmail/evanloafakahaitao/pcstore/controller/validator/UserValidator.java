@@ -3,6 +3,9 @@ package com.gmail.evanloafakahaitao.pcstore.controller.validator;
 import com.gmail.evanloafakahaitao.pcstore.service.UserService;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleUserDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.UserDTO;
+import com.gmail.evanloafakahaitao.pcstore.service.impl.ItemServiceImpl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -13,6 +16,8 @@ import java.util.regex.Pattern;
 
 @Component
 public class UserValidator implements Validator {
+
+    private static final Logger logger = LogManager.getLogger(UserValidator.class);
 
     private final UserService userService;
 
@@ -28,8 +33,10 @@ public class UserValidator implements Validator {
 
     @Override
     public void validate(Object obj, Errors err) {
+        logger.info("Validating user");
         UserDTO user = (UserDTO) obj;
         if (user.getId() == null) {
+            logger.info("Validating user if");
             ValidationUtils.rejectIfEmpty(err, "email", "user.email.empty");
             ValidationUtils.rejectIfEmpty(err, "password", "user.password.empty");
             ValidationUtils.rejectIfEmpty(err, "firstName", "user.firstname.empty");
@@ -45,12 +52,14 @@ public class UserValidator implements Validator {
             if (user.getEmail().length() > 30) {
                 err.rejectValue("email", "user.email.length");
             }
-            Pattern passwordPattern = Pattern.compile(
-                    "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,20}$",
-                    Pattern.CASE_INSENSITIVE
-            );
-            if (!(passwordPattern.matcher(user.getPassword()).matches())) {
-                err.rejectValue("password", "user.password.invalid");
+            if (user.getPassword() != null) {
+                Pattern passwordPattern = Pattern.compile(
+                        "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,20}$",
+                        Pattern.CASE_INSENSITIVE
+                );
+                if (!(passwordPattern.matcher(user.getPassword()).matches())) {
+                    err.rejectValue("password", "user.password.invalid");
+                }
             }
             if (user.getLastName().length() > 20) {
                 err.rejectValue("lastName", "user.lastname.length");
@@ -68,6 +77,7 @@ public class UserValidator implements Validator {
             }
 
         } else {
+            logger.info("Validating user else");
             if (user.getPassword() != null) {
                 Pattern passwordPattern = Pattern.compile(
                         "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,20}$",

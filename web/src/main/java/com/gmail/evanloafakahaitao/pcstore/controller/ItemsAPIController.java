@@ -1,12 +1,14 @@
 package com.gmail.evanloafakahaitao.pcstore.controller;
 
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.PageProperties;
+import com.gmail.evanloafakahaitao.pcstore.controller.validator.ItemValidator;
 import com.gmail.evanloafakahaitao.pcstore.service.ItemService;
 import com.gmail.evanloafakahaitao.pcstore.service.OrderService;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.ItemDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleItemDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,18 +20,20 @@ public class ItemsAPIController {
     private final ItemService itemService;
     private final OrderService orderService;
     private final PageProperties pageProperties;
+    private final ItemValidator itemValidator;
 
     @Autowired
-    public ItemsAPIController(ItemService itemService, PageProperties pageProperties, OrderService orderService) {
+    public ItemsAPIController(ItemService itemService, PageProperties pageProperties, OrderService orderService, ItemValidator itemValidator) {
         this.itemService = itemService;
         this.pageProperties = pageProperties;
         this.orderService = orderService;
+        this.itemValidator = itemValidator;
     }
 
     @GetMapping
     @PreAuthorize("hasAuthority('view_items_api')")
     public List<ItemDTO> getItems(
-            @RequestParam("page") Integer page
+            @RequestParam(value = "page", required = false) Integer page
     ) {
         if (page == null) {
             page = 1;
@@ -40,8 +44,16 @@ public class ItemsAPIController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('create_item_api')")
-    public ItemDTO createItem(@RequestBody ItemDTO item) {
-        return itemService.save(item);
+    public ItemDTO createItem(
+            @RequestBody ItemDTO item,
+            BindingResult result
+    ) {
+        itemValidator.validate(item, result);
+        if (result.hasErrors()) {
+            return item;
+        } else {
+            return itemService.save(item);
+        }
     }
 
     @GetMapping(value = "/{id}")
@@ -65,9 +77,13 @@ public class ItemsAPIController {
         }
     }
 
-    @PutMapping
+    @PutMapping(value = "/{id}")
     @PreAuthorize("hasAuthority('update_item_api')")
-    public ItemDTO updateItem(@RequestBody ItemDTO item) {
+    public ItemDTO updateItem(
+            @RequestBody ItemDTO item,
+            @PathVariable("id") Long id
+    ) {
+        item.setId(id);
         return itemService.update(item);
     }
 }

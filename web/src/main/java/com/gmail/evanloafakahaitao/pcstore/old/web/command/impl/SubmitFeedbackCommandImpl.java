@@ -28,7 +28,7 @@ public class SubmitFeedbackCommandImpl implements Command {
         if (!feedbackValidation) {
             request.setAttribute("error", "Enter some message up to 200 characters");
             request.setAttribute("feedback", feedback);
-            return pageProperties.getSendFeedbackPagePath();
+            return pageProperties.getFeedbackCreatePagePath();
         }
         HttpSession session = request.getSession();
         UserPrincipal userPrincipal = (UserPrincipal) session.getAttribute("user");

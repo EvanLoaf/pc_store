@@ -23,7 +23,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED)
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) {
         User user = userDao.findByEmail(username);
         UserPrincipal userPrincipal;

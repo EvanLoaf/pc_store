@@ -20,7 +20,6 @@ public class PageProperties {
     private String errorsAccessPagePath;
     private String itemsPagePath;
     private String itemCreatePagePath;
-    private String itemUpdatePagePath;
     private String itemsUploadPagePath;
     private String itemsSetDiscountPagePath;
     private String usersPagePath;
@@ -53,7 +52,6 @@ public class PageProperties {
         this.errorsAccessPagePath = environment.getProperty("errors.access.page.path");
         this.itemsPagePath = environment.getProperty("items.page.path");
         this.itemCreatePagePath = environment.getProperty("item.create.page.path");
-        this.itemUpdatePagePath = environment.getProperty("item.update.page.path");
         this.itemsUploadPagePath = environment.getProperty("items.upload.page.path");
         this.itemsSetDiscountPagePath = environment.getProperty("items.set.discount.page.path");
         this.usersPagePath = environment.getProperty("users.page.path");
@@ -102,10 +100,6 @@ public class PageProperties {
 
     public String getItemCreatePagePath() {
         return itemCreatePagePath;
-    }
-
-    public String getItemUpdatePagePath() {
-        return itemUpdatePagePath;
     }
 
     public String getItemsUploadPagePath() {

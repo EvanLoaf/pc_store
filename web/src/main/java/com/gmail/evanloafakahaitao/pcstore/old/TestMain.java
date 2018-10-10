@@ -1,5 +1,8 @@
 package com.gmail.evanloafakahaitao.pcstore.old;
 
+import com.gmail.evanloafakahaitao.pcstore.controller.validator.UserValidator;
+import com.gmail.evanloafakahaitao.pcstore.service.impl.UserServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class TestMain {
@@ -249,6 +252,7 @@ public class TestMain {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         System.out.println(bCryptPasswordEncoder.encode("user_password"));
         System.out.println(bCryptPasswordEncoder.matches("api_password", "$2a$10$W6NToJt9EjwJmDl46ZgETuVZIL82ZBJ3Qxybmt7SZxMDCufXze/6K"));
+
 
     }
 }

@@ -16,9 +16,15 @@
         </div>
         <div class="col-md-4">
 
-            <c:if test="${not empty error}">
+            <c:if test="${param.error == 'true'}">
                 <div class="alert alert-danger" role="alert">
                     <p>Wrong Username or Password</p>
+                </div>
+            </c:if>
+
+            <c:if test="${not empty param.logout}">
+                <div class="alert alert-success" role="alert">
+                    <p>Logged off successfully</p>
                 </div>
             </c:if>
 
@@ -36,7 +42,7 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
-            <a href="${app}/web" class="btn btn-dark" aria-pressed="true" role="button">Create an account</a>
+            <a href="${app}/web/register" class="btn btn-dark" aria-pressed="true" role="button">Create an account</a>
         </div>
         <div class="col-md-4">
         </div>
