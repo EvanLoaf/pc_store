@@ -1,7 +1,9 @@
 package com.gmail.evanloafakahaitao.pcstore.controller.filter;
 
+import com.gmail.evanloafakahaitao.pcstore.controller.properties.PageProperties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.DefaultRedirectStrategy;
@@ -21,6 +23,12 @@ public class AppAuthenticationSuccessHandler implements AuthenticationSuccessHan
 
     private static final Logger logger = LogManager.getLogger(AppAuthenticationSuccessHandler.class);
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+    private final PageProperties pageProperties;
+
+    @Autowired
+    public AppAuthenticationSuccessHandler(PageProperties pageProperties) {
+        this.pageProperties = pageProperties;
+    }
 
     @Override
     public void onAuthenticationSuccess(
@@ -47,21 +55,27 @@ public class AppAuthenticationSuccessHandler implements AuthenticationSuccessHan
     //TODO here will be way more roles, authorities are placeholders
     private String determineTargetUrl(Authentication authentication) {
         boolean isUser = false;
-        boolean isAdmin = false;
+        boolean isSecurityAdmin = false;
+        boolean isSalesAdmin = false;
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (GrantedAuthority grantedAuthority : authorities) {
-            if (grantedAuthority.getAuthority().equals("USER_PERMISSION_SET")) {
+            if (grantedAuthority.getAuthority().equals("user_basic_permission")) {
                 isUser = true;
                 break;
-            } else if (grantedAuthority.getAuthority().equals("ADMIN_PERMISSION_SET")) {
-                isAdmin = true;
+            } else if (grantedAuthority.getAuthority().equals("security_admin_basic_permission")) {
+                isSecurityAdmin = true;
+                break;
+            } else if (grantedAuthority.getAuthority().equals("sales_admin_basic_permission")) {
+                isSalesAdmin = true;
                 break;
             }
         }
         if (isUser) {
-            return "/items";
-        } else if (isAdmin) {
-            return "/users";
+            return pageProperties.getItemsPagePath();
+        } else if (isSecurityAdmin) {
+            return pageProperties.getUsersPagePath();
+        } else if (isSalesAdmin) {
+            return pageProperties.getItemsPagePath();
         } else {
             throw new IllegalStateException();
         }

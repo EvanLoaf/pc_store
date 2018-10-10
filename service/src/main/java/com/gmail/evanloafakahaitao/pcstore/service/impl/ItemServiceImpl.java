@@ -41,18 +41,21 @@ public class ItemServiceImpl implements ItemService {
     private final DiscountDao discountDao;
     private final Converter<ItemDTO, Item> itemConverter;
     private final DTOConverter<ItemDTO, Item> itemDTOConverter;
+    private final DTOConverter<SimpleItemDTO, Item> simpleItemDTOConverter;
 
     @Autowired
     public ItemServiceImpl(
             ItemDao itemDao,
             DiscountDao discountDao,
             @Qualifier("itemConverter") Converter<ItemDTO, Item> itemConverter,
-            @Qualifier("itemDTOConverter") DTOConverter<ItemDTO, Item> itemDTOConverter
+            @Qualifier("itemDTOConverter") DTOConverter<ItemDTO, Item> itemDTOConverter,
+            @Qualifier("simpleItemDTOConverter") DTOConverter<SimpleItemDTO, Item> simpleItemDTOConverter
     ) {
         this.itemDao = itemDao;
         this.discountDao = discountDao;
         this.itemConverter = itemConverter;
         this.itemDTOConverter = itemDTOConverter;
+        this.simpleItemDTOConverter = simpleItemDTOConverter;
     }
 
     //TODO most likely delete this method
@@ -108,7 +111,7 @@ public class ItemServiceImpl implements ItemService {
 
     //TODO it clears all the existing discount, although we got a set there.. if that's okay
     @Override
-    public ItemDTO updateDiscount(ItemDTO itemDTO) {
+    public ItemDTO update(ItemDTO itemDTO) {
         logger.info("Updating Item Discount");
         if (!itemDTO.getDiscounts().isEmpty()) {
             Item item = itemDao.findByVendorCode(itemDTO.getVendorCode());
@@ -118,7 +121,24 @@ public class ItemServiceImpl implements ItemService {
             itemDao.update(item);
             return itemDTOConverter.toDto(item);
         } else {
-            return null;
+            Item item = itemDao.findOne(itemDTO.getId());
+            if (itemDTO.getName() != null) {
+                item.setName(itemDTO.getName());
+            }
+            if (itemDTO.getDescription() != null) {
+                item.setDescription(itemDTO.getDescription());
+            }
+            if (itemDTO.getVendorCode() != null) {
+                Item itemByVendorCode = itemDao.findByVendorCode(itemDTO.getVendorCode());
+                if (itemByVendorCode == null) {
+                    item.setVendorCode(itemDTO.getVendorCode());
+                }
+            }
+            if (itemDTO.getPrice() != null) {
+                item.setPrice(itemDTO.getPrice());
+            }
+            itemDao.update(item);
+            return itemDTOConverter.toDto(item);
         }
     }
 
@@ -127,6 +147,38 @@ public class ItemServiceImpl implements ItemService {
         logger.info("Soft Deleting Item");
         itemDao.softDelete(simpleItemDTO.getId());
         return simpleItemDTO;
+    }
+
+    @Override
+    public SimpleItemDTO hardDelete(SimpleItemDTO simpleItemDTO) {
+        logger.info("Hard Deleting Item");
+        itemDao.deleteById(simpleItemDTO.getId());
+        return simpleItemDTO;
+    }
+
+    @Override
+    public SimpleItemDTO copy(SimpleItemDTO simpleItemDTO) {
+        logger.info("Copying Item");
+        Item item = itemDao.findOne(simpleItemDTO.getId());
+        Item newItem = new Item();
+        newItem.setName(item.getName());
+        newItem.setDescription(item.getDescription());
+        String newVendorCode = null;
+        for (int i = 1; i < Integer.MAX_VALUE; i++) {
+            newVendorCode = item.getId() + "copy" + i;
+            Item itemFound = itemDao.findByVendorCode(newVendorCode);
+            if (itemFound == null) {
+                break;
+            }
+        }
+        newItem.setVendorCode(newVendorCode);
+        newItem.setPrice(item.getPrice());
+        newItem.setDeleted(item.isDeleted());
+        if (!item.getDiscounts().isEmpty()) {
+            newItem.setDiscounts(item.getDiscounts());
+        }
+        itemDao.create(newItem);
+        return simpleItemDTOConverter.toDto(newItem);
     }
 
     //TODO most likely wont need these methods... DEL

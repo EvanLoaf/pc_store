@@ -8,7 +8,7 @@ public interface OrderService {
 
     SimpleOrderDTO save(DataOrderDTO dataOrderDTO);
 
-    List<SimpleOrderDTO> findByUserId(SimpleUserDTO simpleUserDTO);
+    List<SimpleOrderDTO> findByUserId(SimpleUserDTO simpleUserDTO, Integer startPosition, Integer maxResults);
 
     SimpleOrderDTO findByUuid(DataOrderDTO dataOrderDTO);
 
@@ -17,4 +17,6 @@ public interface OrderService {
     SimpleOrderDTO deleteByUuid(SimpleOrderDTO simpleOrderDTO);
 
     List<OrderDTO> findAll(Integer startPosition, Integer maxResults);
+
+    Long countByItemId(SimpleItemDTO item);
 }

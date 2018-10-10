@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface OrderDao extends GenericDao<Order> {
 
-    List<Order> findByUserId(Long id);
+    List<Order> findByUserId(Long id, Integer startPosition, Integer maxResults);
 
     Order findByUuid(String uuid);
 
     int deleteByUuid(String uuid);
 
-    List<Order> findByItemId(Long id);
+    Long countByItemId(Long id);
 }

@@ -26,13 +26,15 @@ public class ItemDTOConverter implements DTOConverter<ItemDTO, Item> {
     @Override
     public ItemDTO toDto(Item entity) {
         ItemDTO item = new ItemDTO();
-        item.setId(entity.getId());
-        item.setName(entity.getName());
-        item.setVendorCode(entity.getVendorCode());
-        item.setDescription(entity.getDescription());
-        item.setPrice(entity.getPrice().setScale(2, RoundingMode.CEILING));
-        if (!entity.getDiscounts().isEmpty()) {
-            item.setDiscounts(discountDTOConverter.toDTOSet(entity.getDiscounts()));
+        if (entity != null) {
+            item.setId(entity.getId());
+            item.setName(entity.getName());
+            item.setVendorCode(entity.getVendorCode());
+            item.setDescription(entity.getDescription());
+            item.setPrice(entity.getPrice().setScale(2, RoundingMode.CEILING));
+            if (!entity.getDiscounts().isEmpty()) {
+                item.setDiscounts(discountDTOConverter.toDTOSet(entity.getDiscounts()));
+            }
         }
         return item;
     }

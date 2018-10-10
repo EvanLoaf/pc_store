@@ -21,9 +21,13 @@ public interface ItemService {
 
     List<ItemDTO> findInPriceRange(BigDecimal minPrice, BigDecimal maxPrice, Integer startPos, Integer maxResults);
 
-    ItemDTO updateDiscount(ItemDTO itemDTO);
+    ItemDTO update(ItemDTO itemDTO);
 
     SimpleItemDTO softDelete(SimpleItemDTO simpleItemDTO);
+
+    SimpleItemDTO hardDelete(SimpleItemDTO simpleItemDTO);
+
+    SimpleItemDTO copy(SimpleItemDTO simpleItemDTO);
 
     /*List<ItemDTO> findByDiscount(DiscountDTO discountDTO);
 

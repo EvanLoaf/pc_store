@@ -16,9 +16,11 @@ public class OrderDaoImpl extends GenericDaoImpl<Order> implements OrderDao {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<Order> findByUserId(Long id) {
+    public List<Order> findByUserId(Long id, Integer startPosition, Integer maxResults) {
         String hql = "from Order as o where o.user.id=:id";
         Query query = getCurrentSession().createQuery(hql);
+        query.setFirstResult(startPosition);
+        query.setMaxResults(maxResults);
         query.setParameter("id", id);
         return query.getResultList();
     }
@@ -41,10 +43,10 @@ public class OrderDaoImpl extends GenericDaoImpl<Order> implements OrderDao {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<Order> findByItemId(Long id) {
-        String hql = "from Order as o where o.item.id=:id";
+    public Long countByItemId(Long id) {
+        String hql = "select count(*) from Order as o where o.item.id=:id";
         Query query = getCurrentSession().createQuery(hql);
         query.setParameter("id", id);
-        return query.getResultList();
+        return (Long) query.getSingleResult();
     }
 }

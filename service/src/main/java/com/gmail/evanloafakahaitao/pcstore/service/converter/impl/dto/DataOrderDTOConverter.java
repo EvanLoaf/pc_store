@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-@Component("saveOrderDTOConverter")
+@Component("dataOrderDTOConverter")
 public class DataOrderDTOConverter implements DTOConverter<DataOrderDTO, Order> {
 
     private final DTOConverter<SimpleItemDTO, Item> simpleItemDTOConverter;

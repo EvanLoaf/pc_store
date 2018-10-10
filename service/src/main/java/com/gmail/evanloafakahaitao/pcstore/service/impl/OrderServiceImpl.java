@@ -26,6 +26,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
@@ -38,8 +39,8 @@ public class OrderServiceImpl implements OrderService {
     private final UserDao userDao;
     private final Converter<OrderDTO, Order> orderConverter;
     private final DTOConverter<OrderDTO, Order> orderDTOConverter;
-    private final Converter<DataOrderDTO, Order> saveOrderConverter;
-    private final DTOConverter<DataOrderDTO, Order> saveOrderDTOConverter;
+    private final Converter<DataOrderDTO, Order> dataOrderConverter;
+    private final DTOConverter<DataOrderDTO, Order> dataOrderDTOConverter;
     private final Converter<SimpleOrderDTO, Order> simpleOrderConverter;
     private final DTOConverter<SimpleOrderDTO, Order> simpleOrderDTOConverter;
 
@@ -50,8 +51,8 @@ public class OrderServiceImpl implements OrderService {
             UserDao userDao,
             @Qualifier("orderConverter") Converter<OrderDTO, Order> orderConverter,
             @Qualifier("orderDTOConverter") DTOConverter<OrderDTO, Order> orderDTOConverter,
-            @Qualifier("saveOrderDTOConverter") DTOConverter<DataOrderDTO, Order> saveOrderDTOConverter,
-            @Qualifier("saveOrderConverter") Converter<DataOrderDTO, Order> saveOrderConverter,
+            @Qualifier("dataOrderDTOConverter") DTOConverter<DataOrderDTO, Order> dataOrderDTOConverter,
+            @Qualifier("dataOrderConverter") Converter<DataOrderDTO, Order> dataOrderConverter,
             @Qualifier("simpleOrderConverter") Converter<SimpleOrderDTO, Order> simpleOrderConverter,
             @Qualifier("simpleOrderDTOConverter") DTOConverter<SimpleOrderDTO, Order> simpleOrderDTOConverter
     ) {
@@ -60,8 +61,8 @@ public class OrderServiceImpl implements OrderService {
         this.userDao = userDao;
         this.orderConverter = orderConverter;
         this.orderDTOConverter = orderDTOConverter;
-        this.saveOrderDTOConverter = saveOrderDTOConverter;
-        this.saveOrderConverter = saveOrderConverter;
+        this.dataOrderDTOConverter = dataOrderDTOConverter;
+        this.dataOrderConverter = dataOrderConverter;
         this.simpleOrderConverter = simpleOrderConverter;
         this.simpleOrderDTOConverter = simpleOrderDTOConverter;
     }
@@ -72,9 +73,10 @@ public class OrderServiceImpl implements OrderService {
         if (dataOrderDTO.getUser() != null && dataOrderDTO.getItem() != null) {
             User user = userDao.findByEmail(dataOrderDTO.getUser().getEmail());
             Item item = itemDao.findByVendorCode(dataOrderDTO.getItem().getVendorCode());
-            Order order = saveOrderConverter.toEntity(dataOrderDTO);
+            Order order = dataOrderConverter.toEntity(dataOrderDTO);
             order.setCreated(LocalDateTime.now());
             order.setStatus(OrderStatusEnum.NEW);
+            order.setUuid(UUID.randomUUID().toString());
             BigDecimal quantity = BigDecimal.valueOf(order.getQuantity());
             BigDecimal itemDiscountFactor;
             if (!item.getDiscounts().isEmpty()) {
@@ -106,9 +108,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<SimpleOrderDTO> findByUserId(SimpleUserDTO simpleUserDTO) {
+    public List<SimpleOrderDTO> findByUserId(SimpleUserDTO simpleUserDTO, Integer startPosition, Integer maxResults) {
         logger.info("Retrieving Order by User Id");
-        List<Order> orders = orderDao.findByUserId(simpleUserDTO.getId());
+        List<Order> orders = orderDao.findByUserId(simpleUserDTO.getId(), startPosition, maxResults);
         return simpleOrderDTOConverter.toDTOList(orders);
     }
 
@@ -144,5 +146,11 @@ public class OrderServiceImpl implements OrderService {
             logger.info("Retrieving all Orders");
             List<Order> orders = orderDao.findAll(startPosition, maxResults);
             return orderDTOConverter.toDTOList(orders);
+    }
+
+    @Override
+    public Long countByItemId(SimpleItemDTO item) {
+        logger.info("Counting Orders by Item Id");
+        return orderDao.countByItemId(item.getId());
     }
 }

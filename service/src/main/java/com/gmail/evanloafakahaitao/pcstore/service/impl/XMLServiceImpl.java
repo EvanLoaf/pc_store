@@ -22,30 +22,26 @@ public class XMLServiceImpl implements XMLService {
 
     private static final Logger logger = LogManager.getLogger(XMLServiceImpl.class);
 
-    private final XMLDao xmlDao;
     private final XMLValidator xmlValidator;
-    private final XMLParser xmlParserService;
+    private final XMLParser xmlParser;
 
     @Autowired
     public XMLServiceImpl(
-            XMLDao xmlDao,
             XMLValidator xmlValidator,
-            XMLParser xmlParserService
+            XMLParser xmlParser
     ) {
-        this.xmlDao = xmlDao;
         this.xmlValidator = xmlValidator;
-        this.xmlParserService = xmlParserService;
+        this.xmlParser = xmlParser;
     }
 
     @Override
-    public List<ItemXMLDTO> getXmlItems(String xmlFilePath, String schemaFilePath) {
+    public List<ItemXMLDTO> getXmlItems(File xmlFile, String schemaFilePath) {
         List<ItemXMLDTO> xmlItemsList = new ArrayList<>();
-        boolean validation = xmlValidator.validate(xmlFilePath, schemaFilePath);
+        boolean validation = xmlValidator.validate(xmlFile, schemaFilePath);
         logger.info("Item XML is Valid: " + validation);
         if (validation) {
-            File xmlFile = xmlDao.getXmlFile(xmlFilePath);
             logger.info("Parsing XML ...");
-            xmlItemsList = xmlParserService.parse(xmlFile);
+            xmlItemsList = xmlParser.parse(xmlFile);
         }
         return xmlItemsList;
     }

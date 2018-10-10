@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-@Component("saveOrderConverter")
+@Component("dataOrderConverter")
 public class DataOrderConverter implements Converter<DataOrderDTO, Order> {
 
     private final Converter<SimpleItemDTO, Item> simpleItemConverter;
@@ -29,8 +29,10 @@ public class DataOrderConverter implements Converter<DataOrderDTO, Order> {
     @Override
     public Order toEntity(DataOrderDTO dto) {
         Order order = new Order();
-        order.setUuid(dto.getUuid());
         order.setQuantity(dto.getQuantity());
+        if (dto.getUuid() != null) {
+            order.setUuid(dto.getUuid());
+        }
         if (dto.getUser() != null) {
             order.setUser(simpleUserConverter.toEntity(dto.getUser()));
         }

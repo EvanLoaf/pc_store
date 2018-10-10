@@ -73,34 +73,30 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO save(UserDTO userDTO) {
         logger.info("Saving User");
-        if (userDTO.getRole() != null) {
-            Role role = roleDao.findByName(userDTO.getRole().getName());
-            User user = userConverter.toEntity(userDTO);
-            user.setDisabled(false);
-            user.setRole(role);
-            user.setPassword(
-                    bCryptPasswordEncoder.encode(userDTO.getPassword())
-            );
-            if (userDTO.getDiscount() != null && userDTO.getDiscount().getPercent() != null) {
-                Discount discount = discountDao.findByPercent(userDTO.getDiscount().getPercent());
-                user.setDiscount(discount);
-            } else {
-                user.setDiscount(null);
-            }
-            if (userDTO.getProfile() != null) {
-                Profile profile = profileConverter.toEntity(userDTO.getProfile());
-                user.setProfile(profile);
-                profile.setUser(user);
-            } else {
-                Profile profile = new Profile();
-                user.setProfile(profile);
-                profile.setUser(user);
-            }
-            userDao.create(user);
-            return userDTOConverter.toDto(user);
+        Role role = roleDao.findByName("user");
+        User user = userConverter.toEntity(userDTO);
+        user.setDisabled(false);
+        user.setRole(role);
+        user.setPassword(
+                bCryptPasswordEncoder.encode(userDTO.getPassword())
+        );
+        if (userDTO.getDiscount() != null && userDTO.getDiscount().getPercent() != null) {
+            Discount discount = discountDao.findByPercent(userDTO.getDiscount().getPercent());
+            user.setDiscount(discount);
         } else {
-            return null;
+            user.setDiscount(null);
         }
+        if (userDTO.getProfile() != null) {
+            Profile profile = profileConverter.toEntity(userDTO.getProfile());
+            user.setProfile(profile);
+            profile.setUser(user);
+        } else {
+            Profile profile = new Profile();
+            user.setProfile(profile);
+            profile.setUser(user);
+        }
+        userDao.create(user);
+        return userDTOConverter.toDto(user);
     }
 
     @Override
@@ -113,7 +109,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO update(UserDTO userDTO) {
         logger.info("Updating User");
-        User user = userDao.findByEmail(userDTO.getEmail());
+        User user = userDao.findOne(userDTO.getId());
         if (userDTO.isDisabled() != null) {
             user.setDisabled(userDTO.isDisabled());
             userDao.update(user);
@@ -155,5 +151,19 @@ public class UserServiceImpl implements UserService {
         logger.info("Retrieving User by Email");
         User user = userDao.findByEmail(userDTO.getEmail());
         return simpleUserDTOConverter.toDto(user);
+    }
+
+    @Override
+    public UserDTO findById(UserDTO userDTO) {
+        logger.info("Retrieving User by Id");
+        User user = userDao.findOne(userDTO.getId());
+        return userDTOConverter.toDto(user);
+    }
+
+    @Override
+    public SimpleUserDTO deleteById(SimpleUserDTO simpleUserDTO) {
+        logger.info("Deleting User by Id");
+        userDao.deleteById(simpleUserDTO.getId());
+        return simpleUserDTO;
     }
 }

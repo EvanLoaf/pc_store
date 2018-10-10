@@ -13,5 +13,9 @@ public interface UserService {
 
     UserDTO update(UserDTO userDTO);
 
-    SimpleUserDTO findByEmail(SimpleUserDTO userDTO);
+    SimpleUserDTO findByEmail(SimpleUserDTO simpleUserDTO);
+
+    UserDTO findById(UserDTO userDTO);
+
+    SimpleUserDTO deleteById(SimpleUserDTO simpleUserDTO);
 }

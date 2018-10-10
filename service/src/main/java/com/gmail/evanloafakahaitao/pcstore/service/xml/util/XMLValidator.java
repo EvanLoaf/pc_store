@@ -9,6 +9,7 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
@@ -17,9 +18,9 @@ public class XMLValidator {
 
     private static final Logger logger = LogManager.getLogger(XMLValidator.class);
 
-    public boolean validate(String xmlRoute, String xsdRoute) {
+    public boolean validate(File xmlFile, String xsdRoute) {
         try (
-                InputStream xml = new FileInputStream(xmlRoute);
+                InputStream xml = new FileInputStream(xmlFile);
                 InputStream xsd = new FileInputStream(xsdRoute)
         ) {
             SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
