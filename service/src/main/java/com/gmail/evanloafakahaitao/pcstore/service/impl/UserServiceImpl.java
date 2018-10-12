@@ -76,6 +76,7 @@ public class UserServiceImpl implements UserService {
         Role role = roleDao.findByName("user");
         User user = userConverter.toEntity(userDTO);
         user.setDisabled(false);
+        user.setDeleted(false);
         user.setRole(role);
         user.setPassword(
                 bCryptPasswordEncoder.encode(userDTO.getPassword())
@@ -86,20 +87,12 @@ public class UserServiceImpl implements UserService {
         } else {
             user.setDiscount(null);
         }
-        if (userDTO.getProfile() != null) {
-            Profile profile = profileConverter.toEntity(userDTO.getProfile());
-            user.setProfile(profile);
-            profile.setUser(user);
-        } else {
-            Profile profile = new Profile();
-            user.setProfile(profile);
-            profile.setUser(user);
-        }
         userDao.create(user);
         return userDTOConverter.toDto(user);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<UserDTO> findAll(Integer startPosition, Integer maxResults) {
         logger.info("Retrieving all Users");
         List<User> users = userDao.findAll(startPosition, maxResults);
@@ -110,8 +103,8 @@ public class UserServiceImpl implements UserService {
     public UserDTO update(UserDTO userDTO) {
         logger.info("Updating User");
         User user = userDao.findOne(userDTO.getId());
-        if (userDTO.isDisabled() != null) {
-            user.setDisabled(userDTO.isDisabled());
+        if (userDTO.getDisabled() != null) {
+            user.setDisabled(userDTO.getDisabled());
             userDao.update(user);
         } else {
             if (userDTO.getFirstName() != null) {
@@ -120,18 +113,16 @@ public class UserServiceImpl implements UserService {
             if (userDTO.getLastName() != null) {
                 user.setLastName(userDTO.getLastName());
             }
-            if (userDTO.getPassword() != null) {
+            if (userDTO.getPassword() != null && !userDTO.getPassword().equals("")) {
                 user.setPassword(
                         bCryptPasswordEncoder.encode(userDTO.getPassword())
                 );
             }
-            if (userDTO.getProfile() != null) {
-                if (userDTO.getProfile().getAddress() != null) {
-                    user.getProfile().setAddress(userDTO.getProfile().getAddress());
-                }
-                if (userDTO.getProfile().getPhoneNumber() != null) {
-                    user.getProfile().setPhoneNumber(userDTO.getProfile().getPhoneNumber());
-                }
+            if (userDTO.getAddress() != null) {
+                user.getProfile().setAddress(userDTO.getAddress());
+            }
+            if (userDTO.getPhoneNumber() != null) {
+                user.getProfile().setPhoneNumber(userDTO.getPhoneNumber());
             }
             if (userDTO.getRole() != null) {
                 /*Role role = roleDao.findByName(userDTO.getRole().getName());*/
@@ -148,6 +139,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public SimpleUserDTO findByEmail(SimpleUserDTO userDTO) {
         logger.info("Retrieving User by Email");
         User user = userDao.findByEmail(userDTO.getEmail());
@@ -159,6 +151,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserDTO findById(UserDTO userDTO) {
         logger.info("Retrieving User by Id");
         User user = userDao.findOne(userDTO.getId());
@@ -170,5 +163,11 @@ public class UserServiceImpl implements UserService {
         logger.info("Deleting User by Id");
         userDao.deleteById(simpleUserDTO.getId());
         return simpleUserDTO;
+    }
+
+    @Override
+    public Long countAll() {
+        logger.info("Counting all Users");
+        return userDao.countAll();
     }
 }

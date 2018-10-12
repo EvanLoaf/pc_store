@@ -1,5 +1,7 @@
 package com.gmail.evanloafakahaitao.pcstore.controller;
 
+import com.gmail.evanloafakahaitao.pcstore.controller.model.Pagination;
+import com.gmail.evanloafakahaitao.pcstore.controller.util.PaginationUtil;
 import com.gmail.evanloafakahaitao.pcstore.controller.util.TargetDeterminer;
 import com.gmail.evanloafakahaitao.pcstore.service.RoleService;
 import com.gmail.evanloafakahaitao.pcstore.service.UserService;
@@ -31,53 +33,74 @@ public class UsersController {
     private final UserValidator userValidator;
     private final TargetDeterminer targetDeterminer;
     private final RoleService roleService;
+    private final PaginationUtil paginationUtil;
 
     @Autowired
     public UsersController(
             PageProperties pageProperties,
             UserService userService,
-            UserValidator userValidator, TargetDeterminer targetDeterminer, RoleService roleService) {
+            UserValidator userValidator,
+            TargetDeterminer targetDeterminer,
+            RoleService roleService,
+            PaginationUtil paginationUtil
+    ) {
         this.pageProperties = pageProperties;
         this.userService = userService;
         this.userValidator = userValidator;
         this.targetDeterminer = targetDeterminer;
         this.roleService = roleService;
+        this.paginationUtil = paginationUtil;
     }
 
     @GetMapping
     @PreAuthorize("hasAuthority('view_users_all')")
     public String getUsers(
-            @RequestParam(value = "page", required = false) Integer page,
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
             ModelMap modelMap
     ) {
-        if (page == null) {
-            page = 1;
-        }
-        int startPosition = (page - 1) * pageProperties.getPaginationMaxResults();
-        List<UserDTO> users = userService.findAll(startPosition, pageProperties.getPaginationMaxResults());
+        List<UserDTO> users = userService.findAll(paginationUtil.getStartPosition(page), pageProperties.getPaginationMaxResults());
         modelMap.addAttribute("users", users);
+        Pagination pagination = new Pagination();
+        pagination.setPage(page);
+        pagination.setPageNumbers(
+                paginationUtil.getPageNumbers(userService.countAll().intValue())
+        );
+        pagination.setStartPosition(paginationUtil.getStartPosition(page) + 1);
+        modelMap.addAttribute("pagination", pagination);
         return pageProperties.getUsersPagePath();
     }
 
     @PostMapping
-    public String createUser(
+    public String registerUser(
             @ModelAttribute("user") UserDTO user,
             BindingResult result,
             ModelMap modelMap
     ) {
-        logger.info("user create method");
-        logger.info("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
         userValidator.validate(user, result);
         if (result.hasErrors()) {
-            logger.info("user create method in errors");
             modelMap.addAttribute("user", user);
             return pageProperties.getRegisterPagePath();
         } else {
-            logger.info("user create method no errors");
             userService.save(user);
             return pageProperties.getLoginPagePath();
         }
-        /*return targetDeterminer.urlAfterUserCreation(result.hasErrors());*/
+    }
+
+    @PostMapping(value = "/admin")
+    @PreAuthorize("hasAuthority('create_user')")
+    public String createUserAdmin(
+            @ModelAttribute("user") UserDTO user,
+            BindingResult result,
+            ModelMap modelMap
+    ) {
+        userValidator.validate(user, result);
+        if (result.hasErrors()) {
+            modelMap.addAttribute("user", user);
+            return pageProperties.getUserCreatePagePath();
+        } else {
+            userService.save(user);
+            return "redirect:/web/users";
+        }
     }
 
     @GetMapping(value = "/{id}")
@@ -90,11 +113,12 @@ public class UsersController {
         user.setId(id);
         UserDTO userRetrieved = userService.findById(user);
         modelMap.addAttribute("user", userRetrieved);
-        List<RoleDTO> roles = roleService.findAll(0, pageProperties.getPaginationMaxResults());
-        modelMap.addAttribute("roles", roles);
         /*modelMap.addAttribute("user", new UserDTO());*/
-        return pageProperties.getUserUpdatePagePath();
+        return pageProperties.getUserProfilePagePath();
     }
+
+    /*List<RoleDTO> roles = roleService.findAll(0, pageProperties.getPaginationMaxResults());
+        modelMap.addAttribute("roles", roles);*/
 
     @PostMapping(value = "/{id}")
     @PreAuthorize("hasAnyAuthority('update_user_self', 'update_users_all')")
@@ -108,10 +132,11 @@ public class UsersController {
         userValidator.validate(user, result);
         if (result.hasErrors()) {
             modelMap.addAttribute("user", user);
+            return pageProperties.getUserProfilePagePath();
         } else {
             userService.update(user);
+            return "redirect:/web/users/" + id;
         }
-        return pageProperties.getUserUpdatePagePath();
     }
 
     @GetMapping(value = "/create")
@@ -131,19 +156,34 @@ public class UsersController {
             user.setId(id);
             userService.deleteById(user);
         }
-        return pageProperties.getUsersPagePath();
+        return "redirect:/web/users";
     }
 
     @GetMapping(value = "/{id}/disable")
     @PreAuthorize("hasAuthority('disable_user')")
     public String disableUser(
             @PathVariable("id") Long id,
-            @RequestParam("disable") boolean disable
+            @RequestParam(value = "disable", defaultValue = "true") boolean disable
     ) {
         UserDTO user = new UserDTO();
         user.setId(id);
         user.setDisabled(disable);
         userService.update(user);
-        return pageProperties.getUsersPagePath();
+        return "redirect:/web/users";
+    }
+
+    @GetMapping(value = "/{id}/update")
+    @PreAuthorize("hasAuthority('update_users_all')")
+    public String updateUserPage(
+            @PathVariable("id") Long id,
+            ModelMap modelMap
+    ) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(id);
+        UserDTO user = userService.findById(userDTO);
+        List<RoleDTO> roles = roleService.findAll(0, pageProperties.getPaginationMaxResults());
+        modelMap.addAttribute("roles", roles);
+        modelMap.addAttribute("user", user);
+        return pageProperties.getUserUpdatePagePath();
     }
 }

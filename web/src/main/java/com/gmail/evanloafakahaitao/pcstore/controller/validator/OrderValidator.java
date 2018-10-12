@@ -6,6 +6,8 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+import java.util.regex.Pattern;
+
 @Component
 public class OrderValidator implements Validator {
 
@@ -19,8 +21,16 @@ public class OrderValidator implements Validator {
     public void validate(Object obj, Errors err) {
         DataOrderDTO order = (DataOrderDTO) obj;
         ValidationUtils.rejectIfEmpty(err, "quantity", "order.quantity.empty");
-        if (order.getQuantity() > 10) {
-            err.rejectValue("quantity", "order.quantity.bulk");
+        if (order.getQuantity() != null) {
+            Pattern quantityPattern = Pattern.compile(
+                    "^[0-9]{1,9}$"
+            );
+            if (!(quantityPattern.matcher(order.getQuantity().toString()).matches())) {
+                err.rejectValue("quantity", "order.quantity.invalid");
+            }
+            if (order.getQuantity() > 10) {
+                err.rejectValue("quantity", "order.quantity.bulk");
+            }
         }
     }
 }

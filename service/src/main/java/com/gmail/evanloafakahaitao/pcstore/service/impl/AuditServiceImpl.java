@@ -65,6 +65,7 @@ public class AuditServiceImpl implements AuditService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<AuditDTO> findAll(Integer startPosition, Integer maxResults) {
         logger.info("Retrieving all Audit");
         List<Audit> audits = auditDao.findAll(startPosition, maxResults);

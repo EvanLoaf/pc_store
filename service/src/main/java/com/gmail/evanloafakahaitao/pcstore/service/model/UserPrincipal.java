@@ -16,6 +16,7 @@ public class UserPrincipal implements UserDetails {
     private String name;
     private String username;
     private String password;
+    private boolean isDeleted;
     private boolean isDisabled;
     private List<GrantedAuthority> authorities;
 
@@ -25,6 +26,7 @@ public class UserPrincipal implements UserDetails {
         this.username = user.getEmail();
         this.password = user.getPassword();
         this.isDisabled = user.isDisabled();
+        this.isDeleted = user.isDeleted();
         String[] authorityList = user.getRole()
                 .getPermissions()
                 .stream()
@@ -61,6 +63,10 @@ public class UserPrincipal implements UserDetails {
         return isDisabled;
     }
 
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
     //TODO isEnabled principal
     @Override
     public boolean isEnabled() {
@@ -69,7 +75,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return !isDeleted;
     }
 
     @Override

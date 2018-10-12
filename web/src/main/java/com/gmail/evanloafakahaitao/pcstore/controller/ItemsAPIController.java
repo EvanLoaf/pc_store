@@ -33,11 +33,11 @@ public class ItemsAPIController {
     @GetMapping
     @PreAuthorize("hasAuthority('view_items_api')")
     public List<ItemDTO> getItems(
-            @RequestParam(value = "page", required = false) Integer page
+            @RequestParam(value = "page", defaultValue = "1") Integer page
     ) {
-        if (page == null) {
+        /*if (page == null) {
             page = 1;
-        }
+        }*/
         int startPosition = (page - 1) * pageProperties.getPaginationMaxResults();
         return itemService.findAll(startPosition, pageProperties.getPaginationMaxResults());
     }

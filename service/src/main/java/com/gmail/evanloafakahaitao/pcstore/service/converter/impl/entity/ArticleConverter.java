@@ -31,12 +31,9 @@ public class ArticleConverter implements Converter<ArticleDTO, Article> {
         Article article = new Article();
         article.setTitle(dto.getTitle());
         article.setContent(dto.getContent());
-        article.setUser(simpleUserConverter.toEntity(dto.getUser()));
+        /*article.setUser(simpleUserConverter.toEntity(dto.getUser()));*/
         if (dto.getId() != null) {
             article.setId(dto.getId());
-        }
-        if (dto.getCreated() != null) {
-            article.setCreated(dto.getCreated());
         }
         if (!dto.getComments().isEmpty()) {
             article.setComments(commentConverter.toEntitySet(dto.getComments()));

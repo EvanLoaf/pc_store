@@ -108,6 +108,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<SimpleOrderDTO> findByUserId(SimpleUserDTO simpleUserDTO, Integer startPosition, Integer maxResults) {
         logger.info("Retrieving Order by User Id");
         List<Order> orders = orderDao.findByUserId(simpleUserDTO.getId(), startPosition, maxResults);
@@ -115,6 +116,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public SimpleOrderDTO findByUuid(DataOrderDTO dataOrderDTO) {
         logger.info("Retrieving Order by Uuid");
         Order order = orderDao.findByUuid(dataOrderDTO.getUuid());
@@ -142,6 +144,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<OrderDTO> findAll(Integer startPosition, Integer maxResults) {
             logger.info("Retrieving all Orders");
             List<Order> orders = orderDao.findAll(startPosition, maxResults);
@@ -149,6 +152,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Long countByItemId(SimpleItemDTO item) {
         logger.info("Counting Orders by Item Id");
         return orderDao.countByItemId(item.getId());

@@ -34,6 +34,8 @@ public class UserConverter implements Converter<UserDTO, User> {
     @Override
     public User toEntity(UserDTO dto) {
         User user = new User();
+        Profile profile = new Profile();
+        user.setProfile(profile);
         user.setEmail(dto.getEmail());
         user.setPassword(dto.getPassword());
         user.setFirstName(dto.getFirstName());
@@ -47,11 +49,17 @@ public class UserConverter implements Converter<UserDTO, User> {
         if (dto.getRole() != null) {
             user.setRole(roleConverter.toEntity(dto.getRole()));
         }
-        if (dto.getProfile() != null) {
-            user.setProfile(profileConverter.toEntity(dto.getProfile()));
+        if (dto.getAddress() != null) {
+            user.getProfile().setAddress(dto.getAddress());
         }
-        if (dto.isDisabled() != null) {
-            user.setDisabled(dto.isDisabled());
+        if (dto.getPhoneNumber() != null) {
+            user.getProfile().setPhoneNumber(dto.getPhoneNumber());
+        }
+        if (dto.getDisabled() != null) {
+            user.setDisabled(dto.getDisabled());
+        }
+        if (dto.getDeleted() != null) {
+            user.setDeleted(dto.getDeleted());
         }
         return user;
     }

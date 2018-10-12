@@ -2,18 +2,23 @@ package com.gmail.evanloafakahaitao.pcstore.dao.model;
 
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class User extends DisableEntity implements Serializable {
+@SQLDelete(sql = "update t_user set f_is_deleted = true where f_id = ?")
+@Where(clause = "f_is_deleted = false")
+public class User extends SoftDeleteAndDisableEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,6 +45,9 @@ public class User extends DisableEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "discountId")
     private Discount discount;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "userId", nullable = false)
+    private Set<BusinessCard> businessCards = new HashSet<>();
 
     public User() {
     }
@@ -108,21 +116,13 @@ public class User extends DisableEntity implements Serializable {
         this.discount = discount;
     }
 
-    private User(Builder builder) {
-        id = builder.id;
-        email = builder.email;
-        password = builder.password;
-        firstName = builder.firstName;
-        lastName = builder.lastName;
-        role = builder.role;
-        profile = builder.profile;
-        discount = builder.discount;
+    public Set<BusinessCard> getBusinessCards() {
+        return businessCards;
     }
 
-    public static Builder newBuilder() {
-        return new Builder();
+    public void setBusinessCards(Set<BusinessCard> businessCards) {
+        this.businessCards = businessCards;
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -136,64 +136,4 @@ public class User extends DisableEntity implements Serializable {
     public int hashCode() {
         return Objects.hash(email);
     }
-
-    public static final class Builder {
-        private Long id;
-        private @NotNull @Email(message = "Not an email") String email;
-        private @NotNull String password;
-        private @NotNull String firstName;
-        private @NotNull String lastName;
-        private Role role;
-        private Profile profile;
-        private Discount discount;
-
-        private Builder() {
-        }
-
-        public Builder withId(Long val) {
-            id = val;
-            return this;
-        }
-
-        public Builder withEmail(@NotNull @Email(message = "Not an email") String val) {
-            email = val;
-            return this;
-        }
-
-        public Builder withPassword(@NotNull String val) {
-            password = val;
-            return this;
-        }
-
-        public Builder withFirstName(@NotNull String val) {
-            firstName = val;
-            return this;
-        }
-
-        public Builder withLastName(@NotNull String val) {
-            lastName = val;
-            return this;
-        }
-
-        public Builder withRole(Role val) {
-            role = val;
-            return this;
-        }
-
-        public Builder withProfile(Profile val) {
-            profile = val;
-            return this;
-        }
-
-        public Builder withDiscount(Discount val) {
-            discount = val;
-            return this;
-        }
-
-        public User build() {
-            return new User(this);
-        }
-    }
-
-
 }

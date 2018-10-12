@@ -39,6 +39,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public RoleDTO findByName(RoleDTO roleDTO) {
         logger.info("Retrieving Role by Name");
         Role role = roleDao.findByName(roleDTO.getName());
@@ -46,6 +47,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<RoleDTO> findAll(Integer startPosition, Integer maxResults) {
        logger.info("Retrieving all Roles");
        List<Role> roles = roleDao.findAll(startPosition, maxResults);

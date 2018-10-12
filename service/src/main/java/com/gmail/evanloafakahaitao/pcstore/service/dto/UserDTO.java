@@ -1,7 +1,9 @@
 package com.gmail.evanloafakahaitao.pcstore.service.dto;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 public class UserDTO implements Serializable {
 
@@ -10,11 +12,22 @@ public class UserDTO implements Serializable {
     private String password;
     private String firstName;
     private String lastName;
+    private String address;
+    private String phoneNumber;
     private Long countOfUsers;
-    private Boolean isDisabled;
+    private Boolean disabled;
+    private Boolean deleted;
     private RoleDTO role;
-    private ProfileDTO profile;
     private DiscountDTO discount;
+    private Set<BusinessCardDTO> businessCards = new HashSet<>();
+
+    public Set<BusinessCardDTO> getBusinessCards() {
+        return businessCards;
+    }
+
+    public void setBusinessCards(Set<BusinessCardDTO> businessCards) {
+        this.businessCards = businessCards;
+    }
 
     public Long getId() {
         return id;
@@ -56,6 +69,22 @@ public class UserDTO implements Serializable {
         this.lastName = lastName;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public Long getCountOfUsers() {
         return countOfUsers;
     }
@@ -64,12 +93,20 @@ public class UserDTO implements Serializable {
         this.countOfUsers = countOfUsers;
     }
 
-    public Boolean isDisabled() {
-        return isDisabled;
+    public Boolean getDisabled() {
+        return disabled;
     }
 
     public void setDisabled(Boolean disabled) {
-        isDisabled = disabled;
+        this.disabled = disabled;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
     public RoleDTO getRole() {
@@ -78,14 +115,6 @@ public class UserDTO implements Serializable {
 
     public void setRole(RoleDTO role) {
         this.role = role;
-    }
-
-    public ProfileDTO getProfile() {
-        return profile;
-    }
-
-    public void setProfile(ProfileDTO profile) {
-        this.profile = profile;
     }
 
     public DiscountDTO getDiscount() {

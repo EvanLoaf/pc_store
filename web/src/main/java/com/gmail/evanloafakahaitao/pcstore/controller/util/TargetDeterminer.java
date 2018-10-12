@@ -1,6 +1,7 @@
 package com.gmail.evanloafakahaitao.pcstore.controller.util;
 
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.PageProperties;
+import com.gmail.evanloafakahaitao.pcstore.service.util.CurrentUserExtractor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
@@ -10,19 +11,17 @@ import java.util.Collection;
 @Component
 public class TargetDeterminer {
 
-    private final UserPrincipalExtractor userPrincipalExtractor;
     private final PageProperties pageProperties;
 
     @Autowired
-    public TargetDeterminer(UserPrincipalExtractor userPrincipalExtractor, PageProperties pageProperties) {
-        this.userPrincipalExtractor = userPrincipalExtractor;
+    public TargetDeterminer(PageProperties pageProperties) {
         this.pageProperties = pageProperties;
     }
 
     public String urlAfterUserCreation(boolean hasErrors) {
         boolean isUser = false;
         boolean isSecurityAdmin = false;
-        Collection<? extends GrantedAuthority> authorities = userPrincipalExtractor.getAuthorities();
+        Collection<? extends GrantedAuthority> authorities = CurrentUserExtractor.getCurrentAuthorities();
         for (GrantedAuthority grantedAuthority : authorities) {
             if (grantedAuthority.getAuthority().equals("user_basic_permission")) {
                 isUser = true;
@@ -52,7 +51,7 @@ public class TargetDeterminer {
     }
 
     public String methodToFindOrders() {
-        Collection<? extends GrantedAuthority> authorities = userPrincipalExtractor.getAuthorities();
+        Collection<? extends GrantedAuthority> authorities = CurrentUserExtractor.getCurrentAuthorities();
         for (GrantedAuthority grantedAuthority : authorities) {
             if (grantedAuthority.getAuthority().equals("view_orders_all")) {
                 return "all";

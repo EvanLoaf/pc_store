@@ -7,7 +7,7 @@
 <head>
     <c:set var="app" value="${pageContext.request.contextPath}"/>
     <jsp:include page="/WEB-INF/pages/util/head.jsp"/>
-    <title>Login</title>
+    <title>Create order</title>
 </head>
 <body>
 
@@ -74,10 +74,10 @@
             </div>
             <security:authorize access="hasAuthority('create_order')">
                 <form:form action="${app}/web/orders" modelAttribute="order" method="post">
-                    <form:errors path="*" cssClass="container-fluid" element="div"/>
+                    <form:errors path="quantity" cssClass="alert-danger" element="div"/>
                     <div class="form-group">
                         <form:label path="quantity">Quantity :</form:label>
-                        <form:input type="text" path="quantity" class="form-control" id="quantity"
+                        <form:input type="number" path="quantity" min="1" class="form-control" id="quantity" maxlength="9"
                                     placeholder="Enter quantity"/>
                     </div>
                     <div class="form-group" hidden>
@@ -137,45 +137,10 @@
                 </div>
             </security:authorize>
             <jsp:include page="/WEB-INF/pages/util/ads.jsp"/>
-        </div>
-    </div>
-</div>
-
-<div class="container">
-    <div class="row">
-        <div class="col-md-4">
-        </div>
-        <div class="col-md-4">
-
-            <c:if test="${not empty error}">
-                <div class="alert alert-danger" role="alert">
-                    <p>Wrong Username or Password</p>
-                </div>
-            </c:if>
-
-            <c:if test="${not empty logout}">
-                <div class="alert alert-success" role="alert">
-                    <p>Logged off successfully</p>
-                </div>
-            </c:if>
-
-            <form action="${app}/web/login" method="post">
-                <div class="form-group">
-                    <label for="email">Email address</label>
-                    <input type="email" name="email" class="form-control" id="email"
-                           aria-describedby="emailHelp"
-                           placeholder="your@mail.com"/>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" name="password" class="form-control" id="password"
-                           placeholder="********"/>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-            <a href="${app}/web" class="btn btn-dark" aria-pressed="true" role="button">Create an account</a>
-        </div>
-        <div class="col-md-4">
+            <div class="row">
+                <a href="${app}/web/logout"
+                   class="btn btn-outline-success" aria-pressed="true" role="button">LOG OUT</a>
+            </div>
         </div>
     </div>
 </div>

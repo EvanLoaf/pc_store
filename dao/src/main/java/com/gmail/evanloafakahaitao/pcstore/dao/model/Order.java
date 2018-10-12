@@ -39,7 +39,6 @@ public class Order implements Serializable {
     private User user;
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("itemId")
-    @Where(clause = "1 = 1")
     private Item item;
 
     public OrderId getId() {

@@ -18,4 +18,6 @@ public interface UserService {
     UserDTO findById(UserDTO userDTO);
 
     SimpleUserDTO deleteById(SimpleUserDTO simpleUserDTO);
+
+    Long countAll();
 }

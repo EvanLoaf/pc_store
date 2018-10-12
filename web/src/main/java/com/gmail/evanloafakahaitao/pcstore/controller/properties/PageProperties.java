@@ -36,6 +36,8 @@ public class PageProperties {
     private String feedbackPagePath;
     private String feedbackCreatePagePath;
     private String auditPagePath;
+    private String businessCardsPagePath;
+    private String businessCardCreatePagePath;
 
     @Autowired
     public PageProperties(Environment environment) {
@@ -68,6 +70,8 @@ public class PageProperties {
         this.feedbackPagePath = environment.getProperty("feedback.page.path");
         this.feedbackCreatePagePath = environment.getProperty("feedback.create.page.path");
         this.auditPagePath = environment.getProperty("audit.page.path");
+        this.businessCardsPagePath = environment.getProperty("business.cards.page.path");
+        this.businessCardCreatePagePath = environment.getProperty("business.card.create.page.path");
     }
 
     public String getSchemaFilePath() {
@@ -164,5 +168,13 @@ public class PageProperties {
 
     public String getAuditPagePath() {
         return auditPagePath;
+    }
+
+    public String getBusinessCardsPagePath() {
+        return businessCardsPagePath;
+    }
+
+    public String getBusinessCardCreatePagePath() {
+        return businessCardCreatePagePath;
     }
 }

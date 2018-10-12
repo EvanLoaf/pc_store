@@ -12,7 +12,6 @@ public class SimpleArticleConverter implements Converter<SimpleArticleDTO, Artic
     public Article toEntity(SimpleArticleDTO dto) {
         Article article = new Article();
         article.setTitle(dto.getTitle());
-        article.setCreated(dto.getCreated());
         if (dto.getId() != null) {
             article.setId(dto.getId());
         }

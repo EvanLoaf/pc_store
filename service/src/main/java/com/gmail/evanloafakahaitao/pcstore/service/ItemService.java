@@ -29,6 +29,8 @@ public interface ItemService {
 
     SimpleItemDTO copy(SimpleItemDTO simpleItemDTO);
 
+    Long countAll();
+
     /*List<ItemDTO> findByDiscount(DiscountDTO discountDTO);
 
     Long findCountInPriceRange(BigDecimal minPrice, BigDecimal maxPrice);*/

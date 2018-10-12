@@ -11,7 +11,7 @@ import java.util.Objects;
 
 @Entity
 @Table
-@SQLDelete(sql = "update t_comment set f_is_deleted = true where id = ?")
+@SQLDelete(sql = "update t_comment set f_is_deleted = true where f_id = ?")
 @Where(clause = "f_is_deleted = false")
 public class Comment extends SoftDeleteEntity implements Serializable {
 
@@ -21,7 +21,7 @@ public class Comment extends SoftDeleteEntity implements Serializable {
     private Long id;
     @NotNull
     @Column
-    private String content;
+    private String message;
     @NotNull
     @Column
     private LocalDateTime created;
@@ -37,12 +37,12 @@ public class Comment extends SoftDeleteEntity implements Serializable {
         this.id = id;
     }
 
-    public String getContent() {
-        return content;
+    public String getMessage() {
+        return message;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public LocalDateTime getCreated() {
@@ -67,11 +67,11 @@ public class Comment extends SoftDeleteEntity implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Comment comment = (Comment) o;
         return Objects.equals(id, comment.id) &&
-                Objects.equals(content, comment.content);
+                Objects.equals(message, comment.message);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, content);
+        return Objects.hash(id, message);
     }
 }

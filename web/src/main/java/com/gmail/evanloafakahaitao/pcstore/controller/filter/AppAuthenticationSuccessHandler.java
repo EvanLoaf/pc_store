@@ -4,6 +4,7 @@ import com.gmail.evanloafakahaitao.pcstore.controller.properties.PageProperties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.DefaultRedirectStrategy;
@@ -57,17 +58,22 @@ public class AppAuthenticationSuccessHandler implements AuthenticationSuccessHan
         boolean isUser = false;
         boolean isSecurityAdmin = false;
         boolean isSalesAdmin = false;
+        boolean isApiAdmin = false;
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (GrantedAuthority grantedAuthority : authorities) {
-            if (grantedAuthority.getAuthority().equals("user_basic_permission")) {
-                isUser = true;
-                break;
-            } else if (grantedAuthority.getAuthority().equals("security_admin_basic_permission")) {
-                isSecurityAdmin = true;
-                break;
-            } else if (grantedAuthority.getAuthority().equals("sales_admin_basic_permission")) {
-                isSalesAdmin = true;
-                break;
+            switch (grantedAuthority.getAuthority()) {
+                case "user_basic_permission":
+                    isUser = true;
+                    break;
+                case "security_admin_basic_permission":
+                    isSecurityAdmin = true;
+                    break;
+                case "sales_admin_basic_permission":
+                    isSalesAdmin = true;
+                    break;
+                case "api_admin_basic_permission":
+                    isApiAdmin = true;
+                    break;
             }
         }
         if (isUser) {
@@ -76,6 +82,8 @@ public class AppAuthenticationSuccessHandler implements AuthenticationSuccessHan
             return pageProperties.getUsersPagePath();
         } else if (isSalesAdmin) {
             return pageProperties.getItemsPagePath();
+        } else if (isApiAdmin) {
+            throw new AccessDeniedException("API admin is not allowed to access UI");
         } else {
             throw new IllegalStateException();
         }

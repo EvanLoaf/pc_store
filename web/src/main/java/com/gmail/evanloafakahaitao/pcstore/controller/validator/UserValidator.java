@@ -33,14 +33,14 @@ public class UserValidator implements Validator {
 
     @Override
     public void validate(Object obj, Errors err) {
-        logger.info("Validating user");
         UserDTO user = (UserDTO) obj;
         if (user.getId() == null) {
-            logger.info("Validating user if");
             ValidationUtils.rejectIfEmpty(err, "email", "user.email.empty");
             ValidationUtils.rejectIfEmpty(err, "password", "user.password.empty");
             ValidationUtils.rejectIfEmpty(err, "firstName", "user.firstname.empty");
             ValidationUtils.rejectIfEmpty(err, "lastName", "user.lastname.empty");
+            ValidationUtils.rejectIfEmpty(err, "address", "user.address.empty");
+            ValidationUtils.rejectIfEmpty(err, "phoneNumber", "user.phonenumber.empty");
 
             Pattern emailPattern = Pattern.compile(
                     "^[A-Z0-9._%+-]+@[A-Z0-9]+\\.[A-Z]{2,6}$",
@@ -77,8 +77,9 @@ public class UserValidator implements Validator {
             }
 
         } else {
-            logger.info("Validating user else");
-            if (user.getPassword() != null) {
+            /*ValidationUtils.rejectIfEmpty(err, "password", "user.password.empty");*/
+
+            if (user.getPassword() != null && !user.getPassword().equals("")) {
                 Pattern passwordPattern = Pattern.compile(
                         "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,20}$",
                         Pattern.CASE_INSENSITIVE
@@ -87,19 +88,17 @@ public class UserValidator implements Validator {
                     err.rejectValue("password", "user.password.invalid");
                 }
             }
-            if (user.getLastName() != null && user.getLastName().length() > 20) {
+            if (user.getLastName() != null && !user.getLastName().equals("") && user.getLastName().length() > 20) {
                 err.rejectValue("lastName", "user.lastname.length");
             }
-            if (user.getFirstName() != null && user.getFirstName().length() > 20) {
+            if (user.getFirstName() != null && !user.getFirstName().equals("") && user.getFirstName().length() > 20) {
                 err.rejectValue("firstName", "user.firstname.length");
             }
-            if (user.getProfile() != null) {
-                if (user.getProfile().getAddress() != null && user.getProfile().getAddress().length() > 90) {
-                    err.rejectValue("profile.address", "user.address.length");
-                }
-                if (user.getProfile().getPhoneNumber() != null && user.getProfile().getPhoneNumber().length() > 20) {
-                    err.rejectValue("profile.phoneNumber", "user.phonenumber.length");
-                }
+            if (user.getAddress() != null && !user.getAddress().equals("") && user.getAddress().length() > 90) {
+                err.rejectValue("address", "user.address.length");
+            }
+            if (user.getPhoneNumber() != null && !user.getPhoneNumber().equals("") && user.getPhoneNumber().length() > 20) {
+                err.rejectValue("phoneNumber", "user.phonenumber.length");
             }
         }
     }

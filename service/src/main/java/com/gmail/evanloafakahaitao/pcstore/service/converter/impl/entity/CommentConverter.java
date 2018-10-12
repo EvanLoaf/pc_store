@@ -24,10 +24,9 @@ public class CommentConverter implements Converter<CommentDTO, Comment> {
     @Override
     public Comment toEntity(CommentDTO dto) {
         Comment comment = new Comment();
-        comment.setId(dto.getId());
-        comment.setContent(dto.getContent());
-        comment.setCreated(dto.getCreated());
-        comment.setUser(simpleUserConverter.toEntity(dto.getUser()));
+        comment.setMessage(dto.getMessage());
+        /*comment.setCreated(dto.getCreated());
+        comment.setUser(simpleUserConverter.toEntity(dto.getUser()));*/
         return comment;
     }
 }

@@ -7,7 +7,7 @@
 <head>
     <c:set var="app" value="${pageContext.request.contextPath}"/>
     <jsp:include page="/WEB-INF/pages/util/head.jsp"/>
-    <title>Items</title>
+    <title>Orders</title>
 </head>
 <body>
 <div class="container wide">
@@ -31,12 +31,10 @@
                         <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">OrderID</th>
                             <th scope="col">Created</th>
                             <th scope="col">User email</th>
                             <th scope="col">Item name</th>
                             <th scope="col">Vendor code</th>
-                            <th scope="col">Desc</th>
                             <th scope="col">Quantity</th>
                             <th scope="col">Total price</th>
                             <th scope="col">Status</th>
@@ -50,36 +48,43 @@
                                 <th scope="row">
                                     <c:out value="${counter}"/>
                                 </th>
-                                <td>${order.uuid}</td>
                                 <td>${order.created}</td>
                                 <td>
-                                    <c:if test="${not empty order.user}">
+                                    <security:authorize access="hasAuthority('view_orders_all')">
                                         ${order.user.email}
-                                    </c:if>
-                                    <c:if test="${empty order.user}">
-                                        <security:authorize access="hasAuthority('view_orders_self')">
-                                            <security:authentication property="username"/>
-                                        </security:authorize>
-                                    </c:if>
+                                    </security:authorize>
+                                    <security:authorize access="hasAuthority('view_orders_self')">
+                                        <security:authentication property="principal.username"/>
+                                    </security:authorize>
                                 </td>
                                     <%--<fmt:formatNumber var="price" value="${item.price}"
                                                       maxFractionDigits="2"/>--%>
                                 <td>${order.item.name}</td>
                                 <td>${order.item.vendorCode}</td>
-                                <td>${order.item.description}</td>
                                 <td>${order.quantity}</td>
                                 <td>${order.totalPrice}</td>
                                 <td>${order.status}</td>
                                 <td>
                                     <security:authorize access="hasAuthority('update_order_status')">
-                                        <a href="${app}/web/orders"
-                                           class="btn btn-outline-success" aria-pressed="true" role="button">SHOW ORDERS</a>
+                                        <%--<a href="${app}/web/orders"
+                                           class="btn btn-outline-success" aria-pressed="true" role="button">SHOW
+                                            ORDERS</a>--%>
                                         <form action="${app}/web/orders/${order.uuid}" method="post">
                                             <div class="form-group">
-                                                <label for="status">Status</label>
-                                                <select name="status" id="status" size="4">
+                                                <%--<label for="status">Status</label>--%>
+                                                <select name="status" class="custom-select-lg" id="status">
                                                     <c:set var="status" value="${order.status}"/>
-                                                    <c:choose>
+                                                    <c:forEach items="${statusEnum}" var="status">
+                                                        <c:choose>
+                                                            <c:when test="${status == order.status}">
+                                                                <option value="${status}" selected>${status}</option>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <option value="${status}">${status}</option>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </c:forEach>
+                                                    <%--<c:choose>
                                                         <c:when test="${status == 'NEW'}">
                                                             <option value="NEW" selected>NEW</option>
                                                             <option value="REVIEWING">REVIEWING</option>
@@ -110,7 +115,7 @@
                                                             <option value="IN_PROGRESS">IN_PROGRESS</option>
                                                             <option value="DELIVERED">DELIVERED</option>
                                                         </c:otherwise>
-                                                    </c:choose>
+                                                    </c:choose>--%>
                                                 </select>
                                             </div>
                                             <button type="submit" class="btn btn-primary">CHANGE STATUS</button>
@@ -152,17 +157,17 @@
             <%--<security:authorize access="isAuthenticated()">
                 <security:authentication property="principal.id" var="userid"/>
             </security:authorize>--%>
-            <security:authorize access="hasAnyAuthority('view_orders_self', 'view_orders_all')">
-                <div class="row">
-                    <a href="${app}/web/orders"
-                       class="btn btn-outline-success" aria-pressed="true" role="button">SHOW ORDERS</a>
-                </div>
-            </security:authorize>
             <security:authorize access="hasAuthority('view_user_self')">
                 <security:authentication property="principal.id" var="userid"/>
                 <div class="row">
                     <a href="${app}/web/users/${userid}"
                        class="btn btn-outline-success" aria-pressed="true" role="button">PROFILE</a>
+                </div>
+            </security:authorize>
+            <security:authorize access="hasAuthority('view_items')">
+                <div class="row">
+                    <a href="${app}/web/items"
+                       class="btn btn-outline-success" aria-pressed="true" role="button">ITEMS</a>
                 </div>
             </security:authorize>
             <security:authorize access="hasAuthority('view_news')">
@@ -184,6 +189,10 @@
                 </div>
             </security:authorize>
             <jsp:include page="/WEB-INF/pages/util/ads.jsp"/>
+            <div class="row">
+                <a href="${app}/web/logout"
+                   class="btn btn-outline-success" aria-pressed="true" role="button">LOG OUT</a>
+            </div>
         </div>
     </div>
 </div>

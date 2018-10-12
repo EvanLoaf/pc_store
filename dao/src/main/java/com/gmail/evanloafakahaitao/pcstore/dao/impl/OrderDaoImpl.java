@@ -30,7 +30,7 @@ public class OrderDaoImpl extends GenericDaoImpl<Order> implements OrderDao {
         String hql = "from Order as o where o.uuid=:uuid";
         Query query = getCurrentSession().createQuery(hql);
         query.setParameter("uuid", uuid);
-        return (Order) query.getSingleResult();
+        return (Order) query.uniqueResult();
     }
 
     @Override
@@ -47,6 +47,6 @@ public class OrderDaoImpl extends GenericDaoImpl<Order> implements OrderDao {
         String hql = "select count(*) from Order as o where o.item.id=:id";
         Query query = getCurrentSession().createQuery(hql);
         query.setParameter("id", id);
-        return (Long) query.getSingleResult();
+        return (Long) query.uniqueResult();
     }
 }

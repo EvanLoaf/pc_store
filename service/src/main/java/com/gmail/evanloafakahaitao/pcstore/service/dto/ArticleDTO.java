@@ -11,7 +11,7 @@ public class ArticleDTO implements Serializable {
     private Long id;
     private String title;
     private String content;
-    private LocalDateTime created;
+    private String created;
     private SimpleUserDTO user;
     private Set<CommentDTO> comments = new HashSet<>();
 
@@ -39,11 +39,11 @@ public class ArticleDTO implements Serializable {
         this.content = content;
     }
 
-    public LocalDateTime getCreated() {
+    public String getCreated() {
         return created;
     }
 
-    public void setCreated(LocalDateTime created) {
+    public void setCreated(String created) {
         this.created = created;
     }
 

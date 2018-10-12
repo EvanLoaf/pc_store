@@ -36,7 +36,7 @@ public abstract class GenericDaoImpl<T extends Serializable> implements GenericD
 
     @Override
     public Long countAll() {
-        return (Long) getCurrentSession().createQuery("select count(*) from " + clazz.getSimpleName()).getSingleResult();
+        return (Long) getCurrentSession().createQuery("select count(*) from " + clazz.getSimpleName()).uniqueResult();
     }
 
     @Override

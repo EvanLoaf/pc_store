@@ -72,6 +72,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ItemDTO> findAll(Integer startPosition, Integer maxResults) {
         logger.info("Retrieving all Items");
         List<Item> items = itemDao.findAll(startPosition, maxResults);
@@ -79,6 +80,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ItemDTO findByVendorCode(ItemDTO itemDTO) {
         logger.info("Retrieving Item by VendorCode");
         Item item = itemDao.findByVendorCode(itemDTO.getVendorCode());
@@ -90,6 +92,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ItemDTO findById(ItemDTO itemDTO) {
         logger.info("Retrieving Item by Id");
         Item item = itemDao.findOne(itemDTO.getId());
@@ -107,6 +110,7 @@ public class ItemServiceImpl implements ItemService {
 
     //TODO might need to set disc for price range (Remove start pos, max res if so) ___ or Delete this Method
     @Override
+    @Transactional(readOnly = true)
     public List<ItemDTO> findInPriceRange(BigDecimal minPrice, BigDecimal maxPrice, Integer startPos, Integer maxResults) {
         logger.info("Retrieving Items in price range");
         List<Item> items = itemDao.findInPriceRange(minPrice, maxPrice, startPos, maxResults);
@@ -183,6 +187,12 @@ public class ItemServiceImpl implements ItemService {
         }
         itemDao.create(newItem);
         return simpleItemDTOConverter.toDto(newItem);
+    }
+
+    @Override
+    public Long countAll() {
+        logger.info("Counting all Items");
+        return itemDao.countAll();
     }
 
     //TODO most likely wont need these methods... DEL

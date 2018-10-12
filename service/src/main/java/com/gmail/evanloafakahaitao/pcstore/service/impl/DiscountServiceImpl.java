@@ -50,6 +50,7 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public DiscountDTO findByPercent(DiscountDTO discountDTO) {
         logger.info("Retrieving Discount by Percent");
         Discount discount = discountDao.findByPercent(discountDTO.getPercent());

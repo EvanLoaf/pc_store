@@ -41,6 +41,7 @@ create table if not exists t_user (
   f_last_name   varchar(20)                                    not null,
   f_password    varchar(60)                                    not null,
   f_is_disabled boolean default false                          not null,
+  f_is_deleted  boolean default false                          not null,
   f_role_id     bigint(19) unsigned                            not null,
   f_discount_id bigint(19) unsigned,
   primary key (f_id),
@@ -127,7 +128,7 @@ create table if not exists t_news (
 
 create table if not exists t_comment (
   f_id         bigint(19) unsigned auto_increment             not null,
-  f_content    varchar(180)                                   not null,
+  f_message    varchar(180)                                   not null,
   f_created    datetime default now()                         not null,
   f_is_deleted boolean default false                          not null,
   f_user_id    bigint(19) unsigned                            not null,
@@ -186,7 +187,7 @@ values (1, 'SECURITY_ADMIN_BASIC_PERMISSION'),
        (29, 'UPDATE_NEWS_ALL'),
        (30, 'REMOVE_NEWS_ALL'),
        (31, 'REMOVE_COMMENTS_ALL'),
-       (32, 'CREATE_ITEM,'),
+       (32, 'CREATE_ITEM'),
        (33, 'COPY_ITEM'),
        (34, 'REMOVE_ITEM'),
        (35, 'UPLOAD_ITEMS'),
@@ -281,6 +282,12 @@ values (1,
         null)
 on duplicate key update f_id = f_id;
 
+insert into t_profile (f_user_id, f_address, f_phone_number)
+values (1, 'address1', 'phone1'),
+       (2, 'address2', 'phone2'),
+       (3, 'address3', 'phone3'),
+       (4, 'address4', 'phone4');
+
 insert into t_item (f_id, f_name, f_vendor_code, f_description, f_price, f_is_deleted)
 values (1, 'pc1', 'vc1', 'desc1', 111.00, false),
        (2, 'pc2', 'vc2', 'desc2', 111.00, false),
@@ -291,6 +298,16 @@ values (1, 'pc1', 'vc1', 'desc1', 111.00, false),
        (7, 'pc7', 'vc7', 'desc7', 111.00, false),
        (8, 'pc8', 'vc8', 'desc8', 111.00, false)
 on duplicate key update f_id = f_id;
+
+insert into t_feedback (f_id, f_user_id, f_message)
+values (1, 4, 'hey'),
+       (2, 4, 'there');
+
+insert into t_news (f_id, f_title, f_content, f_created, f_is_deleted, f_user_id)
+values (1, 'testnews', 'test message', now(), false, 2);
+
+insert into t_comment (f_id, f_content, f_created, f_is_deleted, f_user_id, f_news_id)
+values (1, 'test comment', now(), false, 4, 1);
 
 (5, 'user1@pcst.by', 'user', 'default', 'password', false, (select r.f_id from t_role r where r.f_name = 'user'), null)
 

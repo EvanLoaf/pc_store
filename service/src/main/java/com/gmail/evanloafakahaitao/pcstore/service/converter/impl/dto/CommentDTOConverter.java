@@ -25,7 +25,7 @@ public class CommentDTOConverter implements DTOConverter<CommentDTO, Comment> {
     public CommentDTO toDto(Comment entity) {
         CommentDTO comment = new CommentDTO();
         comment.setId(entity.getId());
-        comment.setContent(entity.getContent());
+        comment.setMessage(entity.getMessage());
         comment.setCreated(entity.getCreated());
         comment.setUser(simpleUserDTOConverter.toDto(entity.getUser()));
         return comment;

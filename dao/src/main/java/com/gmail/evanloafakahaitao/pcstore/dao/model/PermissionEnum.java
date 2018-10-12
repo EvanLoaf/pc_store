@@ -40,7 +40,9 @@ public enum PermissionEnum {
     VIEW_ITEMS_API,
     CREATE_ITEM_API,
     UPDATE_ITEM_API,
-    DELETE_ITEM_API;
+    DELETE_ITEM_API,
+    MANAGE_BUSINESS_CARD,
+    MANAGE_BUSINESS_CARD_API;
 
     private static final Logger logger = LogManager.getLogger(PermissionEnum.class);
 

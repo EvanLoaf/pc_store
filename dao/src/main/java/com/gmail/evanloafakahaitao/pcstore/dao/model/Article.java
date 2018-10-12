@@ -12,8 +12,8 @@ import java.util.Objects;
 import java.util.Set;
 
 @Table(name = "News")
-@Entity(name = "News")
-@SQLDelete(sql = "update t_news set f_is_deleted = true where id = ?")
+@Entity
+@SQLDelete(sql = "update t_news set f_is_deleted = true where f_id = ?")
 @Where(clause = "f_is_deleted = false")
 public class Article extends SoftDeleteEntity implements Serializable {
 

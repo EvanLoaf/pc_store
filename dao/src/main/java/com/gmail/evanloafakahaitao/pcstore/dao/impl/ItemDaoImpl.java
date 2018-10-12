@@ -23,7 +23,7 @@ public class ItemDaoImpl extends GenericDaoImpl<Item> implements ItemDao {
         if (query.getResultList().isEmpty()) {
             return null;
         } else {
-            return (Item) query.getSingleResult();
+            return (Item) query.uniqueResult();
         }
     }
 
@@ -68,7 +68,7 @@ public class ItemDaoImpl extends GenericDaoImpl<Item> implements ItemDao {
         Query query = getCurrentSession().createQuery(hql);
         query.setParameter("minprice", minPrice);
         query.setParameter("maxprice", maxPrice);
-        return (Long) query.getSingleResult();
+        return (Long) query.uniqueResult();
     }
 
     @Override

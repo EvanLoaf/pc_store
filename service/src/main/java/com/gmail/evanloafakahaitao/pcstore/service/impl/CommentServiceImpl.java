@@ -12,6 +12,7 @@ import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.impl.dto.ArticleDTOConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.CommentDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.ArticleDTO;
+import com.gmail.evanloafakahaitao.pcstore.service.util.CurrentUserExtractor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
@@ -25,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Iterator;
+import java.util.Set;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.REPEATABLE_READ)
@@ -62,7 +64,7 @@ public class CommentServiceImpl implements CommentService {
         if (!articleDTO.getComments().isEmpty()) {
             Article article = articleDao.findOne(articleDTO.getId());
             Comment comment = commentConverter.toEntity(articleDTO.getComments().iterator().next());
-            User user = userDao.findByEmail(comment.getUser().getEmail());
+            User user = userDao.findOne(CurrentUserExtractor.getCurrentId());
             if (comment.getCreated() == null) {
                 comment.setCreated(LocalDateTime.now());
             }
@@ -81,8 +83,16 @@ public class CommentServiceImpl implements CommentService {
         logger.info("Deleting Comment by Id");
         if (!articleDTO.getComments().isEmpty()) {
             Article article = articleDao.findOne(articleDTO.getId());
-            Comment comment = commentDao.findOne(articleDTO.getComments().iterator().next().getId());
-            article.getComments().remove(comment);
+            /*Comment comment = commentDao.findOne(articleDTO.getComments().iterator().next().getId());*/
+            Iterator<Comment> iterator = article.getComments().iterator();
+            while (iterator.hasNext()) {
+                Comment comment = iterator.next();
+                if (comment.getId().equals(articleDTO.getComments().iterator().next().getId())) {
+                    iterator.remove();
+                    break;
+                }
+            }
+            /*article.getComments().remove(comment);*/
             articleDao.update(article);
             return articleDTOConverter.toDto(article);
         } else {

@@ -1,7 +1,9 @@
 package com.gmail.evanloafakahaitao.pcstore.controller;
 
+import com.gmail.evanloafakahaitao.pcstore.controller.model.Pagination;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.PageProperties;
 import com.gmail.evanloafakahaitao.pcstore.controller.util.FileConverter;
+import com.gmail.evanloafakahaitao.pcstore.controller.util.PaginationUtil;
 import com.gmail.evanloafakahaitao.pcstore.controller.validator.ItemValidator;
 import com.gmail.evanloafakahaitao.pcstore.service.ItemService;
 import com.gmail.evanloafakahaitao.pcstore.service.XMLService;
@@ -31,36 +33,49 @@ public class ItemsController {
     private final FileConverter fileConverter;
     private final XMLItemConverter xmlItemConverter;
     private final XMLService xmlService;
+    private final PaginationUtil paginationUtil;
 
     @Autowired
-    public ItemsController(PageProperties pageProperties, ItemService itemService, ItemValidator itemValidator, FileConverter fileConverter, XMLItemConverter xmlItemConverter, XMLService xmlService) {
+    public ItemsController(
+            PageProperties pageProperties,
+            ItemService itemService,
+            ItemValidator itemValidator,
+            FileConverter fileConverter,
+            XMLItemConverter xmlItemConverter,
+            XMLService xmlService,
+            PaginationUtil paginationUtil
+    ) {
         this.pageProperties = pageProperties;
         this.itemService = itemService;
         this.itemValidator = itemValidator;
         this.fileConverter = fileConverter;
         this.xmlItemConverter = xmlItemConverter;
         this.xmlService = xmlService;
+        this.paginationUtil = paginationUtil;
     }
 
     @GetMapping
     @PreAuthorize("hasAuthority('view_items')")
     public String getItems(
-            @RequestParam(value = "page", required = false) Integer page,
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
             ModelMap modelMap
     ) {
-        if (page == null) {
-            page = 1;
-        }
-        int startPosition = (page - 1) * pageProperties.getPaginationMaxResults();
-        List<ItemDTO> items = itemService.findAll(startPosition, pageProperties.getPaginationMaxResults());
+        List<ItemDTO> items = itemService.findAll(paginationUtil.getStartPosition(page), pageProperties.getPaginationMaxResults());
         modelMap.addAttribute("items", items);
+        Pagination pagination = new Pagination();
+        pagination.setPage(page);
+        pagination.setPageNumbers(
+                paginationUtil.getPageNumbers(itemService.countAll().intValue())
+        );
+        pagination.setStartPosition(paginationUtil.getStartPosition(page) + 1);
+        modelMap.addAttribute("pagination", pagination);
         return pageProperties.getItemsPagePath();
     }
 
     @PostMapping
     @PreAuthorize("hasAuthority('create_item')")
     public String createItem(
-            @ModelAttribute("order") ItemDTO item,
+            @ModelAttribute("item") ItemDTO item,
             BindingResult result,
             ModelMap modelMap
     ) {
@@ -70,7 +85,7 @@ public class ItemsController {
             return pageProperties.getItemCreatePagePath();
         } else {
             itemService.save(item);
-            return pageProperties.getItemsPagePath();
+            return "redirect:/web/items";
         }
     }
 
@@ -91,23 +106,24 @@ public class ItemsController {
     @PreAuthorize("hasAuthority('upload_items')")
     public String uploadItems(
             @RequestParam("file") MultipartFile multipartItems,
-            BindingResult result,
+            /*BindingResult result,*/
             ModelMap modelMap
     ) throws IOException {
         File itemsFile = fileConverter.convert(multipartItems);
         List<ItemXMLDTO> xmlItems = xmlService.getXmlItems(itemsFile, pageProperties.getSchemaFilePath());
         List<ItemDTO> items = xmlItemConverter.toItems(xmlItems);
         for (ItemDTO item : items) {
-            BindingResult itemResult = result;
+            /*BindingResult itemResult = result;
             itemValidator.validate(item, itemResult);
             if (!itemResult.hasErrors()) {
                 itemService.save(item);
-            }
+            }*/
+            itemService.save(item);
         }
-        return pageProperties.getItemsPagePath();
+        return "redirect:/web/items";
     }
 
-    @GetMapping(value = "/{id}/delete")
+    /*@GetMapping(value = "/{id}/delete")
     @PreAuthorize("hasAuthority('remove_item')")
     public String deleteItem(
             @PathVariable("id") Long id
@@ -116,6 +132,19 @@ public class ItemsController {
         item.setId(id);
         itemService.softDelete(item);
         return pageProperties.getItemsPagePath();
+    }*/
+
+    @PostMapping(value = "/delete")
+    @PreAuthorize("hasAuthority('remove_item')")
+    public String deleteItem(
+            @RequestParam("ids") Long[] ids
+    ) {
+        for (Long id : ids) {
+            SimpleItemDTO item = new SimpleItemDTO();
+            item.setId(id);
+            itemService.softDelete(item);
+        }
+        return "redirect:/web/items";
     }
 
     @GetMapping(value = "/{id}/copy")
@@ -126,6 +155,6 @@ public class ItemsController {
         SimpleItemDTO item = new SimpleItemDTO();
         item.setId(id);
         itemService.copy(item);
-        return pageProperties.getItemsPagePath();
+        return "redirect:/web/items";
     }
 }

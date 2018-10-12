@@ -50,6 +50,7 @@ public class DatabaseConfig {
     public SpringLiquibase springLiquibase(DataSource dataSource) {
         SpringLiquibase springLiquibase = new SpringLiquibase();
         springLiquibase.setDataSource(dataSource);
+        //TODO temp not drop first
         springLiquibase.setDropFirst(Boolean.TRUE);
         springLiquibase.setChangeLog("classpath:migration/db-changelog.xml");
         return springLiquibase;
@@ -67,7 +68,6 @@ public class DatabaseConfig {
         properties.put(SHOW_SQL, databaseProperties.getHibernateShowSQL());
         properties.put(FORMAT_SQL, databaseProperties.getHibernateFormatSQL());
         properties.put(HBM2DDL_AUTO, databaseProperties.getHibernateHBM2DDLAuto());
-        /*properties.put(CURRENT_SESSION_CONTEXT_CLASS, databaseProperties.getHibernateCurrentSessionContextClass());*/
         properties.put(USE_SECOND_LEVEL_CACHE, databaseProperties.getHibernateUseSecondLevelCache());
         properties.put(CACHE_REGION_FACTORY, databaseProperties.getHibernateCacheRegionFactoryClass());
         factoryBean.setHibernateProperties(properties);
@@ -76,7 +76,7 @@ public class DatabaseConfig {
                 Article.class,
                 Audit.class,
                 Comment.class,
-                DisableEntity.class,
+                SoftDeleteAndDisableEntity.class,
                 Discount.class,
                 Feedback.class,
                 Item.class,
@@ -86,7 +86,8 @@ public class DatabaseConfig {
                 Profile.class,
                 Role.class,
                 SoftDeleteEntity.class,
-                User.class
+                User.class,
+                BusinessCard.class
         );
         return factoryBean;
     }

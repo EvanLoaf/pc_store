@@ -7,7 +7,10 @@ import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
 import com.gmail.evanloafakahaitao.pcstore.service.ArticleService;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
+import com.gmail.evanloafakahaitao.pcstore.service.converter.impl.dto.SimpleArticleDTOConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.ArticleDTO;
+import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleArticleDTO;
+import com.gmail.evanloafakahaitao.pcstore.service.util.CurrentUserExtractor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
@@ -33,43 +36,42 @@ public class ArticleServiceImpl implements ArticleService {
     private final UserDao userDao;
     private final Converter<ArticleDTO, Article> articleConverter;
     private final DTOConverter<ArticleDTO, Article> articleDTOConverter;
+    private final DTOConverter<SimpleArticleDTO, Article> simpleArticleDTOConverter;
 
     @Autowired
     public ArticleServiceImpl(
             ArticleDao articleDao,
             UserDao userDao,
             @Qualifier("articleConverter") Converter<ArticleDTO, Article> articleConverter,
-            @Qualifier("articleDTOConverter") DTOConverter<ArticleDTO, Article> articleDTOConverter
+            @Qualifier("articleDTOConverter") DTOConverter<ArticleDTO, Article> articleDTOConverter,
+            DTOConverter<SimpleArticleDTO, Article> simpleArticleDTOConverter
     ) {
         this.articleDao = articleDao;
         this.userDao = userDao;
         this.articleConverter = articleConverter;
         this.articleDTOConverter = articleDTOConverter;
+        this.simpleArticleDTOConverter = simpleArticleDTOConverter;
     }
 
     @Override
     public ArticleDTO save(ArticleDTO articleDTO) {
         logger.info("Saving News");
-        if (articleDTO.getUser().getEmail() != null) {
-            User user = userDao.findByEmail(articleDTO.getUser().getEmail());
-            Article article = articleConverter.toEntity(articleDTO);
-            if (article.getCreated() == null) {
-                article.setCreated(LocalDateTime.now());
-            }
-            article.setDeleted(false);
-            article.setUser(user);
-            articleDao.create(article);
-            return articleDTOConverter.toDto(article);
-        } else {
-            return null;
+        User user = userDao.findOne(CurrentUserExtractor.getCurrentId());
+        Article article = articleConverter.toEntity(articleDTO);
+        if (article.getCreated() == null) {
+            article.setCreated(LocalDateTime.now());
         }
+        article.setDeleted(false);
+        article.setUser(user);
+        articleDao.create(article);
+        return articleDTOConverter.toDto(article);
     }
 
     @Override
-    public ArticleDTO deleteById(ArticleDTO articleDTO) {
+    public SimpleArticleDTO deleteById(SimpleArticleDTO simpleArticleDTO) {
         logger.info("Deleting News by Id");
-        articleDao.deleteById(articleDTO.getId());
-        return articleDTO;
+        articleDao.deleteById(simpleArticleDTO.getId());
+        return simpleArticleDTO;
     }
 
     @Override
@@ -87,9 +89,23 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleDTO> findAll(Integer startPosition, Integer maxResults) {
+    @Transactional(readOnly = true)
+    public List<SimpleArticleDTO> findAll(Integer startPosition, Integer maxResults) {
         logger.info("Retrieving all News");
         List<Article> articles = articleDao.findAll(startPosition, maxResults);
-        return articleDTOConverter.toDTOList(articles);
+        return simpleArticleDTOConverter.toDTOList(articles);
+    }
+
+    @Override
+    public Long countAll() {
+        logger.info("Counting all News");
+        return articleDao.countAll();
+    }
+
+    @Override
+    public ArticleDTO findById(SimpleArticleDTO news) {
+        logger.info("Retrieving News by Id");
+        Article article = articleDao.findOne(news.getId());
+        return articleDTOConverter.toDto(article);
     }
 }

@@ -65,6 +65,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<FeedbackDTO> findAll(Integer startPosition, Integer maxResults) {
         logger.info("Retrieving all Feedback");
         List<Feedback> feedbacks = feedbackDao.findAll(startPosition, maxResults);

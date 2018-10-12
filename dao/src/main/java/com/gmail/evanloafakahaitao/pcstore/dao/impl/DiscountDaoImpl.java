@@ -18,6 +18,6 @@ public class DiscountDaoImpl extends GenericDaoImpl<Discount> implements Discoun
         String hql = "from Discount as d where d.percent=:percent";
         Query query = getCurrentSession().createQuery(hql);
         query.setParameter("percent", percent);
-        return (Discount) query.getSingleResult();
+        return (Discount) query.uniqueResult();
     }
 }

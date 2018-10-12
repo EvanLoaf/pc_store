@@ -23,31 +23,43 @@
             </c:if>--%>
 
             <form:form action="${app}/web/users" modelAttribute="user" method="post">
-                <form:errors path="email" cssClass="container-fluid" element="div"/>
+                <form:errors path="email" cssClass="alert-danger" element="div"/>
                 <div class="form-group">
                     <form:label path="email">Email address</form:label>
                     <form:input type="email" path="email" class="form-control" id="email"
                                 aria-describedby="emailHelp"
                                 placeholder="your@mail.com"/>
                 </div>
-                <form:errors path="password" cssClass="container-fluid" element="div"/>
+                <form:errors path="password" cssClass="alert-danger" element="div"/>
                 <div class="form-group">
                     <form:label path="password">Password</form:label>
                     <form:input type="password" path="password" class="form-control" id="password"
                                 placeholder="********"/>
                 </div>
-                <form:errors path="firstName" cssClass="container-fluid" element="div"/>
+                <form:errors path="firstName" cssClass="alert-danger" element="div"/>
                 <div class="form-group">
                     <form:label path="firstName">First name</form:label>
                     <form:input type="text" path="firstName"  class="form-control"
                                 id="firstName"
                                 placeholder="John"/>
                 </div>
-                <form:errors path="lastName" cssClass="container-fluid" element="div"/>
+                <form:errors path="lastName" cssClass="alert-danger" element="div"/>
                 <div class="form-group">
                     <form:label path="lastName">Last name</form:label>
                     <form:input type="text" path="lastName" class="form-control" id="lastName"
                                 placeholder="Doe"/>
+                </div>
+                <form:errors path="address" cssClass="alert-danger" element="div"/>
+                <div class="form-group">
+                    <form:label path="address">Address</form:label>
+                    <form:input type="text" path="address" class="form-control" id="address"
+                                placeholder="10 Downing Street"/>
+                </div>
+                <form:errors path="phoneNumber" cssClass="alert-danger" element="div"/>
+                <div class="form-group">
+                    <form:label path="phoneNumber">Phone number</form:label>
+                    <form:input type="text" path="phoneNumber" class="form-control" id="phoneNumber"
+                                placeholder="+86 123 123 123"/>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form:form>
