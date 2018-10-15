@@ -12,7 +12,7 @@ public class SimpleOrderDTO implements Serializable {
     private static final long serialVersionUID = -1882979228195015744L;
 
     private String uuid;
-    private LocalDateTime created;
+    private String created;
     private Integer quantity;
     private BigDecimal totalPrice;
     private OrderStatusEnum status;
@@ -27,11 +27,11 @@ public class SimpleOrderDTO implements Serializable {
         this.uuid = uuid;
     }
 
-    public LocalDateTime getCreated() {
+    public String getCreated() {
         return created;
     }
 
-    public void setCreated(LocalDateTime created) {
+    public void setCreated(String created) {
         this.created = created;
     }
 

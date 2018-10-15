@@ -6,7 +6,6 @@ import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.DiscountDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.OrderUserDTO;
-import com.gmail.evanloafakahaitao.pcstore.service.dto.ProfileDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -14,15 +13,12 @@ import org.springframework.stereotype.Component;
 @Component("orderUserConverter")
 public class OrderUserConverter implements Converter<OrderUserDTO, User> {
 
-    private final Converter<ProfileDTO, Profile> profileConverter;
     private final Converter<DiscountDTO, Discount> discountConverter;
 
     @Autowired
     public OrderUserConverter(
-            @Qualifier("profileConverter") Converter<ProfileDTO, Profile> profileConverter,
             @Qualifier("discountConverter") Converter<DiscountDTO, Discount> discountConverter
     ) {
-        this.profileConverter = profileConverter;
         this.discountConverter = discountConverter;
     }
 
@@ -30,9 +26,14 @@ public class OrderUserConverter implements Converter<OrderUserDTO, User> {
     public User toEntity(OrderUserDTO dto) {
         User user = new User();
         user.setEmail(dto.getEmail());
-        if (dto.getProfile() != null) {
-            user.setProfile(profileConverter.toEntity(dto.getProfile()));
+        Profile profile = new Profile();
+        if (dto.getAddress() != null) {
+            profile.setAddress(dto.getAddress());
         }
+        if (dto.getPhoneNumber() != null) {
+            profile.setPhoneNumber(dto.getPhoneNumber());
+        }
+        user.setProfile(profile);
         if (dto.getDiscount() != null) {
             user.setDiscount(discountConverter.toEntity(dto.getDiscount()));
         }

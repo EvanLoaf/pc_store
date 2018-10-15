@@ -27,9 +27,6 @@ public class AuditConverter implements Converter<AuditDTO, Audit> {
         audit.setId(audit.getId());
         audit.setEventType(dto.getEventType());
         audit.setUser(simpleUserConverter.toEntity(dto.getUser()));
-        if (dto.getCreated() != null) {
-            audit.setCreated(dto.getCreated());
-        }
         return audit;
     }
 }

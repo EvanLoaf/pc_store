@@ -35,9 +35,6 @@ public class OrderConverter implements Converter<OrderDTO, Order> {
         if (dto.getUuid() != null) {
             order.setUuid(dto.getUuid());
         }
-        if (dto.getCreated() != null) {
-            order.setCreated(dto.getCreated());
-        }
         if (dto.getStatus() != null) {
             order.setStatus(dto.getStatus());
         }

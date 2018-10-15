@@ -10,7 +10,7 @@ public class AuditDTO implements Serializable {
 
     private Long id;
     private String eventType;
-    private LocalDateTime created;
+    private String created;
     private SimpleUserDTO user;
 
     public Long getId() {
@@ -29,11 +29,11 @@ public class AuditDTO implements Serializable {
         this.eventType = eventType;
     }
 
-    public LocalDateTime getCreated() {
+    public String getCreated() {
         return created;
     }
 
-    public void setCreated(LocalDateTime created) {
+    public void setCreated(String created) {
         this.created = created;
     }
 

@@ -10,7 +10,7 @@ public class CommentDTO implements Serializable {
 
     private Long id;
     private String message;
-    private LocalDateTime created;
+    private String created;
     private SimpleUserDTO user;
 
     public Long getId() {
@@ -29,11 +29,11 @@ public class CommentDTO implements Serializable {
         this.message = message;
     }
 
-    public LocalDateTime getCreated() {
+    public String getCreated() {
         return created;
     }
 
-    public void setCreated(LocalDateTime created) {
+    public void setCreated(String created) {
         this.created = created;
     }
 

@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import java.time.format.DateTimeFormatter;
+
 @Component("commentDTOConverter")
 public class CommentDTOConverter implements DTOConverter<CommentDTO, Comment> {
 
@@ -26,7 +28,8 @@ public class CommentDTOConverter implements DTOConverter<CommentDTO, Comment> {
         CommentDTO comment = new CommentDTO();
         comment.setId(entity.getId());
         comment.setMessage(entity.getMessage());
-        comment.setCreated(entity.getCreated());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        comment.setCreated(entity.getCreated().format(formatter));
         comment.setUser(simpleUserDTOConverter.toDto(entity.getUser()));
         return comment;
     }

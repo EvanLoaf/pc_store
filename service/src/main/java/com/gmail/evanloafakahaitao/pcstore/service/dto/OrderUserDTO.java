@@ -9,7 +9,8 @@ public class OrderUserDTO implements Serializable {
 
     private String email;
     private String name;
-    private ProfileDTO profile;
+    private String address;
+    private String phoneNumber;
     private DiscountDTO discount;
 
     public String getEmail() {
@@ -28,12 +29,20 @@ public class OrderUserDTO implements Serializable {
         this.name = name;
     }
 
-    public ProfileDTO getProfile() {
-        return profile;
+    public String getAddress() {
+        return address;
     }
 
-    public void setProfile(ProfileDTO profile) {
-        this.profile = profile;
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public DiscountDTO getDiscount() {

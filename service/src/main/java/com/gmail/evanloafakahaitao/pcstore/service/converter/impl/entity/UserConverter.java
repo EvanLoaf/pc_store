@@ -6,7 +6,6 @@ import com.gmail.evanloafakahaitao.pcstore.dao.model.Role;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.DiscountDTO;
-import com.gmail.evanloafakahaitao.pcstore.service.dto.ProfileDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.RoleDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,17 +15,14 @@ import org.springframework.stereotype.Component;
 @Component("userConverter")
 public class UserConverter implements Converter<UserDTO, User> {
 
-    private final Converter<ProfileDTO, Profile> profileConverter;
     private final Converter<RoleDTO, Role> roleConverter;
     private final Converter<DiscountDTO, Discount> discountConverter;
 
     @Autowired
     public UserConverter(
-            @Qualifier("profileConverter") Converter<ProfileDTO, Profile> profileConverter,
             @Qualifier("roleConverter") Converter<RoleDTO, Role> roleConverter,
             @Qualifier("discountConverter") Converter<DiscountDTO, Discount> discountConverter
     ) {
-        this.profileConverter = profileConverter;
         this.roleConverter = roleConverter;
         this.discountConverter = discountConverter;
     }
@@ -57,9 +53,6 @@ public class UserConverter implements Converter<UserDTO, User> {
         }
         if (dto.getDisabled() != null) {
             user.setDisabled(dto.getDisabled());
-        }
-        if (dto.getDeleted() != null) {
-            user.setDeleted(dto.getDeleted());
         }
         return user;
     }

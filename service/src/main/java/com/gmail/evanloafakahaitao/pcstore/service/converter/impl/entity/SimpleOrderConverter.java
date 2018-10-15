@@ -27,7 +27,6 @@ public class SimpleOrderConverter implements Converter<SimpleOrderDTO, Order> {
         //TODO might be probs here, not sure yet
         Order order = new Order();
         order.setUuid(dto.getUuid());
-        order.setCreated(dto.getCreated());
         order.setStatus(dto.getStatus());
         order.setTotalPrice(dto.getTotalPrice());
         order.setQuantity(dto.getQuantity());

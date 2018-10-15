@@ -1,9 +1,6 @@
 package com.gmail.evanloafakahaitao.pcstore.controller.util;
 
-import com.gmail.evanloafakahaitao.pcstore.controller.NewsController;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.PageProperties;
-import com.gmail.evanloafakahaitao.pcstore.dao.model.OrderStatusEnum;
-import com.gmail.evanloafakahaitao.pcstore.service.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +21,12 @@ public class PaginationUtil {
     }
 
     public int getStartPosition(int page) {
+        logger.debug("Calculating start position for page " + page);
         return (page - 1) * pageProperties.getPaginationMaxResults();
     }
 
     public int[] getPageNumbers(int itemCount) {
+        logger.debug("Calculating page numbers for " + itemCount + " items on a single page");
         if (itemCount == 0) {
             return new int[] {1};
         } else {

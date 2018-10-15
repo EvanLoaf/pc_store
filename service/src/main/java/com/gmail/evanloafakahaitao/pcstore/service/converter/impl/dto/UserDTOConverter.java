@@ -10,19 +10,16 @@ import org.springframework.stereotype.Component;
 @Component("userDTOConverter")
 public class UserDTOConverter implements DTOConverter<UserDTO, User> {
 
-    private final DTOConverter<ProfileDTO, Profile> profileDTOConverter;
     private final DTOConverter<RoleDTO, Role> roleDTOConverter;
     private final DTOConverter<DiscountDTO, Discount> discountDTOConverter;
     private final DTOConverter<BusinessCardDTO, BusinessCard> businessCardDTOConverter;
 
     @Autowired
     public UserDTOConverter(
-            @Qualifier("profileDTOConverter") DTOConverter<ProfileDTO, Profile> profileDTOConverter,
             @Qualifier("roleDTOConverter") DTOConverter<RoleDTO, Role> roleDTOConverter,
             @Qualifier("discountDTOConverter") DTOConverter<DiscountDTO, Discount> discountDTOConverter,
             @Qualifier("businessCardDTOConverter") DTOConverter<BusinessCardDTO, BusinessCard> businessCardDTOConverter
     ) {
-        this.profileDTOConverter = profileDTOConverter;
         this.roleDTOConverter = roleDTOConverter;
         this.discountDTOConverter = discountDTOConverter;
         this.businessCardDTOConverter = businessCardDTOConverter;
@@ -41,7 +38,6 @@ public class UserDTOConverter implements DTOConverter<UserDTO, User> {
             user.setPhoneNumber(entity.getProfile().getPhoneNumber());
         }
         user.setDisabled(entity.isDisabled());
-        user.setDeleted(entity.isDeleted());
         if (entity.getDiscount() != null) {
             user.setDiscount(discountDTOConverter.toDto(entity.getDiscount()));
         }

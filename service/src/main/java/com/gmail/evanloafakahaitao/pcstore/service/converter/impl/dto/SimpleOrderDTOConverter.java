@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.math.RoundingMode;
+import java.time.format.DateTimeFormatter;
 
 @Component("simpleOrderDTOConverter")
 public class SimpleOrderDTOConverter implements DTOConverter<SimpleOrderDTO, Order> {
@@ -27,7 +28,8 @@ public class SimpleOrderDTOConverter implements DTOConverter<SimpleOrderDTO, Ord
     @Override
     public SimpleOrderDTO toDto(Order entity) {
         SimpleOrderDTO order = new SimpleOrderDTO();
-        order.setCreated(entity.getCreated());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        order.setCreated(entity.getCreated().format(formatter));
         order.setStatus(entity.getStatus());
         order.setQuantity(entity.getQuantity());
         order.setTotalPrice(entity.getTotalPrice().setScale(2, RoundingMode.CEILING));
