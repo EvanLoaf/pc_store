@@ -11,6 +11,8 @@ public interface GenericDao<T extends Serializable> {
 
     List<T> findAll(Integer startPosition, Integer maxResults);
 
+    List<T> findAll();
+
     Long countAll();
 
     void create(final T entity);

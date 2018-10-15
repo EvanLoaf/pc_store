@@ -16,6 +16,7 @@ import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.impl.dto.SimpleUserDTOConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.impl.entity.UserConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.impl.dto.UserDTOConverter;
+import com.gmail.evanloafakahaitao.pcstore.service.dto.DiscountDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.ProfileDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleUserDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.UserDTO;
@@ -47,6 +48,7 @@ public class UserServiceImpl implements UserService {
     private final Converter<UserDTO, User> userConverter;
     private final DTOConverter<SimpleUserDTO, User> simpleUserDTOConverter;
     private final Converter<ProfileDTO, Profile> profileConverter;
+    private final DTOConverter<DiscountDTO, Discount> discountDTOConverter;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
@@ -58,7 +60,8 @@ public class UserServiceImpl implements UserService {
             @Qualifier("userConverter") Converter<UserDTO, User> userConverter,
             @Qualifier("simpleUserDTOConverter") DTOConverter<SimpleUserDTO, User> simpleUserDTOConverter,
             @Qualifier("profileConverter") Converter<ProfileDTO, Profile> profileConverter,
-            BCryptPasswordEncoder bCryptPasswordEncoder
+            BCryptPasswordEncoder bCryptPasswordEncoder,
+            @Qualifier("discountDTOConverter") DTOConverter<DiscountDTO, Discount> discountDTOConverter
     ) {
         this.userDao = userDao;
         this.roleDao = roleDao;
@@ -68,6 +71,7 @@ public class UserServiceImpl implements UserService {
         this.simpleUserDTOConverter = simpleUserDTOConverter;
         this.profileConverter = profileConverter;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.discountDTOConverter = discountDTOConverter;
     }
 
     @Override
@@ -87,6 +91,7 @@ public class UserServiceImpl implements UserService {
         } else {
             user.setDiscount(null);
         }
+        user.getProfile().setUser(user);
         userDao.create(user);
         return userDTOConverter.toDto(user);
     }
@@ -129,10 +134,10 @@ public class UserServiceImpl implements UserService {
                 Role role = roleDao.findOne(userDTO.getRole().getId());
                 user.setRole(role);
             }
-            if (userDTO.getDiscount() != null && userDTO.getDiscount().getPercent() != null) {
-                Discount discount = discountDao.findByPercent(userDTO.getDiscount().getPercent());
+            /*if (userDTO.getDiscount() != null && userDTO.getDiscount().getPercent() != null) {
+                Discount discount = discountDao.findOne(userDTO.getDiscount().getId());
                 user.setDiscount(discount);
-            }
+            }*/
             userDao.update(user);
         }
         return userDTOConverter.toDto(user);
@@ -169,5 +174,23 @@ public class UserServiceImpl implements UserService {
     public Long countAll() {
         logger.info("Counting all Users");
         return userDao.countAll();
+    }
+
+    @Override
+    public List<UserDTO> findAllNotDeleted(Integer startPosition, Integer maxResults) {
+        logger.info("Retrieving all not deleted Users");
+        List<User> users = userDao.findAllNotDeleted(startPosition, maxResults);
+        return userDTOConverter.toDTOList(users);
+    }
+
+    @Override
+    public DiscountDTO updateDiscountAll(Long discountId) {
+        Discount discount = discountDao.findOne(discountId);
+        List<User> users = userDao.findAll();
+        for (User user : users) {
+            user.setDiscount(discount);
+            userDao.update(user);
+        }
+        return discountDTOConverter.toDto(discount);
     }
 }

@@ -17,7 +17,7 @@
         </div>
         <div class="col-md-8">
             <div class="row">
-                <a href="${app}/web/business/cards/create"
+                <a href="${app}/web/cards/create"
                    class="btn btn-primary" aria-pressed="true" role="button">CREATE CARD</a>
             </div>
             <div class="row">

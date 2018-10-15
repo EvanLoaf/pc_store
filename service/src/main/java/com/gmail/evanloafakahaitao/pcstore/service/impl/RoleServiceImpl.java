@@ -48,9 +48,9 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<RoleDTO> findAll(Integer startPosition, Integer maxResults) {
+    public List<RoleDTO> findAll() {
        logger.info("Retrieving all Roles");
-       List<Role> roles = roleDao.findAll(startPosition, maxResults);
+       List<Role> roles = roleDao.findAll();
        return roleDTOConverter.toDTOList(roles);
     }
 }

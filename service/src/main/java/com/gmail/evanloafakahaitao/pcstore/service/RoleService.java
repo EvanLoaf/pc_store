@@ -8,5 +8,5 @@ public interface RoleService {
 
     RoleDTO findByName(RoleDTO roleDTO);
 
-    List<RoleDTO> findAll(Integer startPosition, Integer maxResults);
+    List<RoleDTO> findAll();
 }

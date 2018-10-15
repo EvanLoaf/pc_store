@@ -20,6 +20,8 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED)
 public class DiscountServiceImpl implements DiscountService {
@@ -55,5 +57,12 @@ public class DiscountServiceImpl implements DiscountService {
         logger.info("Retrieving Discount by Percent");
         Discount discount = discountDao.findByPercent(discountDTO.getPercent());
         return discountDTOConverter.toDto(discount);
+    }
+
+    @Override
+    public List<DiscountDTO> findAll() {
+        logger.info("Retrieving all Discounts");
+        List<Discount> discounts = discountDao.findAll();
+        return discountDTOConverter.toDTOList(discounts);
     }
 }

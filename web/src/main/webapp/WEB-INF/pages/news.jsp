@@ -90,10 +90,22 @@
             <security:authorize access="isAuthenticated()">
                 Hello <security:authentication property="principal.name"/>
             </security:authorize>
-            <security:authorize access="hasAnyAuthority('view_orders_self', 'view_orders_all')">
+            <security:authorize access="hasAuthority('view_orders_self')">
                 <div class="row">
-                    <a href="${app}/web/orders"
+                    <a href="${app}/web/orders/self"
                        class="btn btn-outline-success" aria-pressed="true" role="button">SHOW ORDERS</a>
+                </div>
+            </security:authorize>
+            <security:authorize access="hasAuthority('view_orders_all')">
+                <div class="row">
+                    <a href="${app}/web/orders/all"
+                       class="btn btn-outline-success" aria-pressed="true" role="button">SHOW ORDERS</a>
+                </div>
+            </security:authorize>
+            <security:authorize access="hasAuthority('view_feedback')">
+                <div class="row">
+                    <a href="${app}/web/feedback"
+                       class="btn btn-outline-success" aria-pressed="true" role="button">SHOW FEEDBACK</a>
                 </div>
             </security:authorize>
             <security:authorize access="hasAuthority('view_user_self')">

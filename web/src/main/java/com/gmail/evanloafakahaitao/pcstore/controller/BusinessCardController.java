@@ -15,7 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/web/business/cards")
+@RequestMapping("/web/cards")
 public class BusinessCardController {
 
     private final BusinessCardService businessCardService;

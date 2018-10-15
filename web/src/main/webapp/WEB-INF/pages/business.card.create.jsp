@@ -8,7 +8,7 @@
 <head>
     <c:set var="app" value="${pageContext.request.contextPath}"/>
     <jsp:include page="/WEB-INF/pages/util/head.jsp"/>
-    <title>Orders</title>
+    <title>Create business card</title>
 </head>
 <body>
 <div class="container wide">
@@ -18,8 +18,11 @@
         </div>
         <div class="col-md-8">
             <div class="row">
+                <h1>Create business card</h1>
+            </div>
+            <div class="row">
                 <div class="col-md-12">
-                    <form:form action="${app}/web/business/cards" modelAttribute="businessCard" method="post">
+                    <form:form action="${app}/web/cards" modelAttribute="businessCard" method="post">
                         <form:errors path="title" cssClass="alert-danger" element="div"/>
                         <div class="form-group">
                             <form:label path="title">Title</form:label>
@@ -60,7 +63,7 @@
             </security:authorize>
             <security:authorize access="hasAuthority('manage_business_card')">
                 <div class="row">
-                    <a href="${app}/web/business/cards"
+                    <a href="${app}/web/cards"
                        class="btn btn-outline-success" aria-pressed="true" role="button">BUSINESS CARDS</a>
                 </div>
             </security:authorize>

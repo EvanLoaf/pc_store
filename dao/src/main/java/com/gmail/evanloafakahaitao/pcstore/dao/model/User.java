@@ -17,7 +17,6 @@ import java.util.Set;
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SQLDelete(sql = "update t_user set f_is_deleted = true where f_id = ?")
-@Where(clause = "f_is_deleted = false")
 public class User extends SoftDeleteAndDisableEntity implements Serializable {
 
     @Id
@@ -40,7 +39,7 @@ public class User extends SoftDeleteAndDisableEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "roleId", nullable = false)
     private Role role;
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "user")
     private Profile profile;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "discountId")

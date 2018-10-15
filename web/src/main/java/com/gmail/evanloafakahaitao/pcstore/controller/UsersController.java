@@ -3,8 +3,10 @@ package com.gmail.evanloafakahaitao.pcstore.controller;
 import com.gmail.evanloafakahaitao.pcstore.controller.model.Pagination;
 import com.gmail.evanloafakahaitao.pcstore.controller.util.PaginationUtil;
 import com.gmail.evanloafakahaitao.pcstore.controller.util.TargetDeterminer;
+import com.gmail.evanloafakahaitao.pcstore.service.DiscountService;
 import com.gmail.evanloafakahaitao.pcstore.service.RoleService;
 import com.gmail.evanloafakahaitao.pcstore.service.UserService;
+import com.gmail.evanloafakahaitao.pcstore.service.dto.DiscountDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.RoleDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleUserDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.UserDTO;
@@ -34,6 +36,7 @@ public class UsersController {
     private final TargetDeterminer targetDeterminer;
     private final RoleService roleService;
     private final PaginationUtil paginationUtil;
+    private final DiscountService discountService;
 
     @Autowired
     public UsersController(
@@ -42,7 +45,8 @@ public class UsersController {
             UserValidator userValidator,
             TargetDeterminer targetDeterminer,
             RoleService roleService,
-            PaginationUtil paginationUtil
+            PaginationUtil paginationUtil,
+            DiscountService discountService
     ) {
         this.pageProperties = pageProperties;
         this.userService = userService;
@@ -50,6 +54,7 @@ public class UsersController {
         this.targetDeterminer = targetDeterminer;
         this.roleService = roleService;
         this.paginationUtil = paginationUtil;
+        this.discountService = discountService;
     }
 
     @GetMapping
@@ -58,7 +63,7 @@ public class UsersController {
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             ModelMap modelMap
     ) {
-        List<UserDTO> users = userService.findAll(paginationUtil.getStartPosition(page), pageProperties.getPaginationMaxResults());
+        List<UserDTO> users = userService.findAllNotDeleted(paginationUtil.getStartPosition(page), pageProperties.getPaginationMaxResults());
         modelMap.addAttribute("users", users);
         Pagination pagination = new Pagination();
         pagination.setPage(page);
@@ -86,7 +91,7 @@ public class UsersController {
         }
     }
 
-    @PostMapping(value = "/admin")
+    /*@PostMapping(value = "/admin")
     @PreAuthorize("hasAuthority('create_user')")
     public String createUserAdmin(
             @ModelAttribute("user") UserDTO user,
@@ -101,10 +106,10 @@ public class UsersController {
             userService.save(user);
             return "redirect:/web/users";
         }
-    }
+    }*/
 
     @GetMapping(value = "/{id}")
-    @PreAuthorize("hasAnyAuthority('view_user_self', 'update_user_self', 'update_users_all')")
+    @PreAuthorize("hasAnyAuthority('view_user_self', 'update_user_self')")
     public String getUser(
             @PathVariable("id") Long id,
             ModelMap modelMap
@@ -121,7 +126,7 @@ public class UsersController {
         modelMap.addAttribute("roles", roles);*/
 
     @PostMapping(value = "/{id}")
-    @PreAuthorize("hasAnyAuthority('update_user_self', 'update_users_all')")
+    @PreAuthorize("hasAuthority('update_user_self')")
     public String updateUser(
             @PathVariable("id") Long id,
             @ModelAttribute("user") UserDTO user,
@@ -135,16 +140,35 @@ public class UsersController {
             return pageProperties.getUserProfilePagePath();
         } else {
             userService.update(user);
-            return "redirect:/web/users/" + id;
+            return "redirect:/web/users/" + id + "?update=true";
         }
     }
 
-    @GetMapping(value = "/create")
+    @PostMapping(value = "/{id}/admin")
+    @PreAuthorize("hasAuthority('update_users_all')")
+    public String updateUserByAdmin(
+            @PathVariable("id") Long id,
+            @ModelAttribute("user") UserDTO user,
+            BindingResult result,
+            ModelMap modelMap
+    ) {
+        user.setId(id);
+        userValidator.validate(user, result);
+        if (result.hasErrors()) {
+            modelMap.addAttribute("user", user);
+            return pageProperties.getUserUpdatePagePath();
+        } else {
+            userService.update(user);
+            return "redirect:/web/users" + "?update=true";
+        }
+    }
+
+    /*@GetMapping(value = "/create")
     @PreAuthorize("hasAuthority('create_user')")
     public String createUserPage(ModelMap modelMap) {
         modelMap.addAttribute("user", new UserDTO());
         return pageProperties.getUserCreatePagePath();
-    }
+    }*/
 
     @PostMapping(value = "/delete")
     @PreAuthorize("hasAuthority('delete_user')")
@@ -181,9 +205,28 @@ public class UsersController {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(id);
         UserDTO user = userService.findById(userDTO);
-        List<RoleDTO> roles = roleService.findAll(0, pageProperties.getPaginationMaxResults());
+        List<RoleDTO> roles = roleService.findAll();
         modelMap.addAttribute("roles", roles);
         modelMap.addAttribute("user", user);
         return pageProperties.getUserUpdatePagePath();
+    }
+
+    @PostMapping(value = "/discounts/update")
+    @PreAuthorize("hasAuthority('update_discount_users')")
+    public String updateUsersDiscounts(
+            @RequestParam("discountId") Long discountId
+    ) {
+        userService.updateDiscountAll(discountId);
+        return "redirect:/web/items" + "?userdiscounts=true";
+    }
+
+    @GetMapping(value = "/discounts/update")
+    @PreAuthorize("hasAuthority('update_discount_users')")
+    public String updateUsersDiscountsPage(
+            ModelMap modelMap
+    ) {
+        List<DiscountDTO> discounts = discountService.findAll();
+        modelMap.addAttribute("discounts", discounts);
+        return pageProperties.getUsersSetDiscountPagePath();
     }
 }

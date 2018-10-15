@@ -29,17 +29,11 @@ public class ItemDaoImpl extends GenericDaoImpl<Item> implements ItemDao {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<Item> findInPriceRange(BigDecimal minPrice, BigDecimal maxPrice, Integer startPos, Integer maxResults) {
+    public List<Item> findInPriceRange(BigDecimal minPrice, BigDecimal maxPrice) {
         String hql = "from Item as i where i.price between :minprice and :maxprice order by i.price desc";
         Query query = getCurrentSession().createQuery(hql);
         query.setParameter("minprice", minPrice);
         query.setParameter("maxprice", maxPrice);
-        if (startPos != null && !startPos.equals(0)) {
-            query.setFirstResult(startPos);
-        }
-        if (maxResults != null && !maxResults.equals(0)) {
-            query.setMaxResults(maxResults);
-        }
         return query.getResultList();
     }
 
@@ -77,5 +71,15 @@ public class ItemDaoImpl extends GenericDaoImpl<Item> implements ItemDao {
         Query query = getCurrentSession().createQuery(hql);
         query.setParameter("id", id);
         return query.executeUpdate();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Item> findAllNotDeleted(Integer startPosition, Integer maxResults) {
+        String hql = "from Item as i where i.isDeleted=false";
+        Query query = getCurrentSession().createQuery(hql);
+        query.setFirstResult(startPosition);
+        query.setMaxResults(maxResults);
+        return query.getResultList();
     }
 }

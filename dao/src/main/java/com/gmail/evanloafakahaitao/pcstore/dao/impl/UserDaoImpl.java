@@ -5,6 +5,8 @@ import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
 
@@ -27,5 +29,15 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
         query.setParameter("isDisabled", isDisabled);
         query.setParameter("id", id);
         return query.executeUpdate();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<User> findAllNotDeleted(Integer startPosition, Integer maxResults) {
+        String hql = "from User as u where u.isDeleted=false";
+        Query query = getCurrentSession().createQuery(hql);
+        query.setFirstResult(startPosition);
+        query.setMaxResults(maxResults);
+        return query.getResultList();
     }
 }

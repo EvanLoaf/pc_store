@@ -18,13 +18,7 @@
         </div>
         <div class="col-md-8">
             <div class="row">
-                <div class="col-md-12">
-                    <%--<c:if test="${not empty error}">
-                        <div class="alert alert-danger" role="alert">
-                            <c:out value="${error}"/>
-                        </div>
-                    </c:if>--%>
-                </div>
+                <h1>Create order</h1>
             </div>
             <div class="row">
                 <div class="col-md-12">
@@ -50,7 +44,7 @@
                                 <td>
                                     <c:choose>
                                         <c:when test="${not empty item.discounts}">
-                                            <c:out value="${item.discounts[0].percent}"/>
+                                            <c:out value="${item.discounts.iterator().next().percent}"/>
                                         </c:when>
                                         <c:otherwise>
                                             0

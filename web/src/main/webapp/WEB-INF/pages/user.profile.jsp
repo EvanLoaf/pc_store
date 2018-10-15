@@ -26,6 +26,25 @@
                 </div>
             </div>--%>
             <div class="row">
+
+                <div class="row">
+                    <c:if test="${param.feedback == 'true'}">
+                        <div class="alert alert-success" role="alert">
+                            <p>Feedback submitted successfully</p>
+                        </div>
+                    </c:if>
+
+                    <c:if test="${param.update == 'true'}">
+                        <div class="alert alert-success" role="alert">
+                            <p> Profile updated successfully</p>
+                        </div>
+                    </c:if>
+                </div>
+
+                <div class="row">
+                    <h1>You may change your profile info</h1>
+                </div>
+
                 <div class="col-lg-12">
                     <form:form action="${app}/web/users/${user.id}" modelAttribute="user" method="post">
                         <form:errors path="password" cssClass="alert-danger" element="div"/>
@@ -66,13 +85,19 @@
             </security:authorize>
             <security:authorize access="hasAuthority('view_orders_self')">
                 <div class="row">
-                    <a href="${app}/web/orders"
+                    <a href="${app}/web/orders/self"
                        class="btn btn-outline-success" aria-pressed="true" role="button">SHOW ORDERS</a>
+                </div>
+            </security:authorize>
+            <security:authorize access="hasAuthority('create_feedback')">
+                <div class="row">
+                    <a href="${app}/web/feedback/create"
+                       class="btn btn-outline-success" aria-pressed="true" role="button">LEAVE FEEDBACK</a>
                 </div>
             </security:authorize>
             <security:authorize access="hasAuthority('manage_business_card')">
                 <div class="row">
-                    <a href="${app}/web/business/cards"
+                    <a href="${app}/web/cards"
                        class="btn btn-outline-success" aria-pressed="true" role="button">BUSINESS CARDS</a>
                 </div>
             </security:authorize>

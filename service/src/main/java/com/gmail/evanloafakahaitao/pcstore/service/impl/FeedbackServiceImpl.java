@@ -12,6 +12,7 @@ import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.impl.entity.FeedbackConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.impl.dto.FeedbackDTOConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.FeedbackDTO;
+import com.gmail.evanloafakahaitao.pcstore.service.util.CurrentUserExtractor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
@@ -53,15 +54,13 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Override
     public FeedbackDTO save(FeedbackDTO feedbackDTO) {
         logger.info("Saving Feedback");
-        if (feedbackDTO.getUser().getId() != null) {
-            Feedback feedback = feedbackConverter.toEntity(feedbackDTO);
-            User user = userDao.findOne(feedbackDTO.getUser().getId());
-            feedback.setUser(user);
-            feedbackDao.create(feedback);
-            return feedbackDTOConverter.toDto(feedback);
-        } else {
-            return null;
-        }
+        Feedback feedback = feedbackConverter.toEntity(feedbackDTO);
+        User user = userDao.findOne(
+                CurrentUserExtractor.getCurrentId()
+        );
+        feedback.setUser(user);
+        feedbackDao.create(feedback);
+        return feedbackDTOConverter.toDto(feedback);
     }
 
     @Override
@@ -73,9 +72,15 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public FeedbackDTO deleteById(FeedbackDTO feedbackDTO) {
-            logger.info("Deleting Feedback by Id");
-            feedbackDao.deleteById(feedbackDTO.getId());
-            return feedbackDTO;
+    public Long deleteById(Long id) {
+        logger.info("Deleting Feedback by Id");
+        feedbackDao.deleteById(id);
+        return id;
+    }
+
+    @Override
+    public Long countAll() {
+        logger.info("Counting all Feedback");
+        return feedbackDao.countAll();
     }
 }

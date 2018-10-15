@@ -18,6 +18,9 @@
         </div>
         <div class="col-md-8">
             <security:authorize access="hasAuthority('update_news_all')">
+                <div class="row">
+                    <h1>You may update this piece of news</h1>
+                </div>
                 <form:form action="${app}/web/news/${news.id}" modelAttribute="news" method="post">
                     <div class="row">
                         <div class="col-md-12">
@@ -81,15 +84,15 @@
             </security:authorize>
             <security:authorize access="hasAuthority('create_comment')">
                 <div class="row">
-                    <h3 class="panel-title">${news.title}</h3>
+                    <h3 class="panel-title">Title : ${news.title}</h3>
                 </div>
                 <div class="row">
-                    <h4 class="label-info">${news.user.name}</h4>
+                    <h4 class="label-info">Created by : ${news.user.name}</h4>
                 </div>
                 <div class="row">
-                    <h5 class="label-info">${news.created}</h5>
+                    <h5 class="label-info">on ${news.created}</h5>
                 </div>
-                <div class="row text-center text-capitalize">
+                <div class="news">
                     ${news.content}
                 </div>
                 <div class="row">
@@ -139,9 +142,15 @@
             <security:authorize access="isAuthenticated()">
                 Hello <security:authentication property="principal.name"/>
             </security:authorize>
-            <security:authorize access="hasAnyAuthority('view_orders_self', 'view_orders_all')">
+            <security:authorize access="hasAuthority('view_orders_self')">
                 <div class="row">
-                    <a href="${app}/web/orders"
+                    <a href="${app}/web/orders/self"
+                       class="btn btn-outline-success" aria-pressed="true" role="button">SHOW ORDERS</a>
+                </div>
+            </security:authorize>
+            <security:authorize access="hasAuthority('view_orders_all')">
+                <div class="row">
+                    <a href="${app}/web/orders/all"
                        class="btn btn-outline-success" aria-pressed="true" role="button">SHOW ORDERS</a>
                 </div>
             </security:authorize>

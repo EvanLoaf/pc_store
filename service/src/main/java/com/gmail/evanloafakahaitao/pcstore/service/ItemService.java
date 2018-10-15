@@ -11,7 +11,7 @@ public interface ItemService {
 
     List<ItemDTO> save(List<ItemDTO> items);
 
-    List<ItemDTO> findAll(Integer startPosition, Integer maxResults);
+    List<ItemDTO> findAllNotDeleted(Integer startPosition, Integer maxResults);
 
     ItemDTO findByVendorCode(ItemDTO itemDTO);
 
@@ -30,6 +30,8 @@ public interface ItemService {
     SimpleItemDTO copy(SimpleItemDTO simpleItemDTO);
 
     Long countAll();
+
+    DiscountDTO updateDiscountAll(Long discountId, BigDecimal minPriceRange, BigDecimal maxPriceRange);
 
     /*List<ItemDTO> findByDiscount(DiscountDTO discountDTO);
 

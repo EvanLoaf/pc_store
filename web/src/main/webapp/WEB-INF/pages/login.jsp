@@ -22,11 +22,15 @@
                 </div>
             </c:if>
 
-            <c:if test="${not empty param.logout}">
+            <c:if test="${param.logout == 'true'}">
                 <div class="alert alert-success" role="alert">
                     <p>Logged off successfully</p>
                 </div>
             </c:if>
+
+            <div class="row">
+                <h1>Login into your account</h1>
+            </div>
 
             <form action="${app}/web/login" method="post">
                 <div class="form-group">

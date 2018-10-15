@@ -42,6 +42,7 @@ public class ItemServiceImpl implements ItemService {
     private final Converter<ItemDTO, Item> itemConverter;
     private final DTOConverter<ItemDTO, Item> itemDTOConverter;
     private final DTOConverter<SimpleItemDTO, Item> simpleItemDTOConverter;
+    private final DTOConverter<DiscountDTO, Discount> discountDTOConverter;
 
     @Autowired
     public ItemServiceImpl(
@@ -49,13 +50,15 @@ public class ItemServiceImpl implements ItemService {
             DiscountDao discountDao,
             @Qualifier("itemConverter") Converter<ItemDTO, Item> itemConverter,
             @Qualifier("itemDTOConverter") DTOConverter<ItemDTO, Item> itemDTOConverter,
-            @Qualifier("simpleItemDTOConverter") DTOConverter<SimpleItemDTO, Item> simpleItemDTOConverter
+            @Qualifier("simpleItemDTOConverter") DTOConverter<SimpleItemDTO, Item> simpleItemDTOConverter,
+            @Qualifier("discountDTOConverter") DTOConverter<DiscountDTO, Discount> discountDTOConverter
     ) {
         this.itemDao = itemDao;
         this.discountDao = discountDao;
         this.itemConverter = itemConverter;
         this.itemDTOConverter = itemDTOConverter;
         this.simpleItemDTOConverter = simpleItemDTOConverter;
+        this.discountDTOConverter = discountDTOConverter;
     }
 
     //TODO most likely delete this method
@@ -73,9 +76,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ItemDTO> findAll(Integer startPosition, Integer maxResults) {
-        logger.info("Retrieving all Items");
-        List<Item> items = itemDao.findAll(startPosition, maxResults);
+    public List<ItemDTO> findAllNotDeleted(Integer startPosition, Integer maxResults) {
+        logger.info("Retrieving all not deleted Items");
+        List<Item> items = itemDao.findAllNotDeleted(startPosition, maxResults);
         return itemDTOConverter.toDTOList(items);
     }
 
@@ -113,7 +116,7 @@ public class ItemServiceImpl implements ItemService {
     @Transactional(readOnly = true)
     public List<ItemDTO> findInPriceRange(BigDecimal minPrice, BigDecimal maxPrice, Integer startPos, Integer maxResults) {
         logger.info("Retrieving Items in price range");
-        List<Item> items = itemDao.findInPriceRange(minPrice, maxPrice, startPos, maxResults);
+        List<Item> items = itemDao.findInPriceRange(minPrice, maxPrice);
         return itemDTOConverter.toDTOList(items);
     }
 
@@ -193,6 +196,18 @@ public class ItemServiceImpl implements ItemService {
     public Long countAll() {
         logger.info("Counting all Items");
         return itemDao.countAll();
+    }
+
+    @Override
+    public DiscountDTO updateDiscountAll(Long discountId, BigDecimal minPriceRange, BigDecimal maxPriceRange) {
+        Discount discount = discountDao.findOne(discountId);
+        List<Item> items = itemDao.findInPriceRange(minPriceRange, maxPriceRange);
+        for (Item item : items) {
+            item.getDiscounts().clear();
+            item.getDiscounts().add(discount);
+            itemDao.update(item);
+        }
+        return discountDTOConverter.toDto(discount);
     }
 
     //TODO most likely wont need these methods... DEL

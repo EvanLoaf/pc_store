@@ -3,6 +3,7 @@ package com.gmail.evanloafakahaitao.pcstore.service.impl;
 import com.gmail.evanloafakahaitao.pcstore.dao.ArticleDao;
 import com.gmail.evanloafakahaitao.pcstore.dao.UserDao;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Article;
+import com.gmail.evanloafakahaitao.pcstore.dao.model.Comment;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
 import com.gmail.evanloafakahaitao.pcstore.service.ArticleService;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
@@ -106,6 +107,12 @@ public class ArticleServiceImpl implements ArticleService {
     public ArticleDTO findById(SimpleArticleDTO news) {
         logger.info("Retrieving News by Id");
         Article article = articleDao.findOne(news.getId());
+        logger.info("COMMENT USERS : ");
+        for (Comment comment : article.getComments()) {
+            logger.info("user id " + comment.getUser().getId());
+            logger.info("user role " + comment.getUser().getRole().getName());
+            logger.info("user email " + comment.getUser().getEmail());
+        }
         return articleDTOConverter.toDto(article);
     }
 }

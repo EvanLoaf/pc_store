@@ -9,3 +9,10 @@ textarea.mytextarea {
     min-height: 200px;
 }
 
+.news {
+    width: 100%;
+    text-align: center;
+    color: #533f03;
+    font-size: 24px;
+}
+

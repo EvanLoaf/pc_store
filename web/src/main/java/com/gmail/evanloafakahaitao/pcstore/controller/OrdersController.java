@@ -46,25 +46,31 @@ public class OrdersController {
         this.itemService = itemService;
     }
 
-    @GetMapping
-    @PreAuthorize("hasAnyAuthority('view_orders_all', 'view_orders_self')")
+    @GetMapping(value = "/self")
+    @PreAuthorize("hasAuthority('view_orders_self')")
+    public String getOrdersFromUser(
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            ModelMap modelMap
+    ) {
+        int startPosition = (page - 1) * pageProperties.getPaginationMaxResults();
+        Long userId = CurrentUserExtractor.getCurrentId();
+        SimpleUserDTO user = new SimpleUserDTO();
+        user.setId(userId);
+        List<SimpleOrderDTO> orders = orderService.findByUserId(user, startPosition, pageProperties.getPaginationMaxResults());
+        modelMap.addAttribute("orders", orders);
+        return pageProperties.getOrdersPagePath();
+    }
+
+    @GetMapping(value = "/all")
+    @PreAuthorize("hasAuthority('view_orders_all')")
     public String getOrders(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             ModelMap modelMap
     ) {
         int startPosition = (page - 1) * pageProperties.getPaginationMaxResults();
-        String targetMethod = targetDeterminer.methodToFindOrders();
-        if (targetMethod.equals("all")) {
-            List<OrderDTO> orders = orderService.findAll(startPosition, pageProperties.getPaginationMaxResults());
-            modelMap.addAttribute("statusEnum", OrderStatusEnum.values());
-            modelMap.addAttribute("orders", orders);
-        } else if (targetMethod.equals("self")) {
-            Long userId = CurrentUserExtractor.getCurrentId();
-            SimpleUserDTO user = new SimpleUserDTO();
-            user.setId(userId);
-            List<SimpleOrderDTO> orders = orderService.findByUserId(user, startPosition, pageProperties.getPaginationMaxResults());
-            modelMap.addAttribute("orders", orders);
-        }
+        List<OrderDTO> orders = orderService.findAll(startPosition, pageProperties.getPaginationMaxResults());
+        modelMap.addAttribute("statusEnum", OrderStatusEnum.values());
+        modelMap.addAttribute("orders", orders);
         return pageProperties.getOrdersPagePath();
     }
 
@@ -90,7 +96,7 @@ public class OrdersController {
             return pageProperties.getOrderCreatePagePath();
         } else {
             orderService.save(order);
-            return "redirect:/web/orders";
+            return "redirect:/web/orders/self";
         }
     }
 
@@ -130,7 +136,7 @@ public class OrdersController {
         order.setUuid(uuid);
         order.setStatus(status);
         orderService.update(order);
-        return "redirect:/web/orders";
+        return "redirect:/web/orders/all" + "?status=true";
     }
 
     /*@GetMapping(value = "/{uuid}/update")
@@ -154,6 +160,6 @@ public class OrdersController {
         SimpleOrderDTO order = new SimpleOrderDTO();
         order.setUuid(uuid);
         orderService.deleteByUuid(order);
-        return "redirect:/web/orders";
+        return "redirect:/web/orders/self";
     }
 }

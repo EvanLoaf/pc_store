@@ -1,6 +1,7 @@
 package com.gmail.evanloafakahaitao.pcstore.controller;
 
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.PageProperties;
+import com.gmail.evanloafakahaitao.pcstore.controller.util.PaginationUtil;
 import com.gmail.evanloafakahaitao.pcstore.controller.validator.ItemValidator;
 import com.gmail.evanloafakahaitao.pcstore.service.ItemService;
 import com.gmail.evanloafakahaitao.pcstore.service.OrderService;
@@ -21,13 +22,21 @@ public class ItemsAPIController {
     private final OrderService orderService;
     private final PageProperties pageProperties;
     private final ItemValidator itemValidator;
+    private final PaginationUtil paginationUtil;
 
     @Autowired
-    public ItemsAPIController(ItemService itemService, PageProperties pageProperties, OrderService orderService, ItemValidator itemValidator) {
+    public ItemsAPIController(
+            ItemService itemService,
+            PageProperties pageProperties,
+            OrderService orderService,
+            ItemValidator itemValidator,
+            PaginationUtil paginationUtil
+    ) {
         this.itemService = itemService;
         this.pageProperties = pageProperties;
         this.orderService = orderService;
         this.itemValidator = itemValidator;
+        this.paginationUtil = paginationUtil;
     }
 
     @GetMapping
@@ -35,11 +44,7 @@ public class ItemsAPIController {
     public List<ItemDTO> getItems(
             @RequestParam(value = "page", defaultValue = "1") Integer page
     ) {
-        /*if (page == null) {
-            page = 1;
-        }*/
-        int startPosition = (page - 1) * pageProperties.getPaginationMaxResults();
-        return itemService.findAll(startPosition, pageProperties.getPaginationMaxResults());
+        return itemService.findAllNotDeleted(paginationUtil.getStartPosition(page), pageProperties.getPaginationMaxResults());
     }
 
     @PostMapping

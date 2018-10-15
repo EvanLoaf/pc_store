@@ -7,7 +7,7 @@
 <head>
     <c:set var="app" value="${pageContext.request.contextPath}"/>
     <jsp:include page="/WEB-INF/pages/util/head.jsp"/>
-    <title>Items</title>
+    <title>Users</title>
 </head>
 <body>
 <div class="container wide">
@@ -16,6 +16,15 @@
             <jsp:include page="/WEB-INF/pages/util/ads.jsp"/>
         </div>
         <div class="col-md-8">
+
+            <div class="row">
+                <c:if test="${param.update == 'true'}">
+                    <div class="alert alert-success" role="alert">
+                        <p> User updated successfully</p>
+                    </div>
+                </c:if>
+            </div>
+
             <div class="row">
                 <div class="col-md-8">
                     <form action="${app}/web/users/delete" method="post">

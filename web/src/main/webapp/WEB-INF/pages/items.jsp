@@ -16,6 +16,19 @@
             <jsp:include page="/WEB-INF/pages/util/ads.jsp"/>
         </div>
         <div class="col-md-8">
+
+            <c:if test="${param.userdiscounts == 'true'}">
+                <div class="alert alert-success" role="alert">
+                    <p> User Discounts updated successfully</p>
+                </div>
+            </c:if>
+
+            <c:if test="${param.itemdiscounts == 'true'}">
+                <div class="alert alert-success" role="alert">
+                    <p> Item Discounts updated successfully</p>
+                </div>
+            </c:if>
+
             <div class="row">
                 <div class="col-md-8">
                     <form action="${app}/web/items/delete" method="post">
@@ -54,7 +67,7 @@
                                             <th scope="row">
                                                 <c:out value="${counter}"/>
                                             </th>
-                                            <security:authorize access="hasAuthority('remove_news_all')">
+                                            <security:authorize access="hasAuthority('remove_item')">
                                                 <td>
                                                     <input type="checkbox" name="ids" value="${item.id}">
                                                 </td>
@@ -66,7 +79,7 @@
                                             <td>
                                                 <c:choose>
                                                     <c:when test="${not empty item.discounts}">
-                                                        <c:out value="${item.discounts[0].percent}"/>
+                                                        <c:out value="${item.discounts.iterator().next().percent}"/>
                                                     </c:when>
                                                     <c:otherwise>
                                                         0
@@ -198,10 +211,34 @@
             <%--<security:authorize access="isAuthenticated()">
                 <security:authentication property="principal.id" var="userid"/>
             </security:authorize>--%>
-            <security:authorize access="hasAnyAuthority('view_orders_self', 'view_orders_all')">
+            <security:authorize access="hasAuthority('view_orders_self')">
                 <div class="row">
-                    <a href="${app}/web/orders"
+                    <a href="${app}/web/orders/self"
                        class="btn btn-outline-success" aria-pressed="true" role="button">SHOW ORDERS</a>
+                </div>
+            </security:authorize>
+            <security:authorize access="hasAuthority('view_orders_all')">
+                <div class="row">
+                    <a href="${app}/web/orders/all"
+                       class="btn btn-outline-success" aria-pressed="true" role="button">SHOW ORDERS</a>
+                </div>
+            </security:authorize>
+            <security:authorize access="hasAuthority('view_feedback')">
+                <div class="row">
+                    <a href="${app}/web/feedback"
+                       class="btn btn-outline-success" aria-pressed="true" role="button">SHOW FEEDBACK</a>
+                </div>
+            </security:authorize>
+            <security:authorize access="hasAuthority('update_discount_users')">
+                <div class="row">
+                    <a href="${app}/web/users/discounts/update"
+                       class="btn btn-outline-success" aria-pressed="true" role="button">SET DISCOUNTS - USERS</a>
+                </div>
+            </security:authorize>
+            <security:authorize access="hasAuthority('update_discount_item')">
+                <div class="row">
+                    <a href="${app}/web/items/discounts/update"
+                       class="btn btn-outline-success" aria-pressed="true" role="button">SET DISCOUNTS - ITEMS</a>
                 </div>
             </security:authorize>
             <security:authorize access="hasAuthority('view_user_self')">

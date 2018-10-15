@@ -42,7 +42,8 @@ public enum PermissionEnum {
     UPDATE_ITEM_API,
     DELETE_ITEM_API,
     MANAGE_BUSINESS_CARD,
-    MANAGE_BUSINESS_CARD_API;
+    MANAGE_BUSINESS_CARD_API,
+    DELETE_FEEDBACK;
 
     private static final Logger logger = LogManager.getLogger(PermissionEnum.class);
 
@@ -50,7 +51,7 @@ public enum PermissionEnum {
         try {
             return PermissionEnum.valueOf(permission.toUpperCase());
         } catch (IllegalArgumentException e) {
-            logger.error("Order Status " + permission.toUpperCase() + " not found", e);
+            logger.error("Permission " + permission.toUpperCase() + " not found", e);
         }
         return null;
     }

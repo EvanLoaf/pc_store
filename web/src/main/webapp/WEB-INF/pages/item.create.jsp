@@ -69,7 +69,7 @@
             </security:authorize>
             <security:authorize access="hasAuthority('view_orders_all')">
                 <div class="row">
-                    <a href="${app}/web/orders"
+                    <a href="${app}/web/orders/all"
                        class="btn btn-outline-success" aria-pressed="true" role="button">SHOW ORDERS</a>
                 </div>
             </security:authorize>

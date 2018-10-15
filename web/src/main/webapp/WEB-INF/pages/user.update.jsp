@@ -18,7 +18,7 @@
         <div class="col-xl-8">
             <div class="row">
                 <div class="col-lg-12">
-                    <form:form action="${app}/web/users/${user.id}" modelAttribute="user" method="post">
+                    <form:form action="${app}/web/users/${user.id}/admin" modelAttribute="user" method="post">
                         <form:errors path="password" cssClass="container-fluid" element="div"/>
                         <div class="form-group">
                             <form:label path="password">Password</form:label>

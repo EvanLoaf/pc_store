@@ -34,6 +34,12 @@ public abstract class GenericDaoImpl<T extends Serializable> implements GenericD
         return query.getResultList();
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<T> findAll() {
+        return getCurrentSession().createQuery("from " + clazz.getSimpleName()).getResultList();
+    }
+
     @Override
     public Long countAll() {
         return (Long) getCurrentSession().createQuery("select count(*) from " + clazz.getSimpleName()).uniqueResult();

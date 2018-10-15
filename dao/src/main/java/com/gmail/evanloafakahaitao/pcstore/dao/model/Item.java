@@ -15,7 +15,6 @@ import java.util.Set;
 @Table
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@Where(clause = "f_is_deleted = false")
 public class Item extends SoftDeleteEntity implements Serializable {
 
     @Id

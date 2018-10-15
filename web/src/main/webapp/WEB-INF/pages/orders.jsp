@@ -16,15 +16,15 @@
             <jsp:include page="/WEB-INF/pages/util/ads.jsp"/>
         </div>
         <div class="col-md-8">
+
             <div class="row">
-                <div class="col-md-12">
-                    <%--<c:if test="${not empty error}">
-                        <div class="alert alert-danger" role="alert">
-                            <c:out value="${error}"/>
-                        </div>
-                    </c:if>--%>
-                </div>
+                <c:if test="${param.status == 'true'}">
+                    <div class="alert alert-success" role="alert">
+                        <p> Order status updated successfully</p>
+                    </div>
+                </c:if>
             </div>
+
             <div class="row">
                 <div class="col-md-12">
                     <table class="table">
@@ -168,6 +168,12 @@
                 <div class="row">
                     <a href="${app}/web/items"
                        class="btn btn-outline-success" aria-pressed="true" role="button">ITEMS</a>
+                </div>
+            </security:authorize>
+            <security:authorize access="hasAuthority('view_feedback')">
+                <div class="row">
+                    <a href="${app}/web/feedback"
+                       class="btn btn-outline-success" aria-pressed="true" role="button">SHOW FEEDBACK</a>
                 </div>
             </security:authorize>
             <security:authorize access="hasAuthority('view_news')">

@@ -8,7 +8,7 @@
 <head>
     <c:set var="app" value="${pageContext.request.contextPath}"/>
     <jsp:include page="/WEB-INF/pages/util/head.jsp"/>
-    <title>Items</title>
+    <title> UploadItems</title>
 </head>
 <body>
 <div class="container wide">
@@ -17,6 +17,9 @@
             <jsp:include page="/WEB-INF/pages/util/ads.jsp"/>
         </div>
         <div class="col-md-8">
+            <div class="row">
+                <h1>Choose file to upload items from</h1>
+            </div>
             <div class="row">
                 <div class="col-md-12">
                     <%--<c:if test="${not empty error}">

@@ -544,6 +544,10 @@
             <column name="f_id" valueNumeric="44"/>
             <column name="f_name" value="MANAGE_BUSINESS_CARD_API"/>
         </insert>
+        <insert tableName="t_permission">
+            <column name="f_id" valueNumeric="45"/>
+            <column name="f_name" value="DELETE_FEEDBACK"/>
+        </insert>
     </changeSet>
     <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-20">
         <insert tableName="t_profile">
@@ -725,6 +729,10 @@
         <insert tableName="t_role_permission">
             <column name="f_role_id" valueNumeric="2"/>
             <column name="f_permission_id" valueNumeric="38"/>
+        </insert>
+        <insert tableName="t_role_permission">
+            <column name="f_role_id" valueNumeric="2"/>
+            <column name="f_permission_id" valueNumeric="45"/>
         </insert>
         <insert tableName="t_role_permission">
             <column name="f_role_id" valueNumeric="3"/>

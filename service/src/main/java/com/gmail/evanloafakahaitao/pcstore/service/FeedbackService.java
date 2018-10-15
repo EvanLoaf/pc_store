@@ -10,5 +10,7 @@ public interface FeedbackService {
 
     List<FeedbackDTO> findAll(Integer startPosition, Integer maxResults);
 
-    FeedbackDTO deleteById(FeedbackDTO feedbackDTO);
+    Long deleteById(Long id);
+
+    Long countAll();
 }

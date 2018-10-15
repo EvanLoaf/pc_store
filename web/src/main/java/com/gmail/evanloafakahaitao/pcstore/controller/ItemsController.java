@@ -1,12 +1,16 @@
 package com.gmail.evanloafakahaitao.pcstore.controller;
 
+import com.gmail.evanloafakahaitao.pcstore.controller.model.ItemDiscountData;
 import com.gmail.evanloafakahaitao.pcstore.controller.model.Pagination;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.PageProperties;
 import com.gmail.evanloafakahaitao.pcstore.controller.util.FileConverter;
 import com.gmail.evanloafakahaitao.pcstore.controller.util.PaginationUtil;
+import com.gmail.evanloafakahaitao.pcstore.controller.validator.ItemDiscountDataValidator;
 import com.gmail.evanloafakahaitao.pcstore.controller.validator.ItemValidator;
+import com.gmail.evanloafakahaitao.pcstore.service.DiscountService;
 import com.gmail.evanloafakahaitao.pcstore.service.ItemService;
 import com.gmail.evanloafakahaitao.pcstore.service.XMLService;
+import com.gmail.evanloafakahaitao.pcstore.service.dto.DiscountDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.ItemDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleItemDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.xml.dto.ItemXMLDTO;
@@ -34,6 +38,8 @@ public class ItemsController {
     private final XMLItemConverter xmlItemConverter;
     private final XMLService xmlService;
     private final PaginationUtil paginationUtil;
+    private final DiscountService discountService;
+    private final ItemDiscountDataValidator itemDiscountDataValidator;
 
     @Autowired
     public ItemsController(
@@ -43,7 +49,9 @@ public class ItemsController {
             FileConverter fileConverter,
             XMLItemConverter xmlItemConverter,
             XMLService xmlService,
-            PaginationUtil paginationUtil
+            PaginationUtil paginationUtil,
+            DiscountService discountService,
+            ItemDiscountDataValidator itemDiscountDataValidator
     ) {
         this.pageProperties = pageProperties;
         this.itemService = itemService;
@@ -52,6 +60,8 @@ public class ItemsController {
         this.xmlItemConverter = xmlItemConverter;
         this.xmlService = xmlService;
         this.paginationUtil = paginationUtil;
+        this.discountService = discountService;
+        this.itemDiscountDataValidator = itemDiscountDataValidator;
     }
 
     @GetMapping
@@ -60,7 +70,7 @@ public class ItemsController {
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             ModelMap modelMap
     ) {
-        List<ItemDTO> items = itemService.findAll(paginationUtil.getStartPosition(page), pageProperties.getPaginationMaxResults());
+        List<ItemDTO> items = itemService.findAllNotDeleted(paginationUtil.getStartPosition(page), pageProperties.getPaginationMaxResults());
         modelMap.addAttribute("items", items);
         Pagination pagination = new Pagination();
         pagination.setPage(page);
@@ -156,5 +166,40 @@ public class ItemsController {
         item.setId(id);
         itemService.copy(item);
         return "redirect:/web/items";
+    }
+
+    @PostMapping(value = "/discounts/update")
+    @PreAuthorize("hasAuthority('update_discount_item')")
+    public String updateItemsDiscounts(
+            @ModelAttribute("discountData") ItemDiscountData discountData,
+            BindingResult result,
+            ModelMap modelMap
+    ) {
+        itemDiscountDataValidator.validate(discountData, result);
+        if (result.hasErrors()) {
+            List<DiscountDTO> discounts = discountService.findAll();
+            modelMap.addAttribute("discounts", discounts);
+            modelMap.addAttribute("discountData", discountData);
+            return pageProperties.getItemsSetDiscountPagePath();
+        } else {
+            itemService.updateDiscountAll(
+                    discountData.getDiscountId(),
+                    discountData.getMinPriceRange(),
+                    discountData.getMaxPriceRange()
+            );
+            return "redirect:/web/items" + "?itemdiscounts=true";
+        }
+
+    }
+
+    @GetMapping(value = "/discounts/update")
+    @PreAuthorize("hasAuthority('update_discount_item')")
+    public String updateItemsDiscountsPage(
+            ModelMap modelMap
+    ) {
+        List<DiscountDTO> discounts = discountService.findAll();
+        modelMap.addAttribute("discounts", discounts);
+        modelMap.addAttribute("discountData", new ItemDiscountData());
+        return pageProperties.getItemsSetDiscountPagePath();
     }
 }
