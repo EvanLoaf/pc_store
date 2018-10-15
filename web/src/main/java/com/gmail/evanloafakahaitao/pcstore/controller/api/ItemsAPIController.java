@@ -1,4 +1,4 @@
-package com.gmail.evanloafakahaitao.pcstore.controller;
+package com.gmail.evanloafakahaitao.pcstore.controller.api;
 
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.PageProperties;

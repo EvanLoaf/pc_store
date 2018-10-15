@@ -1,4 +1,4 @@
-package com.gmail.evanloafakahaitao.pcstore.controller;
+package com.gmail.evanloafakahaitao.pcstore.controller.api;
 
 import com.gmail.evanloafakahaitao.pcstore.service.BusinessCardService;
 import com.gmail.evanloafakahaitao.pcstore.service.UserService;

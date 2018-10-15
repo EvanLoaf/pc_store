@@ -35,7 +35,7 @@
         <Logger name="com.gmail.evanloafakahaitao.pcstore.dao" level="info">
             <AppenderRef ref="RollingFileDao"/>
         </Logger>
-        <Logger name="com.gmail.evanloafakahaitao.pcstore.controller.ItemsAPIController" level="debug">
+        <Logger name="com.gmail.evanloafakahaitao.pcstore.controller.api.ItemsAPIController" level="debug">
             <AppenderRef ref="RollingFileApi"/>
         </Logger>
         <Root level="debug">
