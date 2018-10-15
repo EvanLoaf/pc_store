@@ -17,6 +17,8 @@ import java.util.Set;
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Item extends SoftDeleteEntity implements Serializable {
 
+    private static final long serialVersionUID = -4727910610336287492L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)

@@ -7,6 +7,8 @@ import java.util.Objects;
 
 public class PermissionDTO implements Serializable {
 
+    private static final long serialVersionUID = -627583338569304864L;
+
     private Long id;
     private PermissionEnum name;
 

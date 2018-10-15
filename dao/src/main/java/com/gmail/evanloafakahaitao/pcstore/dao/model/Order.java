@@ -16,6 +16,8 @@ import java.util.Objects;
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Order implements Serializable {
 
+    private static final long serialVersionUID = 2845455713476116479L;
+
     @EmbeddedId
     private OrderId id = new OrderId();
     @NotNull

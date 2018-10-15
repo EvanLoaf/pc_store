@@ -2,11 +2,14 @@ package com.gmail.evanloafakahaitao.pcstore.service.dto;
 
 import com.gmail.evanloafakahaitao.pcstore.dao.model.OrderStatusEnum;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class SimpleOrderDTO {
+public class SimpleOrderDTO implements Serializable {
+
+    private static final long serialVersionUID = -1882979228195015744L;
 
     private String uuid;
     private LocalDateTime created;

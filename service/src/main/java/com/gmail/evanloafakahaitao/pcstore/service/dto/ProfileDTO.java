@@ -5,6 +5,8 @@ import java.util.Objects;
 
 public class ProfileDTO implements Serializable {
 
+    private static final long serialVersionUID = 4214973204421171618L;
+
     private String address;
     private String phoneNumber;
 

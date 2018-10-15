@@ -7,6 +7,8 @@ import java.util.Set;
 
 public class UserDTO implements Serializable {
 
+    private static final long serialVersionUID = 3770644750160269279L;
+
     private Long id;
     private String email;
     private String password;
@@ -14,9 +16,7 @@ public class UserDTO implements Serializable {
     private String lastName;
     private String address;
     private String phoneNumber;
-    private Long countOfUsers;
     private Boolean disabled;
-    private Boolean deleted;
     private RoleDTO role;
     private DiscountDTO discount;
     private Set<BusinessCardDTO> businessCards = new HashSet<>();
@@ -85,28 +85,12 @@ public class UserDTO implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public Long getCountOfUsers() {
-        return countOfUsers;
-    }
-
-    public void setCountOfUsers(Long countOfUsers) {
-        this.countOfUsers = countOfUsers;
-    }
-
     public Boolean getDisabled() {
         return disabled;
     }
 
     public void setDisabled(Boolean disabled) {
         this.disabled = disabled;
-    }
-
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
     }
 
     public RoleDTO getRole() {

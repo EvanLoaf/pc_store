@@ -1,7 +1,6 @@
 package com.gmail.evanloafakahaitao.pcstore.controller;
 
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.PageProperties;
-import com.gmail.evanloafakahaitao.pcstore.controller.util.TargetDeterminer;
 import com.gmail.evanloafakahaitao.pcstore.service.util.CurrentUserExtractor;
 import com.gmail.evanloafakahaitao.pcstore.controller.validator.OrderValidator;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.OrderStatusEnum;
@@ -25,7 +24,6 @@ public class OrdersController {
     private final PageProperties pageProperties;
     private final OrderService orderService;
     private final OrderValidator orderValidator;
-    private final TargetDeterminer targetDeterminer;
     private final UserService userService;
     private final ItemService itemService;
 
@@ -34,14 +32,12 @@ public class OrdersController {
             PageProperties pageProperties,
             OrderService orderService,
             OrderValidator orderValidator,
-            TargetDeterminer targetDeterminer,
             UserService userService,
             ItemService itemService
     ) {
         this.pageProperties = pageProperties;
         this.orderService = orderService;
         this.orderValidator = orderValidator;
-        this.targetDeterminer = targetDeterminer;
         this.userService = userService;
         this.itemService = itemService;
     }

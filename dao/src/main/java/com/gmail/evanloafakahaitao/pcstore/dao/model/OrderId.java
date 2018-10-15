@@ -9,6 +9,8 @@ import java.util.Objects;
 @Embeddable
 public class OrderId implements Serializable {
 
+    private static final long serialVersionUID = 4608870614529441551L;
+
     @NotNull
     @Column
     private Long userId;

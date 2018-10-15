@@ -8,12 +8,13 @@ import java.util.Set;
 
 public class ItemDTO implements Serializable {
 
+    private static final long serialVersionUID = -5159236282592304588L;
+
     private Long id;
     private String name;
     private String vendorCode;
     private String description;
     private BigDecimal price;
-    private Long countOfItems;
     private Set<DiscountDTO> discounts = new HashSet<>();
 
     public Long getId() {
@@ -62,14 +63,6 @@ public class ItemDTO implements Serializable {
 
     public void setDiscounts(Set<DiscountDTO> discounts) {
         this.discounts = discounts;
-    }
-
-    public Long getCountOfItems() {
-        return countOfItems;
-    }
-
-    public void setCountOfItems(Long countOfItems) {
-        this.countOfItems = countOfItems;
     }
 
     @Override

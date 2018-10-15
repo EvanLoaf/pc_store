@@ -15,6 +15,8 @@ import java.util.Objects;
 @Where(clause = "f_is_deleted = false")
 public class Comment extends SoftDeleteEntity implements Serializable {
 
+    private static final long serialVersionUID = -5373781922615496607L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)

@@ -5,6 +5,8 @@ import java.util.Objects;
 
 public class SimpleUserDTO implements Serializable {
 
+    private static final long serialVersionUID = 890248695862900208L;
+
     private Long id;
     private String name;
     private String email;

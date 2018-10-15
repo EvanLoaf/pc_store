@@ -17,6 +17,8 @@ import java.util.Set;
 @Where(clause = "f_is_deleted = false")
 public class Article extends SoftDeleteEntity implements Serializable {
 
+    private static final long serialVersionUID = 1782542057905945600L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)

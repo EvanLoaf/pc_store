@@ -5,6 +5,8 @@ import java.util.Objects;
 
 public class SimpleItemDTO implements Serializable {
 
+    private static final long serialVersionUID = -937195903295774246L;
+
     private Long id;
     private String name;
     private String vendorCode;

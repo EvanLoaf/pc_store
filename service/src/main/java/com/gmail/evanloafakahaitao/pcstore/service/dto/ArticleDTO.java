@@ -8,6 +8,8 @@ import java.util.Set;
 
 public class ArticleDTO implements Serializable {
 
+    private static final long serialVersionUID = 7468075411840216853L;
+
     private Long id;
     private String title;
     private String content;

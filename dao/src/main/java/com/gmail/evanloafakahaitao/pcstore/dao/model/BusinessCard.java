@@ -10,6 +10,8 @@ import java.util.Objects;
 @Table
 public class BusinessCard implements Serializable {
 
+    private static final long serialVersionUID = 2500702346831032924L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)

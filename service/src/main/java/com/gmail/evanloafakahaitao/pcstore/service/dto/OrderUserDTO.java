@@ -5,6 +5,8 @@ import java.util.Objects;
 
 public class OrderUserDTO implements Serializable {
 
+    private static final long serialVersionUID = -7221779444959370680L;
+
     private String email;
     private String name;
     private ProfileDTO profile;

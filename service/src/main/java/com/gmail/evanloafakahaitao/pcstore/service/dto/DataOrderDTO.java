@@ -1,8 +1,11 @@
 package com.gmail.evanloafakahaitao.pcstore.service.dto;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class DataOrderDTO {
+public class DataOrderDTO implements Serializable {
+
+    private static final long serialVersionUID = -3895436319279740913L;
 
     private String uuid;
     private Integer quantity;

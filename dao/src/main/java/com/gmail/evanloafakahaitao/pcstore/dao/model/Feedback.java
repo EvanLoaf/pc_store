@@ -9,6 +9,8 @@ import java.util.Objects;
 @Table
 public class Feedback implements Serializable {
 
+    private static final long serialVersionUID = 436348201387874840L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)

@@ -6,10 +6,11 @@ import java.util.Objects;
 
 public class CommentDTO implements Serializable {
 
+    private static final long serialVersionUID = -6031772178788668245L;
+
     private Long id;
     private String message;
     private LocalDateTime created;
-    private Long countOfComments;
     private SimpleUserDTO user;
 
     public Long getId() {
@@ -42,14 +43,6 @@ public class CommentDTO implements Serializable {
 
     public void setUser(SimpleUserDTO user) {
         this.user = user;
-    }
-
-    public Long getCountOfComments() {
-        return countOfComments;
-    }
-
-    public void setCountOfComments(Long countOfComments) {
-        this.countOfComments = countOfComments;
     }
 
     @Override

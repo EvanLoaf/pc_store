@@ -14,6 +14,8 @@ import java.util.Objects;
 @Table
 public class Profile implements Serializable {
 
+    private static final long serialVersionUID = -5261206159106684954L;
+
     @GenericGenerator(
             name = "generator",
             strategy = "foreign",

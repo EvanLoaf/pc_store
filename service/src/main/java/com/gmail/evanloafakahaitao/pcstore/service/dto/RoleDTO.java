@@ -7,6 +7,8 @@ import java.util.Set;
 
 public class RoleDTO implements Serializable {
 
+    private static final long serialVersionUID = 7349530743558629147L;
+
     private Long id;
     private String name;
     private Set<PermissionDTO> permissions = new HashSet<>();

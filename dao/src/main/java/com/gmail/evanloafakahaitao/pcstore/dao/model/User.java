@@ -19,6 +19,8 @@ import java.util.Set;
 @SQLDelete(sql = "update t_user set f_is_deleted = true where f_id = ?")
 public class User extends SoftDeleteAndDisableEntity implements Serializable {
 
+    private static final long serialVersionUID = 423469737265268726L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)

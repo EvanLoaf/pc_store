@@ -6,6 +6,8 @@ import java.util.Objects;
 
 public class SimpleArticleDTO implements Serializable {
 
+    private static final long serialVersionUID = 1914894231808461361L;
+
     private Long id;
     private String title;
     private String created;

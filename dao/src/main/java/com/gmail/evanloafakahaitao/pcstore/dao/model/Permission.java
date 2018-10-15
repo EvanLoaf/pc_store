@@ -9,6 +9,8 @@ import java.util.Objects;
 @Table
 public class Permission implements Serializable {
 
+    private static final long serialVersionUID = 2465483788641631481L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)

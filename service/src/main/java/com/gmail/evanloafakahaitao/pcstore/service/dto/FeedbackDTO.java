@@ -5,9 +5,10 @@ import java.util.Objects;
 
 public class FeedbackDTO implements Serializable {
 
+    private static final long serialVersionUID = 5299823829648609832L;
+
     private Long id;
     private String message;
-    private Long countOfFeedback;
     private SimpleUserDTO user;
 
     public Long getId() {
@@ -32,14 +33,6 @@ public class FeedbackDTO implements Serializable {
 
     public void setUser(SimpleUserDTO user) {
         this.user = user;
-    }
-
-    public Long getCountOfFeedback() {
-        return countOfFeedback;
-    }
-
-    public void setCountOfFeedback(Long countOfFeedback) {
-        this.countOfFeedback = countOfFeedback;
     }
 
     @Override

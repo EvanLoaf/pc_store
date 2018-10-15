@@ -10,6 +10,8 @@ import java.util.Objects;
 @Table
 public class Discount implements Serializable {
 
+    private static final long serialVersionUID = 5294806922396299410L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)

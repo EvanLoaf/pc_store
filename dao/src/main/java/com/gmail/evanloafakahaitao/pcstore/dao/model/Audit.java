@@ -10,6 +10,8 @@ import java.util.Objects;
 @Table
 public class Audit implements Serializable {
 
+    private static final long serialVersionUID = -6707693465296291847L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)

@@ -11,6 +11,8 @@ import java.util.Set;
 @Table
 public class Role implements Serializable {
 
+    private static final long serialVersionUID = -1454340198790778039L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)

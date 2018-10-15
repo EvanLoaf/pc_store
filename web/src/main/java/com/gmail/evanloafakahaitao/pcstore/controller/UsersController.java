@@ -2,7 +2,6 @@ package com.gmail.evanloafakahaitao.pcstore.controller;
 
 import com.gmail.evanloafakahaitao.pcstore.controller.model.Pagination;
 import com.gmail.evanloafakahaitao.pcstore.controller.util.PaginationUtil;
-import com.gmail.evanloafakahaitao.pcstore.controller.util.TargetDeterminer;
 import com.gmail.evanloafakahaitao.pcstore.service.DiscountService;
 import com.gmail.evanloafakahaitao.pcstore.service.RoleService;
 import com.gmail.evanloafakahaitao.pcstore.service.UserService;
@@ -12,7 +11,6 @@ import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleUserDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.UserDTO;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.PageProperties;
 import com.gmail.evanloafakahaitao.pcstore.controller.validator.UserValidator;
-import com.gmail.evanloafakahaitao.pcstore.service.impl.RoleServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +31,6 @@ public class UsersController {
     private final PageProperties pageProperties;
     private final UserService userService;
     private final UserValidator userValidator;
-    private final TargetDeterminer targetDeterminer;
     private final RoleService roleService;
     private final PaginationUtil paginationUtil;
     private final DiscountService discountService;
@@ -43,7 +40,6 @@ public class UsersController {
             PageProperties pageProperties,
             UserService userService,
             UserValidator userValidator,
-            TargetDeterminer targetDeterminer,
             RoleService roleService,
             PaginationUtil paginationUtil,
             DiscountService discountService
@@ -51,7 +47,6 @@ public class UsersController {
         this.pageProperties = pageProperties;
         this.userService = userService;
         this.userValidator = userValidator;
-        this.targetDeterminer = targetDeterminer;
         this.roleService = roleService;
         this.paginationUtil = paginationUtil;
         this.discountService = discountService;
