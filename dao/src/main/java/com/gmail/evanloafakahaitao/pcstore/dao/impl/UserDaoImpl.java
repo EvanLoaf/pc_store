@@ -22,15 +22,6 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
         return (User) query.uniqueResult();
     }
 
-    @Override
-    public int updateDisable(Long id, boolean isDisabled) {
-        String hql = "update User as u set u.isDisabled=:isDisabled where u.id=:id";
-        Query query = getCurrentSession().createQuery(hql);
-        query.setParameter("isDisabled", isDisabled);
-        query.setParameter("id", id);
-        return query.executeUpdate();
-    }
-
     @SuppressWarnings("unchecked")
     @Override
     public List<User> findAllNotDeleted(Integer startPosition, Integer maxResults) {

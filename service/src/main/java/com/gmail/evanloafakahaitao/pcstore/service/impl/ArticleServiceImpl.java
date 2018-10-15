@@ -8,14 +8,11 @@ import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
 import com.gmail.evanloafakahaitao.pcstore.service.ArticleService;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
-import com.gmail.evanloafakahaitao.pcstore.service.converter.impl.dto.SimpleArticleDTOConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.ArticleDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleArticleDTO;
-import com.gmail.evanloafakahaitao.pcstore.service.util.CurrentUserExtractor;
+import com.gmail.evanloafakahaitao.pcstore.service.util.CurrentUser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -24,7 +21,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -57,7 +53,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public ArticleDTO save(ArticleDTO articleDTO) {
         logger.info("Saving News");
-        User user = userDao.findOne(CurrentUserExtractor.getCurrentId());
+        User user = userDao.findOne(CurrentUser.getCurrentId());
         Article article = articleConverter.toEntity(articleDTO);
         if (article.getCreated() == null) {
             article.setCreated(LocalDateTime.now());
@@ -107,12 +103,6 @@ public class ArticleServiceImpl implements ArticleService {
     public ArticleDTO findById(SimpleArticleDTO news) {
         logger.info("Retrieving News by Id");
         Article article = articleDao.findOne(news.getId());
-        logger.info("COMMENT USERS : ");
-        for (Comment comment : article.getComments()) {
-            logger.info("user id " + comment.getUser().getId());
-            logger.info("user role " + comment.getUser().getRole().getName());
-            logger.info("user email " + comment.getUser().getEmail());
-        }
         return articleDTOConverter.toDto(article);
     }
 }

@@ -9,26 +9,26 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Collection;
 
-public class CurrentUserExtractor {
+public class CurrentUser {
 
-    private static final Logger logger = LogManager.getLogger(CurrentUserExtractor.class);
+    private static final Logger logger = LogManager.getLogger(CurrentUser.class);
 
-    private CurrentUserExtractor() {
+    private CurrentUser() {
     }
 
     private static UserPrincipal getCurrentUser() {
-        logger.info("Extracting and returning Current User from context");
+        logger.debug("Extracting and returning Current User from context");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return (UserPrincipal) authentication.getPrincipal();
     }
 
     public static Collection<? extends GrantedAuthority> getCurrentAuthorities() {
-        logger.info("Extracting and returning Current User Authorities from context");
+        logger.debug("Extracting and returning Current User Authorities from context");
         return getCurrentUser().getAuthorities();
     }
 
     public static Long getCurrentId() {
-        logger.info("Extracting and returning Current User Id from context");
+        logger.debug("Extracting and returning Current User Id from context");
         return getCurrentUser().getId();
     }
 }

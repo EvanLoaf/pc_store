@@ -61,19 +61,6 @@ public class ItemServiceImpl implements ItemService {
         this.discountDTOConverter = discountDTOConverter;
     }
 
-    //TODO most likely delete this method
-    @Override
-    public List<ItemDTO> save(List<ItemDTO> itemList) {
-        logger.info("Saving List of Items");
-        List<Item> savedItems = new ArrayList<>();
-        for (ItemDTO itemDTO : itemList) {
-            Item item = itemConverter.toEntity(itemDTO);
-            itemDao.create(item);
-            savedItems.add(item);
-        }
-        return itemDTOConverter.toDTOList(savedItems);
-    }
-
     @Override
     @Transactional(readOnly = true)
     public List<ItemDTO> findAllNotDeleted(Integer startPosition, Integer maxResults) {
@@ -111,46 +98,28 @@ public class ItemServiceImpl implements ItemService {
         return itemDTOConverter.toDto(item);
     }
 
-    //TODO might need to set disc for price range (Remove start pos, max res if so) ___ or Delete this Method
-    @Override
-    @Transactional(readOnly = true)
-    public List<ItemDTO> findInPriceRange(BigDecimal minPrice, BigDecimal maxPrice, Integer startPos, Integer maxResults) {
-        logger.info("Retrieving Items in price range");
-        List<Item> items = itemDao.findInPriceRange(minPrice, maxPrice);
-        return itemDTOConverter.toDTOList(items);
-    }
-
     //TODO it clears all the existing discount, although we got a set there.. if that's okay
     @Override
     public ItemDTO update(ItemDTO itemDTO) {
         logger.info("Updating Item Discount");
-        if (!itemDTO.getDiscounts().isEmpty()) {
-            Item item = itemDao.findByVendorCode(itemDTO.getVendorCode());
-            Discount discount = discountDao.findByPercent(itemDTO.getDiscounts().iterator().next().getPercent());
-            item.getDiscounts().clear();
-            item.getDiscounts().add(discount);
-            itemDao.update(item);
-            return itemDTOConverter.toDto(item);
-        } else {
-            Item item = itemDao.findOne(itemDTO.getId());
-            if (itemDTO.getName() != null) {
-                item.setName(itemDTO.getName());
-            }
-            if (itemDTO.getDescription() != null) {
-                item.setDescription(itemDTO.getDescription());
-            }
-            if (itemDTO.getVendorCode() != null) {
-                Item itemByVendorCode = itemDao.findByVendorCode(itemDTO.getVendorCode());
-                if (itemByVendorCode == null) {
-                    item.setVendorCode(itemDTO.getVendorCode());
-                }
-            }
-            if (itemDTO.getPrice() != null) {
-                item.setPrice(itemDTO.getPrice());
-            }
-            itemDao.update(item);
-            return itemDTOConverter.toDto(item);
+        Item item = itemDao.findOne(itemDTO.getId());
+        if (itemDTO.getName() != null) {
+            item.setName(itemDTO.getName());
         }
+        if (itemDTO.getDescription() != null) {
+            item.setDescription(itemDTO.getDescription());
+        }
+        if (itemDTO.getVendorCode() != null) {
+            Item itemByVendorCode = itemDao.findByVendorCode(itemDTO.getVendorCode());
+            if (itemByVendorCode == null) {
+                item.setVendorCode(itemDTO.getVendorCode());
+            }
+        }
+        if (itemDTO.getPrice() != null) {
+            item.setPrice(itemDTO.getPrice());
+        }
+        itemDao.update(item);
+        return itemDTOConverter.toDto(item);
     }
 
     @Override
@@ -209,46 +178,4 @@ public class ItemServiceImpl implements ItemService {
         }
         return discountDTOConverter.toDto(discount);
     }
-
-    //TODO most likely wont need these methods... DEL
-    /*@Override
-    public List<ItemDTO> findByDiscount(DiscountDTO discountDTO) {
-        Session session = itemDao.getCurrentSession();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive()) {
-                session.beginTransaction();
-            }
-            List<Item> items = itemDao.findByDiscount(discountDTO.getPercent());
-            List<ItemDTO> itemDTOS = itemDTOConverter.toDTOList(items);
-            transaction.commit();
-            return itemDTOS;
-        } catch (Exception e) {
-            if (session.getTransaction().isActive()) {
-                session.getTransaction().rollback();
-            }
-            logger.error("Failed to retrieve Items by discount", e);
-        }
-        return null;
-    }
-
-    @Override
-    public Long findCountInPriceRange(BigDecimal minPrice, BigDecimal maxPrice) {
-        Session session = itemDao.getCurrentSession();
-        try {
-            Transaction transaction = session.getTransaction();
-            if (!transaction.isActive()) {
-                session.beginTransaction();
-            }
-            Long countOfItems = itemDao.findCountInPriceRange(minPrice, maxPrice);
-            transaction.commit();
-            return countOfItems;
-        } catch (Exception e) {
-            if (session.getTransaction().isActive()) {
-                session.getTransaction().rollback();
-            }
-            logger.error("Failed to retrieve Item count", e);
-        }
-        return null;
-    }*/
 }

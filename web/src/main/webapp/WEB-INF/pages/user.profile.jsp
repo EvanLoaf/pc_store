@@ -16,15 +16,6 @@
             <jsp:include page="/WEB-INF/pages/util/ads.jsp"/>
         </div>
         <div class="col-xl-8">
-            <%--<div class="row">
-                <div class="col-lg-12">
-                    <c:if test="${not empty error}">
-                        <div class="alert alert-danger" role="alert">
-                            <c:out value="${error}"/>
-                        </div>
-                    </c:if>
-                </div>
-            </div>--%>
             <div class="row">
 
                 <div class="row">
@@ -113,18 +104,6 @@
                        class="btn btn-outline-success" aria-pressed="true" role="button">ITEMS</a>
                 </div>
             </security:authorize>
-            <%--<security:authorize access="hasAuthority('view_users_all')">
-                <div class="row">
-                    <a href="${app}/web/users"
-                       class="btn btn-outline-success" aria-pressed="true" role="button">USERS</a>
-                </div>
-            </security:authorize>
-            <security:authorize access="hasAuthority('view_audit')">
-                <div class="row">
-                    <a href="${app}/web/audit"
-                       class="btn btn-outline-success" aria-pressed="true" role="button">AUDIT</a>
-                </div>
-            </security:authorize>--%>
             <jsp:include page="/WEB-INF/pages/util/ads.jsp"/>
             <div class="row">
                 <a href="${app}/web/logout"

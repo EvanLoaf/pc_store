@@ -77,6 +77,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO save(UserDTO userDTO) {
         logger.info("Saving User");
+        //TODO isDefault impl
         Role role = roleDao.findByName("user");
         User user = userConverter.toEntity(userDTO);
         user.setDisabled(false);
@@ -85,23 +86,9 @@ public class UserServiceImpl implements UserService {
         user.setPassword(
                 bCryptPasswordEncoder.encode(userDTO.getPassword())
         );
-        if (userDTO.getDiscount() != null && userDTO.getDiscount().getPercent() != null) {
-            Discount discount = discountDao.findByPercent(userDTO.getDiscount().getPercent());
-            user.setDiscount(discount);
-        } else {
-            user.setDiscount(null);
-        }
         user.getProfile().setUser(user);
         userDao.create(user);
         return userDTOConverter.toDto(user);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<UserDTO> findAll(Integer startPosition, Integer maxResults) {
-        logger.info("Retrieving all Users");
-        List<User> users = userDao.findAll(startPosition, maxResults);
-        return userDTOConverter.toDTOList(users);
     }
 
     @Override
@@ -130,14 +117,9 @@ public class UserServiceImpl implements UserService {
                 user.getProfile().setPhoneNumber(userDTO.getPhoneNumber());
             }
             if (userDTO.getRole() != null) {
-                /*Role role = roleDao.findByName(userDTO.getRole().getName());*/
                 Role role = roleDao.findOne(userDTO.getRole().getId());
                 user.setRole(role);
             }
-            /*if (userDTO.getDiscount() != null && userDTO.getDiscount().getPercent() != null) {
-                Discount discount = discountDao.findOne(userDTO.getDiscount().getId());
-                user.setDiscount(discount);
-            }*/
             userDao.update(user);
         }
         return userDTOConverter.toDto(user);

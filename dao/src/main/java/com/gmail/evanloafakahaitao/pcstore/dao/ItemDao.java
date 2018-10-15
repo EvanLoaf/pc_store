@@ -11,10 +11,6 @@ public interface ItemDao extends GenericDao<Item> {
 
     List<Item> findInPriceRange(BigDecimal minPrice, BigDecimal maxPrice);
 
-    List<Item> findByDiscount(Integer percent);
-
-    Long findCountInPriceRange(BigDecimal minPrice, BigDecimal maxPrice);
-
     int softDelete(Long id);
 
     List<Item> findAllNotDeleted(Integer startPosition, Integer maxResults);

@@ -9,14 +9,11 @@ import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
 import com.gmail.evanloafakahaitao.pcstore.service.CommentService;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
-import com.gmail.evanloafakahaitao.pcstore.service.converter.impl.dto.ArticleDTOConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.CommentDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.ArticleDTO;
-import com.gmail.evanloafakahaitao.pcstore.service.util.CurrentUserExtractor;
+import com.gmail.evanloafakahaitao.pcstore.service.util.CurrentUser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -26,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Iterator;
-import java.util.Set;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.REPEATABLE_READ)
@@ -64,7 +60,7 @@ public class CommentServiceImpl implements CommentService {
         if (!articleDTO.getComments().isEmpty()) {
             Article article = articleDao.findOne(articleDTO.getId());
             Comment comment = commentConverter.toEntity(articleDTO.getComments().iterator().next());
-            User user = userDao.findOne(CurrentUserExtractor.getCurrentId());
+            User user = userDao.findOne(CurrentUser.getCurrentId());
             if (comment.getCreated() == null) {
                 comment.setCreated(LocalDateTime.now());
             }
@@ -83,7 +79,6 @@ public class CommentServiceImpl implements CommentService {
         logger.info("Deleting Comment by Id");
         if (!articleDTO.getComments().isEmpty()) {
             Article article = articleDao.findOne(articleDTO.getId());
-            /*Comment comment = commentDao.findOne(articleDTO.getComments().iterator().next().getId());*/
             Iterator<Comment> iterator = article.getComments().iterator();
             while (iterator.hasNext()) {
                 Comment comment = iterator.next();
@@ -92,7 +87,6 @@ public class CommentServiceImpl implements CommentService {
                     break;
                 }
             }
-            /*article.getComments().remove(comment);*/
             articleDao.update(article);
             return articleDTOConverter.toDto(article);
         } else {

@@ -16,15 +16,6 @@
             <jsp:include page="/WEB-INF/pages/util/ads.jsp"/>
         </div>
         <div class="col-xl-8">
-            <%--<div class="row">
-                <div class="col-lg-12">
-                    <c:if test="${not empty error}">
-                        <div class="alert alert-danger" role="alert">
-                            <c:out value="${error}"/>
-                        </div>
-                    </c:if>
-                </div>
-            </div>--%>
                 <div class="row">
                     <h1>Create item</h1>
                 </div>

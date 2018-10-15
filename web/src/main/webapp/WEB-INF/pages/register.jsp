@@ -15,13 +15,6 @@
         <div class="col-md-4">
         </div>
         <div class="col-md-4">
-
-            <%--<c:if test="${not empty error}">
-                <div class="alert alert-danger" role="alert">
-                    <c:out value="${error}"/>
-                </div>
-            </c:if>--%>
-
             <form:form action="${app}/web/users" modelAttribute="user" method="post">
                 <form:errors path="email" cssClass="alert-danger" element="div"/>
                 <div class="form-group">

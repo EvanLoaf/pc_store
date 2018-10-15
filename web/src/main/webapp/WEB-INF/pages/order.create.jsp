@@ -38,8 +38,6 @@
                                 <td>${item.vendorCode}</td>
                                 <td>${item.name}</td>
                                 <td>${item.description}</td>
-                                    <%--<fmt:formatNumber var="price" value="${item.price}"
-                                                      maxFractionDigits="2"/>--%>
                                 <td>${item.price}</td>
                                 <td>
                                     <c:choose>
@@ -92,25 +90,6 @@
             <security:authorize access="isAuthenticated()">
                 Hello <security:authentication property="principal.name"/>
             </security:authorize>
-            <%--<c:out value="${sessionScope.user.name}"/>--%>
-            <%--<c:choose>
-
-                <c:when test="${sessionScope.user.role == 'USER'}">
-                    <div class="row">
-                        <a href="${app}/dispatcher?command=orders"
-                           class="btn btn-outline-success" aria-pressed="true" role="button">ORDERS</a>
-                    </div>
-                </c:when>
-                <c:otherwise>
-                    <div class="row">
-                        <a href="${app}/dispatcher?command=users"
-                           class="btn btn-outline-success" aria-pressed="true" role="button">USERS</a>
-                    </div>
-                </c:otherwise>
-            </c:choose>--%>
-            <%--<security:authorize access="isAuthenticated()">
-                <security:authentication property="principal.id" var="userid"/>
-            </security:authorize>--%>
             <security:authorize access="hasAuthority('view_items')">
                 <div class="row">
                     <a href="${app}/web/items"

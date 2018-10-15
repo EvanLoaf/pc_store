@@ -6,9 +6,5 @@ import java.util.List;
 
 public interface DiscountService {
 
-    DiscountDTO save(DiscountDTO discountDTO);
-
-    DiscountDTO findByPercent(DiscountDTO discountDTO);
-
     List<DiscountDTO> findAll();
 }

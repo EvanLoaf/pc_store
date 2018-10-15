@@ -10,8 +10,6 @@ public interface OrderService {
 
     List<SimpleOrderDTO> findByUserId(SimpleUserDTO simpleUserDTO, Integer startPosition, Integer maxResults);
 
-    SimpleOrderDTO findByUuid(DataOrderDTO dataOrderDTO);
-
     SimpleOrderDTO update(SimpleOrderDTO orderDTO);
 
     SimpleOrderDTO deleteByUuid(SimpleOrderDTO simpleOrderDTO);

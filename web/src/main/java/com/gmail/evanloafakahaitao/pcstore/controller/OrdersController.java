@@ -1,7 +1,7 @@
 package com.gmail.evanloafakahaitao.pcstore.controller;
 
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.PageProperties;
-import com.gmail.evanloafakahaitao.pcstore.service.util.CurrentUserExtractor;
+import com.gmail.evanloafakahaitao.pcstore.service.util.CurrentUser;
 import com.gmail.evanloafakahaitao.pcstore.controller.validator.OrderValidator;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.OrderStatusEnum;
 import com.gmail.evanloafakahaitao.pcstore.service.ItemService;
@@ -49,7 +49,7 @@ public class OrdersController {
             ModelMap modelMap
     ) {
         int startPosition = (page - 1) * pageProperties.getPaginationMaxResults();
-        Long userId = CurrentUserExtractor.getCurrentId();
+        Long userId = CurrentUser.getCurrentId();
         SimpleUserDTO user = new SimpleUserDTO();
         user.setId(userId);
         List<SimpleOrderDTO> orders = orderService.findByUserId(user, startPosition, pageProperties.getPaginationMaxResults());
@@ -84,7 +84,7 @@ public class OrdersController {
             ItemDTO item = itemService.findByVendorCode(itemDTO);
             modelMap.addAttribute("item", item);
             UserDTO userDTO = new UserDTO();
-            Long userId = CurrentUserExtractor.getCurrentId();
+            Long userId = CurrentUser.getCurrentId();
             userDTO.setId(userId);
             UserDTO user = userService.findById(userDTO);
             modelMap.addAttribute("user", user);
@@ -107,7 +107,7 @@ public class OrdersController {
         ItemDTO item = itemService.findById(itemDTO);
         modelMap.addAttribute("item", item);
         UserDTO userDTO = new UserDTO();
-        Long userId = CurrentUserExtractor.getCurrentId();
+        Long userId = CurrentUser.getCurrentId();
         userDTO.setId(userId);
         UserDTO user = userService.findById(userDTO);
         modelMap.addAttribute("user", user);

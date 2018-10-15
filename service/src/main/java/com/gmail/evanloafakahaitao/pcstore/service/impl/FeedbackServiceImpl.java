@@ -2,21 +2,15 @@ package com.gmail.evanloafakahaitao.pcstore.service.impl;
 
 import com.gmail.evanloafakahaitao.pcstore.dao.FeedbackDao;
 import com.gmail.evanloafakahaitao.pcstore.dao.UserDao;
-import com.gmail.evanloafakahaitao.pcstore.dao.impl.FeedbackDaoImpl;
-import com.gmail.evanloafakahaitao.pcstore.dao.impl.UserDaoImpl;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Feedback;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
 import com.gmail.evanloafakahaitao.pcstore.service.FeedbackService;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
-import com.gmail.evanloafakahaitao.pcstore.service.converter.impl.entity.FeedbackConverter;
-import com.gmail.evanloafakahaitao.pcstore.service.converter.impl.dto.FeedbackDTOConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.FeedbackDTO;
-import com.gmail.evanloafakahaitao.pcstore.service.util.CurrentUserExtractor;
+import com.gmail.evanloafakahaitao.pcstore.service.util.CurrentUser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -24,7 +18,6 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -56,7 +49,7 @@ public class FeedbackServiceImpl implements FeedbackService {
         logger.info("Saving Feedback");
         Feedback feedback = feedbackConverter.toEntity(feedbackDTO);
         User user = userDao.findOne(
-                CurrentUserExtractor.getCurrentId()
+                CurrentUser.getCurrentId()
         );
         feedback.setUser(user);
         feedbackDao.create(feedback);

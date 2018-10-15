@@ -44,22 +44,6 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public DiscountDTO save(DiscountDTO discountDTO) {
-        logger.info("Saving Discount");
-        Discount discount = discountConverter.toEntity(discountDTO);
-        discountDao.create(discount);
-        return discountDTOConverter.toDto(discount);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public DiscountDTO findByPercent(DiscountDTO discountDTO) {
-        logger.info("Retrieving Discount by Percent");
-        Discount discount = discountDao.findByPercent(discountDTO.getPercent());
-        return discountDTOConverter.toDto(discount);
-    }
-
-    @Override
     public List<DiscountDTO> findAll() {
         logger.info("Retrieving all Discounts");
         List<Discount> discounts = discountDao.findAll();

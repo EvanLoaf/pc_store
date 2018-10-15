@@ -116,14 +116,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public SimpleOrderDTO findByUuid(DataOrderDTO dataOrderDTO) {
-        logger.info("Retrieving Order by Uuid");
-        Order order = orderDao.findByUuid(dataOrderDTO.getUuid());
-        return simpleOrderDTOConverter.toDto(order);
-    }
-
-    @Override
     public SimpleOrderDTO update(SimpleOrderDTO simpleOrderDTO) {
         logger.info("Updating Order");
         if (simpleOrderDTO.getStatus() != null) {

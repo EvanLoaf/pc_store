@@ -6,7 +6,7 @@ import com.gmail.evanloafakahaitao.pcstore.service.BusinessCardService;
 import com.gmail.evanloafakahaitao.pcstore.service.UserService;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.BusinessCardDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.UserDTO;
-import com.gmail.evanloafakahaitao.pcstore.service.util.CurrentUserExtractor;
+import com.gmail.evanloafakahaitao.pcstore.service.util.CurrentUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -42,7 +42,7 @@ public class BusinessCardController {
             ModelMap modelMap
     ) {
         UserDTO userDTO = new UserDTO();
-        userDTO.setId(CurrentUserExtractor.getCurrentId());
+        userDTO.setId(CurrentUser.getCurrentId());
         UserDTO user = userService.findById(userDTO);
         modelMap.addAttribute("businessCards", user.getBusinessCards());
         return pageProperties.getBusinessCardsPagePath();

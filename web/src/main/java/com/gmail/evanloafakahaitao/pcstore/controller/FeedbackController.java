@@ -6,7 +6,7 @@ import com.gmail.evanloafakahaitao.pcstore.controller.util.PaginationUtil;
 import com.gmail.evanloafakahaitao.pcstore.controller.validator.FeedbackValidator;
 import com.gmail.evanloafakahaitao.pcstore.service.FeedbackService;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.FeedbackDTO;
-import com.gmail.evanloafakahaitao.pcstore.service.util.CurrentUserExtractor;
+import com.gmail.evanloafakahaitao.pcstore.service.util.CurrentUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -64,7 +64,7 @@ public class FeedbackController {
             return pageProperties.getFeedbackCreatePagePath();
         } else {
             feedbackService.save(feedback);
-            return "redirect:/web/users/" + CurrentUserExtractor.getCurrentId() + "?feedback=true";
+            return "redirect:/web/users/" + CurrentUser.getCurrentId() + "?feedback=true";
         }
     }
 

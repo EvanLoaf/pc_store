@@ -9,8 +9,6 @@ import java.util.List;
 
 public interface ItemService {
 
-    List<ItemDTO> save(List<ItemDTO> items);
-
     List<ItemDTO> findAllNotDeleted(Integer startPosition, Integer maxResults);
 
     ItemDTO findByVendorCode(ItemDTO itemDTO);
@@ -18,8 +16,6 @@ public interface ItemService {
     ItemDTO findById(ItemDTO itemDTO);
 
     ItemDTO save(ItemDTO itemDTO);
-
-    List<ItemDTO> findInPriceRange(BigDecimal minPrice, BigDecimal maxPrice, Integer startPos, Integer maxResults);
 
     ItemDTO update(ItemDTO itemDTO);
 
@@ -32,8 +28,4 @@ public interface ItemService {
     Long countAll();
 
     DiscountDTO updateDiscountAll(Long discountId, BigDecimal minPriceRange, BigDecimal maxPriceRange);
-
-    /*List<ItemDTO> findByDiscount(DiscountDTO discountDTO);
-
-    Long findCountInPriceRange(BigDecimal minPrice, BigDecimal maxPrice);*/
 }

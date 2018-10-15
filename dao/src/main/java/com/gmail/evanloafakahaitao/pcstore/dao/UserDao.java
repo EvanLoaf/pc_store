@@ -8,7 +8,5 @@ public interface UserDao extends GenericDao<User> {
 
     User findByEmail(String email);
 
-    int updateDisable(Long id, boolean isDisabled);
-
     List<User> findAllNotDeleted(Integer startPosition, Integer maxResults);
 }
