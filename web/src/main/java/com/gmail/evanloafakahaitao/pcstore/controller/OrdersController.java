@@ -1,6 +1,7 @@
 package com.gmail.evanloafakahaitao.pcstore.controller;
 
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.PageProperties;
+import com.gmail.evanloafakahaitao.pcstore.controller.util.PaginationUtil;
 import com.gmail.evanloafakahaitao.pcstore.service.util.CurrentUser;
 import com.gmail.evanloafakahaitao.pcstore.controller.validator.OrderValidator;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.OrderStatusEnum;
@@ -8,6 +9,8 @@ import com.gmail.evanloafakahaitao.pcstore.service.ItemService;
 import com.gmail.evanloafakahaitao.pcstore.service.OrderService;
 import com.gmail.evanloafakahaitao.pcstore.service.UserService;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -21,11 +24,14 @@ import java.util.List;
 @RequestMapping("/web/orders")
 public class OrdersController {
 
+    private static final Logger logger = LogManager.getLogger(OrdersController.class);
+
     private final PageProperties pageProperties;
     private final OrderService orderService;
     private final OrderValidator orderValidator;
     private final UserService userService;
     private final ItemService itemService;
+    private final PaginationUtil paginationUtil;
 
     @Autowired
     public OrdersController(
@@ -33,13 +39,15 @@ public class OrdersController {
             OrderService orderService,
             OrderValidator orderValidator,
             UserService userService,
-            ItemService itemService
+            ItemService itemService,
+            PaginationUtil paginationUtil
     ) {
         this.pageProperties = pageProperties;
         this.orderService = orderService;
         this.orderValidator = orderValidator;
         this.userService = userService;
         this.itemService = itemService;
+        this.paginationUtil = paginationUtil;
     }
 
     @GetMapping(value = "/self")
@@ -48,11 +56,11 @@ public class OrdersController {
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             ModelMap modelMap
     ) {
-        int startPosition = (page - 1) * pageProperties.getPaginationMaxResults();
+        logger.debug("Executing Orders Controller method : getOrdersFromUser page " + page);
         Long userId = CurrentUser.getCurrentId();
         SimpleUserDTO user = new SimpleUserDTO();
         user.setId(userId);
-        List<SimpleOrderDTO> orders = orderService.findByUserId(user, startPosition, pageProperties.getPaginationMaxResults());
+        List<SimpleOrderDTO> orders = orderService.findByUserId(user, paginationUtil.getStartPosition(page), pageProperties.getPaginationMaxResults());
         modelMap.addAttribute("orders", orders);
         return pageProperties.getOrdersPagePath();
     }
@@ -63,8 +71,8 @@ public class OrdersController {
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             ModelMap modelMap
     ) {
-        int startPosition = (page - 1) * pageProperties.getPaginationMaxResults();
-        List<OrderDTO> orders = orderService.findAll(startPosition, pageProperties.getPaginationMaxResults());
+        logger.debug("Executing Orders Controller method : getOrders page " + page);
+        List<OrderDTO> orders = orderService.findAll(paginationUtil.getStartPosition(page), pageProperties.getPaginationMaxResults());
         modelMap.addAttribute("statusEnum", OrderStatusEnum.values());
         modelMap.addAttribute("orders", orders);
         return pageProperties.getOrdersPagePath();
@@ -77,6 +85,7 @@ public class OrdersController {
             BindingResult result,
             ModelMap modelMap
     ) {
+        logger.debug("Executing Orders Controller method : createOrder");
         orderValidator.validate(order, result);
         if (result.hasErrors()) {
             ItemDTO itemDTO = new ItemDTO();
@@ -102,6 +111,7 @@ public class OrdersController {
             @PathVariable("id") Long itemId,
             ModelMap modelMap
     ) {
+        logger.debug("Executing Orders Controller method : createOrderPage");
         ItemDTO itemDTO = new ItemDTO();
         itemDTO.setId(itemId);
         ItemDTO item = itemService.findById(itemDTO);
@@ -128,6 +138,7 @@ public class OrdersController {
             @PathVariable("uuid") String uuid,
             @RequestParam("status") OrderStatusEnum status
     ) {
+        logger.debug("Executing Orders Controller method : updateOrder to status " + status);
         SimpleOrderDTO order = new SimpleOrderDTO();
         order.setUuid(uuid);
         order.setStatus(status);
@@ -135,24 +146,12 @@ public class OrdersController {
         return "redirect:/web/orders/all" + "?status=true";
     }
 
-    /*@GetMapping(value = "/{uuid}/update")
-    @PreAuthorize("hasAuthority('update_order_status')")
-    public String updateOrderPage(
-            @PathVariable("uuid") String uuid,
-            ModelMap modelMap
-    ) {
-        DataOrderDTO orderDTO = new DataOrderDTO();
-        orderDTO.setUuid(uuid);
-        SimpleOrderDTO order = orderService.findByUuid(orderDTO);
-        modelMap.addAttribute("order", order);
-        return pageProperties.g
-    }*/
-
     @GetMapping(value = "/{uuid}/delete")
     @PreAuthorize("hasAuthority('delete_order_self')")
     public String deleteOrder(
             @PathVariable("uuid") String uuid
     ) {
+        logger.debug("Executing Orders Controller method : deleteOrder with uuid " + uuid);
         SimpleOrderDTO order = new SimpleOrderDTO();
         order.setUuid(uuid);
         orderService.deleteByUuid(order);

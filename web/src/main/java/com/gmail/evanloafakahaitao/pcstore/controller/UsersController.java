@@ -20,6 +20,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -58,6 +59,7 @@ public class UsersController {
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             ModelMap modelMap
     ) {
+        logger.debug("Executing Users Controller method : getUsers page " + page );
         List<UserDTO> users = userService.findAllNotDeleted(paginationUtil.getStartPosition(page), pageProperties.getPaginationMaxResults());
         modelMap.addAttribute("users", users);
         Pagination pagination = new Pagination();
@@ -76,6 +78,7 @@ public class UsersController {
             BindingResult result,
             ModelMap modelMap
     ) {
+        logger.debug("Executing Users Controller method : registerUser");
         userValidator.validate(user, result);
         if (result.hasErrors()) {
             modelMap.addAttribute("user", user);
@@ -86,39 +89,19 @@ public class UsersController {
         }
     }
 
-    /*@PostMapping(value = "/admin")
-    @PreAuthorize("hasAuthority('create_user')")
-    public String createUserAdmin(
-            @ModelAttribute("user") UserDTO user,
-            BindingResult result,
-            ModelMap modelMap
-    ) {
-        userValidator.validate(user, result);
-        if (result.hasErrors()) {
-            modelMap.addAttribute("user", user);
-            return pageProperties.getUserCreatePagePath();
-        } else {
-            userService.save(user);
-            return "redirect:/web/users";
-        }
-    }*/
-
     @GetMapping(value = "/{id}")
     @PreAuthorize("hasAnyAuthority('view_user_self', 'update_user_self')")
     public String getUser(
             @PathVariable("id") Long id,
             ModelMap modelMap
     ) {
+        logger.debug("Executing Users Controller method : getUser with id " + id);
         UserDTO user = new UserDTO();
         user.setId(id);
         UserDTO userRetrieved = userService.findById(user);
         modelMap.addAttribute("user", userRetrieved);
-        /*modelMap.addAttribute("user", new UserDTO());*/
         return pageProperties.getUserProfilePagePath();
     }
-
-    /*List<RoleDTO> roles = roleService.findAll(0, pageProperties.getPaginationMaxResults());
-        modelMap.addAttribute("roles", roles);*/
 
     @PostMapping(value = "/{id}")
     @PreAuthorize("hasAuthority('update_user_self')")
@@ -128,6 +111,7 @@ public class UsersController {
             BindingResult result,
             ModelMap modelMap
     ) {
+        logger.debug("Executing Users Controller method : updateUser with id " + id);
         user.setId(id);
         userValidator.validate(user, result);
         if (result.hasErrors()) {
@@ -147,6 +131,7 @@ public class UsersController {
             BindingResult result,
             ModelMap modelMap
     ) {
+        logger.debug("Executing Users Controller method : updateUserByAdmin with id " + id);
         user.setId(id);
         userValidator.validate(user, result);
         if (result.hasErrors()) {
@@ -158,18 +143,12 @@ public class UsersController {
         }
     }
 
-    /*@GetMapping(value = "/create")
-    @PreAuthorize("hasAuthority('create_user')")
-    public String createUserPage(ModelMap modelMap) {
-        modelMap.addAttribute("user", new UserDTO());
-        return pageProperties.getUserCreatePagePath();
-    }*/
-
     @PostMapping(value = "/delete")
     @PreAuthorize("hasAuthority('delete_user')")
-    public String deleteUser(
+    public String deleteUsers(
             @RequestParam("ids") Long[] ids
     ) {
+        logger.debug("Executing Users Controller method : deleteUsers with id's " + Arrays.toString(ids));
         for (Long id : ids) {
             SimpleUserDTO user = new SimpleUserDTO();
             user.setId(id);
@@ -184,6 +163,7 @@ public class UsersController {
             @PathVariable("id") Long id,
             @RequestParam(value = "disable", defaultValue = "true") boolean disable
     ) {
+        logger.debug("Executing Users Controller method : disableUser with id " + id);
         UserDTO user = new UserDTO();
         user.setId(id);
         user.setDisabled(disable);
@@ -197,6 +177,7 @@ public class UsersController {
             @PathVariable("id") Long id,
             ModelMap modelMap
     ) {
+        logger.debug("Executing Users Controller method : updateUserPage with id " + id);
         UserDTO userDTO = new UserDTO();
         userDTO.setId(id);
         UserDTO user = userService.findById(userDTO);
@@ -208,18 +189,20 @@ public class UsersController {
 
     @PostMapping(value = "/discounts/update")
     @PreAuthorize("hasAuthority('update_discount_users')")
-    public String updateUsersDiscounts(
+    public String updateUsersDiscount(
             @RequestParam("discountId") Long discountId
     ) {
+        logger.debug("Executing Users Controller method : updateUsersDiscount with discount id " + discountId);
         userService.updateDiscountAll(discountId);
         return "redirect:/web/items" + "?userdiscounts=true";
     }
 
     @GetMapping(value = "/discounts/update")
     @PreAuthorize("hasAuthority('update_discount_users')")
-    public String updateUsersDiscountsPage(
+    public String updateUsersDiscountPage(
             ModelMap modelMap
     ) {
+        logger.debug("Executing Users Controller method : updateUsersDiscountPage");
         List<DiscountDTO> discounts = discountService.findAll();
         modelMap.addAttribute("discounts", discounts);
         return pageProperties.getUsersSetDiscountPagePath();

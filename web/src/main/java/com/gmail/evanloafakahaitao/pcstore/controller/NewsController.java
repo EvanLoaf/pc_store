@@ -19,6 +19,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -57,6 +58,7 @@ public class NewsController {
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             ModelMap modelMap
     ) {
+        logger.debug("Executing News Controller method : getNews");
         List<SimpleArticleDTO> news = articleService.findAll(paginationUtil.getStartPosition(page), pageProperties.getPaginationMaxResults());
         modelMap.addAttribute("news", news);
         Pagination pagination = new Pagination();
@@ -76,6 +78,7 @@ public class NewsController {
             BindingResult result,
             ModelMap modelMap
     ) {
+        logger.debug("Executing News Controller method : createNews");
         newsValidator.validate(news, result);
         if (result.hasErrors()) {
             modelMap.addAttribute("news", news);
@@ -89,6 +92,7 @@ public class NewsController {
     @GetMapping(value = "/create")
     @PreAuthorize("hasAuthority('create_news')")
     public String createNewsPage(ModelMap modelMap) {
+        logger.debug("Executing News Controller method : createNewsPage");
         modelMap.addAttribute("news", new ArticleDTO());
         return pageProperties.getNewsCreatePagePath();
     }
@@ -99,6 +103,7 @@ public class NewsController {
             @PathVariable("id") Long id,
             ModelMap modelMap
     ) {
+        logger.debug("Executing News Controller method : getNewsPiece with id " + id);
         SimpleArticleDTO simpleNews = new SimpleArticleDTO();
         simpleNews.setId(id);
         ArticleDTO news = articleService.findById(simpleNews);
@@ -115,6 +120,7 @@ public class NewsController {
             BindingResult result,
             ModelMap modelMap
     ) {
+        logger.debug("Executing News Controller method : updateNews with id " + id);
         news.setId(id);
         newsValidator.validate(news, result);
         if (result.hasErrors()) {
@@ -131,6 +137,7 @@ public class NewsController {
     public String deleteNewsPiece(
             @PathVariable("id") Long id
     ) {
+        logger.debug("Executing News Controller method : deleteNewsPiece with id " + id);
         SimpleArticleDTO news = new SimpleArticleDTO();
         news.setId(id);
         articleService.deleteById(news);
@@ -142,6 +149,7 @@ public class NewsController {
     public String deleteNews(
             @RequestParam("ids") Long[] ids
     ) {
+        logger.debug("Executing News Controller method : deleteNews with id's " + Arrays.toString(ids));
         for (Long id : ids) {
             SimpleArticleDTO news = new SimpleArticleDTO();
             news.setId(id);
@@ -150,7 +158,7 @@ public class NewsController {
         return "redirect:/web/news";
     }
 
-    @PostMapping(value = "/{id}/comment/create")
+    @PostMapping(value = "/{id}/comments/create")
     @PreAuthorize("hasAuthority('create_comment')")
     public String createComment(
             @PathVariable("id") Long id,
@@ -158,6 +166,7 @@ public class NewsController {
             BindingResult result,
             ModelMap modelMap
     ) {
+        logger.debug("Executing News Controller method : createComment");
         commentValidator.validate(comment, result);
         if (result.hasErrors()) {
             modelMap.addAttribute(comment);
@@ -176,12 +185,13 @@ public class NewsController {
         }
     }
 
-    @GetMapping(value = "/{newsid}/comment/{commentid}/delete")
+    @GetMapping(value = "/{newsid}/comments/{commentid}/delete")
     @PreAuthorize("hasAuthority('remove_comments_all')")
     public String deleteComment(
             @PathVariable("newsid") Long newsId,
             @PathVariable("commentid") Long commentId
     ) {
+        logger.debug("Executing News Controller method : deleteComment with id " + commentId);
         ArticleDTO news = new ArticleDTO();
         news.setId(newsId);
         CommentDTO comment = new CommentDTO();

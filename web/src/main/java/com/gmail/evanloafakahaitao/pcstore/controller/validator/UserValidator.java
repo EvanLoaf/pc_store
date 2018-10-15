@@ -77,6 +77,7 @@ public class UserValidator implements Validator {
             }
 
         } else {
+            //TODO test this
             /*ValidationUtils.rejectIfEmpty(err, "password", "user.password.empty");*/
 
             if (user.getPassword() != null && !user.getPassword().equals("")) {

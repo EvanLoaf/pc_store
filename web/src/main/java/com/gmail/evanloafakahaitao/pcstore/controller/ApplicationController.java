@@ -25,12 +25,14 @@ public class ApplicationController {
 
     @GetMapping(value = "/login")
     public String loginPage(ModelMap modelMap) {
+        logger.debug("Executing Application Controller method : loginPage");
         modelMap.addAttribute("user", new UserDTO());
         return pageProperties.getLoginPagePath();
     }
 
     @GetMapping(value = "/register")
     public String registerPage(ModelMap modelMap) {
+        logger.debug("Executing Application Controller method : registerPage");
         logger.info("Entered register page");
         modelMap.addAttribute("user", new UserDTO());
         return pageProperties.getRegisterPagePath();

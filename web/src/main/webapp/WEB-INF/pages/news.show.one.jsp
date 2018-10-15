@@ -71,7 +71,7 @@
                                 <td>${comment.message}</td>
                                 <td>
                                     <security:authorize access="hasAuthority('remove_comments_all')">
-                                        <a href="${app}/web/news/${news.id}/comment/${comment.id}/delete"
+                                        <a href="${app}/web/news/${news.id}/comments/${comment.id}/delete"
                                            class="btn btn-primary" aria-pressed="true" role="button">REMOVE</a>
                                     </security:authorize>
                                 </td>
@@ -124,7 +124,7 @@
                 </table>
                 <div class="row">
                     <div class="col-lg-12">
-                        <form:form action="${app}/web/news/${news.id}/comment/create" modelAttribute="comment"
+                        <form:form action="${app}/web/news/${news.id}/comments/create" modelAttribute="comment"
                                    method="post">
                             <form:errors path="message" cssClass="alert-danger" element="div"/>
                             <div class="form-group">

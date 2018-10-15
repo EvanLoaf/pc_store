@@ -25,7 +25,6 @@ public class FeedbackConverter implements Converter<FeedbackDTO, Feedback> {
     public Feedback toEntity(FeedbackDTO dto) {
         Feedback feedback = new Feedback();
         feedback.setMessage(dto.getMessage());
-        /*feedback.setUser(simpleUserConverter.toEntity(dto.getUser()));*/
         return feedback;
     }
 }
