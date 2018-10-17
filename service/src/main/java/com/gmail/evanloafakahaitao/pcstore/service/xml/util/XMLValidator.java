@@ -19,6 +19,7 @@ public class XMLValidator {
     private static final Logger logger = LogManager.getLogger(XMLValidator.class);
 
     public boolean validate(File xmlFile, String xsdRoute) {
+        logger.info("Validating XML Items");
         try (
                 InputStream xml = new FileInputStream(xmlFile);
                 InputStream xsd = new FileInputStream(xsdRoute)

@@ -4,7 +4,7 @@ import com.gmail.evanloafakahaitao.pcstore.dao.model.Item;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Order;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
-import com.gmail.evanloafakahaitao.pcstore.service.dto.DataOrderDTO;
+import com.gmail.evanloafakahaitao.pcstore.service.dto.CreateOrderDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleItemDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleUserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component("dataOrderDTOConverter")
-public class DataOrderDTOConverter implements DTOConverter<DataOrderDTO, Order> {
+public class DataOrderDTOConverter implements DTOConverter<CreateOrderDTO, Order> {
 
     private final DTOConverter<SimpleItemDTO, Item> simpleItemDTOConverter;
     private final DTOConverter<SimpleUserDTO, User> simpleUserDTOConverter;
@@ -27,8 +27,8 @@ public class DataOrderDTOConverter implements DTOConverter<DataOrderDTO, Order> 
     }
 
     @Override
-    public DataOrderDTO toDto(Order entity) {
-        DataOrderDTO order = new DataOrderDTO();
+    public CreateOrderDTO toDto(Order entity) {
+        CreateOrderDTO order = new CreateOrderDTO();
         order.setQuantity(entity.getQuantity());
         order.setItemVendorCode(entity.getItem().getVendorCode());
         order.setUserEmail(entity.getUser().getEmail());

@@ -5,6 +5,7 @@ use computer_store;
 create table if not exists t_role (
   f_id   bigint(19) unsigned auto_increment not null,
   f_name varchar(20)                        not null,
+  f_is_default boolean default false                       not null,
   primary key (f_id)
 );
 
@@ -154,11 +155,23 @@ create table if not exists t_item_discount (
     on delete restrict
 );
 
-insert into t_role (f_id, f_name)
-values (1, 'security_admin'),
-       (2, 'sales_admin'),
-       (3, 'api_admin'),
-       (4, 'user')
+create table if not exists t_business_card (
+  f_id         bigint(19) unsigned auto_increment             not null,
+  f_title      varchar(20)                                   not null,
+  f_full_name      varchar(40)                                   not null,
+  f_working_telephone      varchar(20)                                   not null,
+  f_user_id    bigint(19) unsigned                            not null,
+  primary key (f_id),
+  foreign key (f_user_id) references t_user (f_id)
+    on update cascade
+    on delete restrict
+);
+
+insert into t_role (f_id, f_name, f_is_default)
+values (1, 'security_admin', false ),
+       (2, 'sales_admin', false ),
+       (3, 'api_admin', false ),
+       (4, 'user', true )
 on duplicate key update f_id = f_id;
 
 insert into t_permission (f_id, f_name)
@@ -197,7 +210,10 @@ values (1, 'SECURITY_ADMIN_BASIC_PERMISSION'),
        (39, 'VIEW_ITEMS_API'),
        (40, 'CREATE_ITEM_API'),
        (41, 'UPDATE_ITEM_API'),
-       (42, 'DELETE_ITEM_API')
+       (42, 'DELETE_ITEM_API'),
+       (43, 'MANAGE_BUSINESS_CARD'),
+       (44, 'MANAGE_BUSINESS_CARD_API'),
+       (45, 'DELETE_FEEDBACK')
 on duplicate key update f_id = f_id;
 
 insert into t_role_permission (f_role_id, f_permission_id)
@@ -224,11 +240,13 @@ values (1, 1),
        (2, 38),
        (2, 11),
        (2, 18),
+       (2, 45),
        (3, 3),
        (3, 39),
        (3, 40),
        (3, 41),
        (3, 42),
+       (3, 44),
        (4, 4),
        (4, 11),
        (4, 12),
@@ -238,7 +256,8 @@ values (1, 1),
        (4, 16),
        (4, 17),
        (4, 18),
-       (4, 19)
+       (4, 19),
+       (4, 43)
 on duplicate key update f_role_id = f_role_id;
 
 insert into t_discount (f_id, f_name, f_percent, f_finish_date)
@@ -306,7 +325,7 @@ values (1, 4, 'hey'),
 insert into t_news (f_id, f_title, f_content, f_created, f_is_deleted, f_user_id)
 values (1, 'testnews', 'test message', now(), false, 2);
 
-insert into t_comment (f_id, f_content, f_created, f_is_deleted, f_user_id, f_news_id)
+insert into t_comment (f_id, f_message, f_created, f_is_deleted, f_user_id, f_news_id)
 values (1, 'test comment', now(), false, 4, 1);
 
 (5, 'user1@pcst.by', 'user', 'default', 'password', false, (select r.f_id from t_role r where r.f_name = 'user'), null)

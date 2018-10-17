@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface OrderService {
 
-    SimpleOrderDTO save(DataOrderDTO dataOrderDTO);
+    SimpleOrderDTO save(CreateOrderDTO createOrderDTO);
 
     List<SimpleOrderDTO> findByCurrentUserId(Integer startPosition, Integer maxResults);
 

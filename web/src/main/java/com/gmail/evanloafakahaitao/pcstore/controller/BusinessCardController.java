@@ -2,7 +2,7 @@ package com.gmail.evanloafakahaitao.pcstore.controller;
 
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.PageProperties;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.WebProperties;
-import com.gmail.evanloafakahaitao.pcstore.controller.validator.BusinessCardValidator;
+import com.gmail.evanloafakahaitao.pcstore.controller.util.FieldTrimmer;
 import com.gmail.evanloafakahaitao.pcstore.service.BusinessCardService;
 import com.gmail.evanloafakahaitao.pcstore.service.UserService;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.BusinessCardDTO;
@@ -28,18 +28,21 @@ public class BusinessCardController {
     private final PageProperties pageProperties;
     private final UserService userService;
     private final Validator businessCardValidator;
+    private final FieldTrimmer fieldTrimmer;
 
     @Autowired
     public BusinessCardController(
             BusinessCardService businessCardService,
             PageProperties pageProperties,
             UserService userService,
-            @Qualifier("businessCardValidator") Validator businessCardValidator
+            @Qualifier("businessCardValidator") Validator businessCardValidator,
+            FieldTrimmer fieldTrimmer
     ) {
         this.businessCardService = businessCardService;
         this.pageProperties = pageProperties;
         this.userService = userService;
         this.businessCardValidator = businessCardValidator;
+        this.fieldTrimmer = fieldTrimmer;
     }
 
     @GetMapping
@@ -61,6 +64,7 @@ public class BusinessCardController {
             ModelMap modelMap
     ) {
         logger.debug("Executing BusinessCard Controller method : createBusinessCard");
+        businessCard = fieldTrimmer.trim(businessCard);
         businessCardValidator.validate(businessCard, result);
         if (result.hasErrors()) {
             modelMap.addAttribute("businessCard", businessCard);
@@ -87,8 +91,6 @@ public class BusinessCardController {
             @PathVariable("id") Long id
     ) {
         logger.debug("Executing BusinessCard Controller method : deleteBusinessCardPage with id " + id);
-        /*BusinessCardDTO businessCard = new BusinessCardDTO();
-        businessCard.setId(id);*/
         businessCardService.deleteById(id);
         return "redirect:" + WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/cards";
     }

@@ -37,8 +37,6 @@
                 </div>
             </c:if>
 
-            <c:out value="${}"/>
-
             <c:if test="${param.logout == 'true'}">
                 <div class="alert alert-success" role="alert">
                     <p>Logged off successfully</p>

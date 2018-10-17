@@ -4,19 +4,14 @@ import com.gmail.evanloafakahaitao.pcstore.controller.model.ItemDiscountData;
 import com.gmail.evanloafakahaitao.pcstore.controller.model.Pagination;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.PageProperties;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.WebProperties;
+import com.gmail.evanloafakahaitao.pcstore.controller.util.FieldTrimmer;
 import com.gmail.evanloafakahaitao.pcstore.service.util.XMLItemSaverUtil;
-import com.gmail.evanloafakahaitao.pcstore.service.xml.util.FileConverter;
 import com.gmail.evanloafakahaitao.pcstore.controller.util.PaginationUtil;
-import com.gmail.evanloafakahaitao.pcstore.controller.validator.ItemDiscountDataValidator;
-import com.gmail.evanloafakahaitao.pcstore.controller.validator.ItemValidator;
 import com.gmail.evanloafakahaitao.pcstore.service.DiscountService;
 import com.gmail.evanloafakahaitao.pcstore.service.ItemService;
 import com.gmail.evanloafakahaitao.pcstore.service.XMLService;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.DiscountDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.ItemDTO;
-import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleItemDTO;
-import com.gmail.evanloafakahaitao.pcstore.service.xml.dto.ItemXMLDTO;
-import com.gmail.evanloafakahaitao.pcstore.service.xml.util.XMLItemConverter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +21,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
@@ -46,6 +46,7 @@ public class ItemsController {
     private final XMLItemSaverUtil xmlItemSaverUtil;
     private final Validator itemValidator;
     private final Validator itemDiscountDataValidator;
+    private final FieldTrimmer fieldTrimmer;
 
     @Autowired
     public ItemsController(
@@ -56,7 +57,8 @@ public class ItemsController {
             DiscountService discountService,
             XMLItemSaverUtil xmlItemSaverUtil,
             @Qualifier("itemValidator") Validator itemValidator,
-            @Qualifier("itemDiscountDataValidator") Validator itemDiscountDataValidator
+            @Qualifier("itemDiscountDataValidator") Validator itemDiscountDataValidator,
+            FieldTrimmer fieldTrimmer
     ) {
         this.pageProperties = pageProperties;
         this.itemService = itemService;
@@ -66,6 +68,7 @@ public class ItemsController {
         this.xmlItemSaverUtil = xmlItemSaverUtil;
         this.itemValidator = itemValidator;
         this.itemDiscountDataValidator = itemDiscountDataValidator;
+        this.fieldTrimmer = fieldTrimmer;
     }
 
     @GetMapping
@@ -82,7 +85,7 @@ public class ItemsController {
         pagination.setPageNumbers(
                 paginationUtil.getPageNumbers(itemService.countAll().intValue())
         );
-        pagination.setStartPosition(paginationUtil.getStartPosition(page) + 1);
+        pagination.setStartPosition(paginationUtil.getPageNumerationStart(page));
         modelMap.addAttribute("pagination", pagination);
         return pageProperties.getItemsPagePath();
     }
@@ -95,6 +98,7 @@ public class ItemsController {
             ModelMap modelMap
     ) {
         logger.debug("Executing Item Controller method : createItem");
+        item = fieldTrimmer.trim(item);
         itemValidator.validate(item, result);
         if (result.hasErrors()) {
             modelMap.addAttribute("item", item);
@@ -128,6 +132,7 @@ public class ItemsController {
     ) {
         logger.debug("Executing Item Controller method : uploadItems");
         List<ItemDTO> items = xmlService.getUploadedXmlItems(multipartItems);
+        items = fieldTrimmer.trim(items);
         List<String> vendorCodeDuplicates = xmlItemSaverUtil.saveUploadedItems(items);
         if (!vendorCodeDuplicates.isEmpty()) {
             modelMap.addAttribute("duplicates", vendorCodeDuplicates);
@@ -144,8 +149,6 @@ public class ItemsController {
     ) {
         logger.debug("Executing Item Controller method : deleteItems with id's " + Arrays.toString(ids));
         for (Long id : ids) {
-            /*SimpleItemDTO item = new SimpleItemDTO();
-            item.setId(id);*/
             itemService.softDelete(id);
         }
         return "redirect:" + WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/items";
@@ -157,8 +160,6 @@ public class ItemsController {
             @PathVariable("id") Long id
     ) {
         logger.debug("Executing Item Controller method : copyItem with id " + id);
-        /*SimpleItemDTO item = new SimpleItemDTO();
-        item.setId(id);*/
         itemService.copy(id);
         return "redirect:" + WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/items";
     }

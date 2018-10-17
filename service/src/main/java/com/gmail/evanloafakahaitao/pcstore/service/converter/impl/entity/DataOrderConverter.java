@@ -4,7 +4,7 @@ import com.gmail.evanloafakahaitao.pcstore.dao.model.Item;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Order;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
-import com.gmail.evanloafakahaitao.pcstore.service.dto.DataOrderDTO;
+import com.gmail.evanloafakahaitao.pcstore.service.dto.CreateOrderDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleItemDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleUserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component("dataOrderConverter")
-public class DataOrderConverter implements Converter<DataOrderDTO, Order> {
+public class DataOrderConverter implements Converter<CreateOrderDTO, Order> {
 
     private final Converter<SimpleItemDTO, Item> simpleItemConverter;
     private final Converter<SimpleUserDTO, User> simpleUserConverter;
@@ -27,7 +27,7 @@ public class DataOrderConverter implements Converter<DataOrderDTO, Order> {
     }
 
     @Override
-    public Order toEntity(DataOrderDTO dto) {
+    public Order toEntity(CreateOrderDTO dto) {
         Order order = new Order();
         order.setQuantity(dto.getQuantity());
         User user = new User();

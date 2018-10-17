@@ -1,10 +1,9 @@
 package com.gmail.evanloafakahaitao.pcstore.controller;
 
+import com.gmail.evanloafakahaitao.pcstore.controller.model.Pagination;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.PageProperties;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.WebProperties;
 import com.gmail.evanloafakahaitao.pcstore.controller.util.PaginationUtil;
-import com.gmail.evanloafakahaitao.pcstore.service.util.CurrentUserUtil;
-import com.gmail.evanloafakahaitao.pcstore.controller.validator.OrderValidator;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.OrderStatusEnum;
 import com.gmail.evanloafakahaitao.pcstore.service.ItemService;
 import com.gmail.evanloafakahaitao.pcstore.service.OrderService;
@@ -53,7 +52,7 @@ public class OrdersController {
         this.orderValidator = orderValidator;
     }
 
-    @GetMapping(value = "/self")
+    @GetMapping
     @PreAuthorize("hasAuthority('view_orders_self')")
     public String getOrdersFromUser(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
@@ -61,15 +60,19 @@ public class OrdersController {
     ) {
         logger.debug("Executing Orders Controller method : getOrdersFromUser page " + page);
         //TODO single method with /all - cin service check auth and then find for curr id or all
-        /*Long userId = CurrentUserUtil.getCurrentId();*/
-        /*SimpleUserDTO user = new SimpleUserDTO();
-        user.setId(userId);*/
         List<SimpleOrderDTO> orders = orderService.findByCurrentUserId(paginationUtil.getStartPosition(page), pageProperties.getPaginationMaxResults());
         modelMap.addAttribute("orders", orders);
+        Pagination pagination = new Pagination();
+        pagination.setPage(page);
+        pagination.setPageNumbers(
+                paginationUtil.getPageNumbers(userService.countAll().intValue())
+        );
+        pagination.setStartPosition(paginationUtil.getPageNumerationStart(page));
+        modelMap.addAttribute("pagination", pagination);
         return pageProperties.getOrdersPagePath();
     }
 
-    @GetMapping(value = "/all")
+    @GetMapping(value = "/admin")
     @PreAuthorize("hasAuthority('view_orders_all')")
     public String getOrders(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
@@ -79,34 +82,35 @@ public class OrdersController {
         List<OrderDTO> orders = orderService.findAll(paginationUtil.getStartPosition(page), pageProperties.getPaginationMaxResults());
         modelMap.addAttribute("statusEnum", OrderStatusEnum.values());
         modelMap.addAttribute("orders", orders);
+        Pagination pagination = new Pagination();
+        pagination.setPage(page);
+        pagination.setPageNumbers(
+                paginationUtil.getPageNumbers(userService.countAll().intValue())
+        );
+        pagination.setStartPosition(paginationUtil.getPageNumerationStart(page));
+        modelMap.addAttribute("pagination", pagination);
         return pageProperties.getOrdersPagePath();
     }
 
     @PostMapping
     @PreAuthorize("hasAuthority('create_order')")
     public String createOrder(
-            @ModelAttribute("order") DataOrderDTO order,
+            @ModelAttribute("order") CreateOrderDTO order,
             BindingResult result,
             ModelMap modelMap
     ) {
         logger.debug("Executing Orders Controller method : createOrder");
         orderValidator.validate(order, result);
         if (result.hasErrors()) {
-            /*ItemDTO itemDTO = new ItemDTO();
-            itemDTO.setVendorCode(order.getItem().getVendorCode());*/
             ItemDTO item = itemService.findByVendorCode(order.getItemVendorCode());
             modelMap.addAttribute("item", item);
-            /*UserDTO userDTO = new UserDTO();*/
-            //TODO already planned findByCurrentId
-            /*Long userId = CurrentUserUtil.getCurrentId();*/
-            /*userDTO.setId(userId);*/
             UserDTO user = userService.findByCurrentId();
             modelMap.addAttribute("user", user);
             modelMap.addAttribute("order", order);
             return pageProperties.getOrderCreatePagePath();
         } else {
             orderService.save(order);
-            return "redirect:" + WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/orders/self";
+            return "redirect:" + WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/orders";
         }
     }
 
@@ -117,22 +121,12 @@ public class OrdersController {
             ModelMap modelMap
     ) {
         logger.debug("Executing Orders Controller method : createOrderPage");
-        /*ItemDTO itemDTO = new ItemDTO();
-        itemDTO.setId(itemId);*/
         ItemDTO item = itemService.findById(itemId);
         modelMap.addAttribute("item", item);
-        /*UserDTO userDTO = new UserDTO();*/
-        //TODO -//-
-        /*Long userId = CurrentUserUtil.getCurrentId();*/
-       /* userDTO.setId(userId);*/
         UserDTO user = userService.findByCurrentId();
         modelMap.addAttribute("user", user);
-        DataOrderDTO order = new DataOrderDTO();
-        /*SimpleUserDTO simpleUserDTO = new SimpleUserDTO();
-        simpleUserDTO.setEmail(user.getEmail());*/
+        CreateOrderDTO order = new CreateOrderDTO();
         order.setUserEmail(user.getEmail());
-        /*SimpleItemDTO simpleItemDTO = new SimpleItemDTO();
-        simpleItemDTO.setVendorCode(item.getVendorCode());*/
         order.setItemVendorCode(item.getVendorCode());
         modelMap.addAttribute("order", order);
         return pageProperties.getOrderCreatePagePath();
@@ -149,7 +143,7 @@ public class OrdersController {
         order.setUuid(uuid);
         order.setStatus(status);
         orderService.update(order);
-        return "redirect:" + WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/orders/all" + "?status=true";
+        return "redirect:" + WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/orders/admin" + "?status=true";
     }
 
     @GetMapping(value = "/{uuid}/delete")
@@ -158,9 +152,7 @@ public class OrdersController {
             @PathVariable("uuid") String uuid
     ) {
         logger.debug("Executing Orders Controller method : deleteOrder with uuid " + uuid);
-        /*SimpleOrderDTO order = new SimpleOrderDTO();
-        order.setUuid(uuid);*/
         orderService.deleteByUuid(uuid);
-        return "redirect:" + WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/orders/self";
+        return "redirect:" + WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/orders";
     }
 }

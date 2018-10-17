@@ -3,7 +3,7 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-1">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-1">
         <createTable tableName="t_audit">
             <column autoIncrement="true" name="f_id" type="BIGINT UNSIGNED">
                 <constraints primaryKey="true"/>
@@ -19,7 +19,26 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-2">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-2">
+        <createTable tableName="t_business_card">
+            <column autoIncrement="true" name="f_id" type="BIGINT UNSIGNED">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="f_title" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="f_full_name" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="f_working_telephone" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="f_user_id" type="BIGINT UNSIGNED">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-3">
         <createTable tableName="t_comment">
             <column autoIncrement="true" name="f_id" type="BIGINT UNSIGNED">
                 <constraints primaryKey="true"/>
@@ -41,7 +60,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-3">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-4">
         <createTable tableName="t_discount">
             <column autoIncrement="true" name="f_id" type="BIGINT UNSIGNED">
                 <constraints primaryKey="true"/>
@@ -57,7 +76,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-4">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-5">
         <createTable tableName="t_feedback">
             <column autoIncrement="true" name="f_id" type="BIGINT UNSIGNED">
                 <constraints primaryKey="true"/>
@@ -70,7 +89,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-5">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-6">
         <createTable tableName="t_item">
             <column autoIncrement="true" name="f_id" type="BIGINT UNSIGNED">
                 <constraints primaryKey="true"/>
@@ -92,7 +111,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-6">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-7">
         <createTable tableName="t_item_discount">
             <column name="f_item_id" type="BIGINT UNSIGNED">
                 <constraints primaryKey="true"/>
@@ -102,7 +121,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-7">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-8">
         <createTable tableName="t_news">
             <column autoIncrement="true" name="f_id" type="BIGINT UNSIGNED">
                 <constraints primaryKey="true"/>
@@ -124,7 +143,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-8">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-9">
         <createTable tableName="t_order">
             <column name="f_user_id" type="BIGINT UNSIGNED">
                 <constraints primaryKey="true"/>
@@ -149,7 +168,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-9">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-10">
         <createTable tableName="t_permission">
             <column autoIncrement="true" name="f_id" type="BIGINT UNSIGNED">
                 <constraints primaryKey="true"/>
@@ -159,7 +178,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-10">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-11">
         <createTable tableName="t_profile">
             <column autoIncrement="true" name="f_user_id" type="BIGINT UNSIGNED">
                 <constraints primaryKey="true"/>
@@ -168,7 +187,7 @@
             <column defaultValue="" name="f_phone_number" type="VARCHAR(20)"/>
         </createTable>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-11">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-12">
         <createTable tableName="t_role">
             <column autoIncrement="true" name="f_id" type="BIGINT UNSIGNED">
                 <constraints primaryKey="true"/>
@@ -176,9 +195,12 @@
             <column name="f_name" type="VARCHAR(20)">
                 <constraints nullable="false"/>
             </column>
+            <column defaultValueBoolean="false" name="f_is_default" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-12">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-13">
         <createTable tableName="t_role_permission">
             <column name="f_role_id" type="BIGINT UNSIGNED">
                 <constraints primaryKey="true"/>
@@ -188,7 +210,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-13">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-14">
         <createTable tableName="t_user">
             <column autoIncrement="true" name="f_id" type="BIGINT UNSIGNED">
                 <constraints primaryKey="true"/>
@@ -217,37 +239,37 @@
             <column name="f_discount_id" type="BIGINT UNSIGNED"/>
         </createTable>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-14">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-15">
         <insert tableName="t_comment">
             <column name="f_id" valueNumeric="1"/>
             <column name="f_message" value="test comment"/>
-            <column name="f_created" valueDate="2018-10-12T02:49:35"/>
+            <column name="f_created" valueDate="2018-10-17T10:37:06"/>
             <column name="f_is_deleted" valueBoolean="false"/>
             <column name="f_user_id" valueNumeric="4"/>
             <column name="f_news_id" valueNumeric="1"/>
         </insert>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-15">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-16">
         <insert tableName="t_discount">
             <column name="f_id" valueNumeric="1"/>
             <column name="f_name" value="ten_percent"/>
             <column name="f_percent" valueNumeric="10"/>
-            <column name="f_finish_date" valueDate="2019-10-12T02:49:34"/>
+            <column name="f_finish_date" valueDate="2019-10-17T10:37:04"/>
         </insert>
         <insert tableName="t_discount">
             <column name="f_id" valueNumeric="2"/>
             <column name="f_name" value="twenty_percent"/>
             <column name="f_percent" valueNumeric="20"/>
-            <column name="f_finish_date" valueDate="2019-10-12T02:49:34"/>
+            <column name="f_finish_date" valueDate="2019-10-17T10:37:04"/>
         </insert>
         <insert tableName="t_discount">
             <column name="f_id" valueNumeric="3"/>
             <column name="f_name" value="thirty_percent"/>
             <column name="f_percent" valueNumeric="30"/>
-            <column name="f_finish_date" valueDate="2019-10-12T02:49:34"/>
+            <column name="f_finish_date" valueDate="2019-10-17T10:37:04"/>
         </insert>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-16">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-17">
         <insert tableName="t_feedback">
             <column name="f_id" valueNumeric="1"/>
             <column name="f_user_id" valueNumeric="4"/>
@@ -259,7 +281,7 @@
             <column name="f_message" value="there"/>
         </insert>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-17">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-18">
         <insert tableName="t_item">
             <column name="f_id" valueNumeric="1"/>
             <column name="f_name" value="pc1"/>
@@ -325,73 +347,17 @@
             <column name="f_is_deleted" valueBoolean="false"/>
         </insert>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-18">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-19">
         <insert tableName="t_news">
             <column name="f_id" valueNumeric="1"/>
-            <column name="f_title" value="testnews1"/>
+            <column name="f_title" value="testnews"/>
             <column name="f_content" value="test message"/>
-            <column name="f_created" valueDate="2018-10-12T02:49:34"/>
-            <column name="f_is_deleted" valueBoolean="false"/>
-            <column name="f_user_id" valueNumeric="2"/>
-        </insert>
-        <insert tableName="t_news">
-            <column name="f_id" valueNumeric="2"/>
-            <column name="f_title" value="testnews2"/>
-            <column name="f_content" value="test message"/>
-            <column name="f_created" valueDate="2018-10-12T02:49:34"/>
-            <column name="f_is_deleted" valueBoolean="false"/>
-            <column name="f_user_id" valueNumeric="2"/>
-        </insert>
-        <insert tableName="t_news">
-            <column name="f_id" valueNumeric="3"/>
-            <column name="f_title" value="testnews3"/>
-            <column name="f_content" value="test message"/>
-            <column name="f_created" valueDate="2018-10-12T02:49:34"/>
-            <column name="f_is_deleted" valueBoolean="false"/>
-            <column name="f_user_id" valueNumeric="2"/>
-        </insert>
-        <insert tableName="t_news">
-            <column name="f_id" valueNumeric="4"/>
-            <column name="f_title" value="testnews4"/>
-            <column name="f_content" value="test message"/>
-            <column name="f_created" valueDate="2018-10-12T02:49:34"/>
-            <column name="f_is_deleted" valueBoolean="false"/>
-            <column name="f_user_id" valueNumeric="2"/>
-        </insert>
-        <insert tableName="t_news">
-            <column name="f_id" valueNumeric="5"/>
-            <column name="f_title" value="testnews5"/>
-            <column name="f_content" value="test message"/>
-            <column name="f_created" valueDate="2018-10-12T02:49:34"/>
-            <column name="f_is_deleted" valueBoolean="false"/>
-            <column name="f_user_id" valueNumeric="2"/>
-        </insert>
-        <insert tableName="t_news">
-            <column name="f_id" valueNumeric="6"/>
-            <column name="f_title" value="testnews6"/>
-            <column name="f_content" value="test message"/>
-            <column name="f_created" valueDate="2018-10-12T02:49:34"/>
-            <column name="f_is_deleted" valueBoolean="false"/>
-            <column name="f_user_id" valueNumeric="2"/>
-        </insert>
-        <insert tableName="t_news">
-            <column name="f_id" valueNumeric="7"/>
-            <column name="f_title" value="testnews7"/>
-            <column name="f_content" value="test message"/>
-            <column name="f_created" valueDate="2018-10-12T02:49:34"/>
-            <column name="f_is_deleted" valueBoolean="false"/>
-            <column name="f_user_id" valueNumeric="2"/>
-        </insert>
-        <insert tableName="t_news">
-            <column name="f_id" valueNumeric="8"/>
-            <column name="f_title" value="testnews8"/>
-            <column name="f_content" value="test message"/>
-            <column name="f_created" valueDate="2018-10-12T02:49:34"/>
+            <column name="f_created" valueDate="2018-10-17T10:37:04"/>
             <column name="f_is_deleted" valueBoolean="false"/>
             <column name="f_user_id" valueNumeric="2"/>
         </insert>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-19">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-20">
         <insert tableName="t_permission">
             <column name="f_id" valueNumeric="1"/>
             <column name="f_name" value="SECURITY_ADMIN_BASIC_PERMISSION"/>
@@ -549,7 +515,7 @@
             <column name="f_name" value="DELETE_FEEDBACK"/>
         </insert>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-20">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-21">
         <insert tableName="t_profile">
             <column name="f_user_id" valueNumeric="1"/>
             <column name="f_address" value="address1"/>
@@ -571,25 +537,29 @@
             <column name="f_phone_number" value="phone4"/>
         </insert>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-21">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-22">
         <insert tableName="t_role">
             <column name="f_id" valueNumeric="1"/>
             <column name="f_name" value="security_admin"/>
+            <column name="f_is_default" valueBoolean="false"/>
         </insert>
         <insert tableName="t_role">
             <column name="f_id" valueNumeric="2"/>
             <column name="f_name" value="sales_admin"/>
+            <column name="f_is_default" valueBoolean="false"/>
         </insert>
         <insert tableName="t_role">
             <column name="f_id" valueNumeric="3"/>
             <column name="f_name" value="api_admin"/>
+            <column name="f_is_default" valueBoolean="false"/>
         </insert>
         <insert tableName="t_role">
             <column name="f_id" valueNumeric="4"/>
             <column name="f_name" value="user"/>
+            <column name="f_is_default" valueBoolean="true"/>
         </insert>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-22">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-23">
         <insert tableName="t_role_permission">
             <column name="f_role_id" valueNumeric="1"/>
             <column name="f_permission_id" valueNumeric="1"/>
@@ -649,10 +619,6 @@
         <insert tableName="t_role_permission">
             <column name="f_role_id" valueNumeric="4"/>
             <column name="f_permission_id" valueNumeric="19"/>
-        </insert>
-        <insert tableName="t_role_permission">
-            <column name="f_role_id" valueNumeric="4"/>
-            <column name="f_permission_id" valueNumeric="43"/>
         </insert>
         <insert tableName="t_role_permission">
             <column name="f_role_id" valueNumeric="1"/>
@@ -731,10 +697,6 @@
             <column name="f_permission_id" valueNumeric="38"/>
         </insert>
         <insert tableName="t_role_permission">
-            <column name="f_role_id" valueNumeric="2"/>
-            <column name="f_permission_id" valueNumeric="45"/>
-        </insert>
-        <insert tableName="t_role_permission">
             <column name="f_role_id" valueNumeric="3"/>
             <column name="f_permission_id" valueNumeric="39"/>
         </insert>
@@ -751,11 +713,19 @@
             <column name="f_permission_id" valueNumeric="42"/>
         </insert>
         <insert tableName="t_role_permission">
+            <column name="f_role_id" valueNumeric="4"/>
+            <column name="f_permission_id" valueNumeric="43"/>
+        </insert>
+        <insert tableName="t_role_permission">
             <column name="f_role_id" valueNumeric="3"/>
             <column name="f_permission_id" valueNumeric="44"/>
         </insert>
+        <insert tableName="t_role_permission">
+            <column name="f_role_id" valueNumeric="2"/>
+            <column name="f_permission_id" valueNumeric="45"/>
+        </insert>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-23">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-24">
         <insert tableName="t_user">
             <column name="f_id" valueNumeric="1"/>
             <column name="f_email" value="security@pcst.by"/>
@@ -801,118 +771,104 @@
             <column name="f_discount_id"/>
         </insert>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-24">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-25">
         <createIndex indexName="f_discount_id" tableName="t_item_discount">
             <column name="f_discount_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-25">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-26">
         <createIndex indexName="f_discount_id" tableName="t_user">
             <column name="f_discount_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-26">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-27">
         <createIndex indexName="f_item_id" tableName="t_order">
             <column name="f_item_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-27">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-28">
         <createIndex indexName="f_news_id" tableName="t_comment">
             <column name="f_news_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-28">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-29">
         <createIndex indexName="f_permission_id" tableName="t_role_permission">
             <column name="f_permission_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-29">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-30">
         <createIndex indexName="f_role_id" tableName="t_user">
             <column name="f_role_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-30">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-31">
         <createIndex indexName="f_user_id" tableName="t_audit">
             <column name="f_user_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-31">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-32">
+        <createIndex indexName="f_user_id" tableName="t_business_card">
+            <column name="f_user_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-33">
         <createIndex indexName="f_user_id" tableName="t_comment">
             <column name="f_user_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-32">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-34">
         <createIndex indexName="f_user_id" tableName="t_feedback">
             <column name="f_user_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-33">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-35">
         <createIndex indexName="f_user_id" tableName="t_news">
             <column name="f_user_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-34">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-36">
         <addForeignKeyConstraint baseColumnNames="f_user_id" baseTableName="t_audit" constraintName="t_audit_ibfk_1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="CASCADE" referencedColumnNames="f_id" referencedTableName="t_user" validate="true"/>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-35">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-37">
+        <addForeignKeyConstraint baseColumnNames="f_user_id" baseTableName="t_business_card" constraintName="t_business_card_ibfk_1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="CASCADE" referencedColumnNames="f_id" referencedTableName="t_user" validate="true"/>
+    </changeSet>
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-38">
         <addForeignKeyConstraint baseColumnNames="f_user_id" baseTableName="t_comment" constraintName="t_comment_ibfk_1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="CASCADE" referencedColumnNames="f_id" referencedTableName="t_user" validate="true"/>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-36">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-39">
         <addForeignKeyConstraint baseColumnNames="f_news_id" baseTableName="t_comment" constraintName="t_comment_ibfk_2" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="CASCADE" referencedColumnNames="f_id" referencedTableName="t_news" validate="true"/>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-37">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-40">
         <addForeignKeyConstraint baseColumnNames="f_user_id" baseTableName="t_feedback" constraintName="t_feedback_ibfk_1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="CASCADE" referencedColumnNames="f_id" referencedTableName="t_user" validate="true"/>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-38">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-41">
         <addForeignKeyConstraint baseColumnNames="f_item_id" baseTableName="t_item_discount" constraintName="t_item_discount_ibfk_1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="CASCADE" referencedColumnNames="f_id" referencedTableName="t_item" validate="true"/>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-39">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-42">
         <addForeignKeyConstraint baseColumnNames="f_discount_id" baseTableName="t_item_discount" constraintName="t_item_discount_ibfk_2" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="CASCADE" referencedColumnNames="f_id" referencedTableName="t_discount" validate="true"/>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-40">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-43">
         <addForeignKeyConstraint baseColumnNames="f_user_id" baseTableName="t_news" constraintName="t_news_ibfk_1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="CASCADE" referencedColumnNames="f_id" referencedTableName="t_user" validate="true"/>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-41">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-44">
         <addForeignKeyConstraint baseColumnNames="f_user_id" baseTableName="t_order" constraintName="t_order_ibfk_1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="CASCADE" referencedColumnNames="f_id" referencedTableName="t_user" validate="true"/>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-42">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-45">
         <addForeignKeyConstraint baseColumnNames="f_item_id" baseTableName="t_order" constraintName="t_order_ibfk_2" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="CASCADE" referencedColumnNames="f_id" referencedTableName="t_item" validate="true"/>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-43">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-46">
         <addForeignKeyConstraint baseColumnNames="f_user_id" baseTableName="t_profile" constraintName="t_profile_ibfk_1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="CASCADE" referencedColumnNames="f_id" referencedTableName="t_user" validate="true"/>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-44">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-47">
         <addForeignKeyConstraint baseColumnNames="f_role_id" baseTableName="t_role_permission" constraintName="t_role_permission_ibfk_1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="CASCADE" referencedColumnNames="f_id" referencedTableName="t_role" validate="true"/>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-45">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-48">
         <addForeignKeyConstraint baseColumnNames="f_permission_id" baseTableName="t_role_permission" constraintName="t_role_permission_ibfk_2" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="CASCADE" referencedColumnNames="f_id" referencedTableName="t_permission" validate="true"/>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-46">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-49">
         <addForeignKeyConstraint baseColumnNames="f_role_id" baseTableName="t_user" constraintName="t_user_ibfk_1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="CASCADE" referencedColumnNames="f_id" referencedTableName="t_role" validate="true"/>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-47">
+    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-50">
         <addForeignKeyConstraint baseColumnNames="f_discount_id" baseTableName="t_user" constraintName="t_user_ibfk_2" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="CASCADE" referencedColumnNames="f_id" referencedTableName="t_discount" validate="true"/>
-    </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-48">
-        <createTable tableName="t_business_card">
-            <column autoIncrement="true" name="f_id" type="BIGINT UNSIGNED">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="f_title" type="VARCHAR(20)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="f_full_name" type="VARCHAR(40)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="f_working_telephone" type="VARCHAR(20)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="f_user_id" type="BIGINT UNSIGNED">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539301829774-49">
-        <addForeignKeyConstraint baseColumnNames="f_user_id" baseTableName="t_business_card" constraintName="t_business_card_ibfk_1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="CASCADE" referencedColumnNames="f_id" referencedTableName="t_user" validate="true"/>
     </changeSet>
 </databaseChangeLog>

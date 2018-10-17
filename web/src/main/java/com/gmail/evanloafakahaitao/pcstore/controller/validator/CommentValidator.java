@@ -1,6 +1,5 @@
 package com.gmail.evanloafakahaitao.pcstore.controller.validator;
 
-import com.gmail.evanloafakahaitao.pcstore.dao.model.Comment;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.CommentDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

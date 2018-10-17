@@ -50,7 +50,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <c:set var="counter" value="1" scope="page"/>
+                        <c:set var="counter" value="${pagination.startPosition}" scope="page"/>
                         <c:forEach items="${orders}" var="order">
                             <tr>
                                 <th scope="row">
@@ -103,6 +103,27 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+            <div class="row">
+                <nav aria-label="...">
+                    <ul class="pagination">
+                        <c:forEach items="${pagination.pageNumbers}" var="page">
+                            <c:choose>
+                                <c:when test="${page == pagination.page}">
+                                    <li class="page-item active">
+                                        <a class="page-link"
+                                           href="${app_entry_path}/orders?page=${page}">${page}</a>
+                                    </li>
+                                </c:when>
+                                <c:otherwise>
+                                    <li class="page-item"><a class="page-link"
+                                                             href="${app_entry_path}/orders?page=${page}">${page}</a>
+                                    </li>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
+                    </ul>
+                </nav>
             </div>
         </div>
         <div class="col-md-2">

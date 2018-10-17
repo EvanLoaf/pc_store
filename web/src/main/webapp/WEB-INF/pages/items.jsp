@@ -139,13 +139,13 @@
             </security:authorize>
             <security:authorize access="hasAuthority('view_orders_self')">
                 <div class="row">
-                    <a href="${app_entry_path}/orders/self"
+                    <a href="${app_entry_path}/orders"
                        class="btn btn-outline-success" aria-pressed="true" role="button">SHOW ORDERS</a>
                 </div>
             </security:authorize>
             <security:authorize access="hasAuthority('view_orders_all')">
                 <div class="row">
-                    <a href="${app_entry_path}/orders/all"
+                    <a href="${app_entry_path}/orders/admin"
                        class="btn btn-outline-success" aria-pressed="true" role="button">SHOW ORDERS</a>
                 </div>
             </security:authorize>

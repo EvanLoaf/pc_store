@@ -16,6 +16,9 @@
             <h2>Application Error, please contact support.</h2>
             <h3>Debug information:</h3>
             <p>Requested URL = ${url}</p>
+            <c:if test="${not empty tip}">
+                <p>${tip}</p>
+            </c:if>
             <br>
             <p>Exception = ${exception.message}</p>
             <br>

@@ -14,8 +14,6 @@ import com.gmail.evanloafakahaitao.pcstore.service.dto.*;
 import com.gmail.evanloafakahaitao.pcstore.service.util.CurrentUserUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -25,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -41,8 +38,8 @@ public class OrderServiceImpl implements OrderService {
     private final UserDao userDao;
     private final Converter<OrderDTO, Order> orderConverter;
     private final DTOConverter<OrderDTO, Order> orderDTOConverter;
-    private final Converter<DataOrderDTO, Order> dataOrderConverter;
-    private final DTOConverter<DataOrderDTO, Order> dataOrderDTOConverter;
+    private final Converter<CreateOrderDTO, Order> dataOrderConverter;
+    private final DTOConverter<CreateOrderDTO, Order> dataOrderDTOConverter;
     private final Converter<SimpleOrderDTO, Order> simpleOrderConverter;
     private final DTOConverter<SimpleOrderDTO, Order> simpleOrderDTOConverter;
 
@@ -53,8 +50,8 @@ public class OrderServiceImpl implements OrderService {
             UserDao userDao,
             @Qualifier("orderConverter") Converter<OrderDTO, Order> orderConverter,
             @Qualifier("orderDTOConverter") DTOConverter<OrderDTO, Order> orderDTOConverter,
-            @Qualifier("dataOrderDTOConverter") DTOConverter<DataOrderDTO, Order> dataOrderDTOConverter,
-            @Qualifier("dataOrderConverter") Converter<DataOrderDTO, Order> dataOrderConverter,
+            @Qualifier("dataOrderDTOConverter") DTOConverter<CreateOrderDTO, Order> dataOrderDTOConverter,
+            @Qualifier("dataOrderConverter") Converter<CreateOrderDTO, Order> dataOrderConverter,
             @Qualifier("simpleOrderConverter") Converter<SimpleOrderDTO, Order> simpleOrderConverter,
             @Qualifier("simpleOrderDTOConverter") DTOConverter<SimpleOrderDTO, Order> simpleOrderDTOConverter
     ) {
@@ -70,12 +67,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public SimpleOrderDTO save(DataOrderDTO dataOrderDTO) {
+    public SimpleOrderDTO save(CreateOrderDTO createOrderDTO) {
         logger.info("Saving Order");
-            User user = userDao.findByEmail(dataOrderDTO.getUserEmail());
-            Item item = itemDao.findByVendorCode(dataOrderDTO.getItemVendorCode());
+            User user = userDao.findByEmail(createOrderDTO.getUserEmail());
+            Item item = itemDao.findByVendorCode(createOrderDTO.getItemVendorCode());
             Order order = new Order();
-            order.setQuantity(dataOrderDTO.getQuantity());
+            order.setQuantity(createOrderDTO.getQuantity());
             order.setCreated(LocalDateTime.now());
             order.setStatus(OrderStatusEnum.NEW);
             order.setUuid(UUID.randomUUID().toString());

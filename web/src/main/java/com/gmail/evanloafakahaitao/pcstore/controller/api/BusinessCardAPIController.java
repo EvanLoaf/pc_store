@@ -3,7 +3,6 @@ package com.gmail.evanloafakahaitao.pcstore.controller.api;
 import com.gmail.evanloafakahaitao.pcstore.controller.model.APIResponseEntity;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.ResponseProperties;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.WebProperties;
-import com.gmail.evanloafakahaitao.pcstore.controller.validator.api.BusinessCardAPIValidator;
 import com.gmail.evanloafakahaitao.pcstore.service.BusinessCardService;
 import com.gmail.evanloafakahaitao.pcstore.service.UserService;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.BusinessCardDTO;
@@ -26,17 +25,14 @@ public class BusinessCardAPIController {
 
     private final BusinessCardService businessCardService;
     private final UserService userService;
-    private final BusinessCardAPIValidator businessCardAPIValidator;
 
     @Autowired
     public BusinessCardAPIController(
             BusinessCardService businessCardService,
-            UserService userService,
-            BusinessCardAPIValidator businessCardAPIValidator
+            UserService userService
     ) {
         this.businessCardService = businessCardService;
         this.userService = userService;
-        this.businessCardAPIValidator = businessCardAPIValidator;
     }
 
     @GetMapping(value = "/users/{id}")

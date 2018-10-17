@@ -65,8 +65,7 @@ public class UserServiceImpl implements  UserService {
     @Override
     public UserDTO save(UserDTO userDTO) {
         logger.info("Saving User");
-        //TODO isDefault impl
-        Role role = roleDao.findByName("user");
+        Role role = roleDao.findDefault();
         User user = userConverter.toEntity(userDTO);
         user.setDisabled(false);
         user.setDeleted(false);

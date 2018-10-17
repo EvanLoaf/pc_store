@@ -25,6 +25,11 @@ public class PaginationUtil {
         return (page - 1) * pageProperties.getPaginationMaxResults();
     }
 
+    public int getPageNumerationStart(int page) {
+        logger.debug("Calculating start position for page numeration, page " + page);
+        return getStartPosition(page) + 1;
+    }
+
     public int[] getPageNumbers(int itemCount) {
         logger.debug("Calculating page numbers for " + itemCount + " items on a single page");
         if (itemCount == 0) {

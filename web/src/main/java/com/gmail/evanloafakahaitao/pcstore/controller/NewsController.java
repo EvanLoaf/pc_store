@@ -2,9 +2,8 @@ package com.gmail.evanloafakahaitao.pcstore.controller;
 
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.PageProperties;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.WebProperties;
+import com.gmail.evanloafakahaitao.pcstore.controller.util.FieldTrimmer;
 import com.gmail.evanloafakahaitao.pcstore.controller.util.PaginationUtil;
-import com.gmail.evanloafakahaitao.pcstore.controller.validator.CommentValidator;
-import com.gmail.evanloafakahaitao.pcstore.controller.validator.NewsValidator;
 import com.gmail.evanloafakahaitao.pcstore.service.NewsService;
 import com.gmail.evanloafakahaitao.pcstore.service.CommentService;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.NewsDTO;
@@ -37,6 +36,7 @@ public class NewsController {
     private final PaginationUtil paginationUtil;
     private final Validator newsValidator;
     private final Validator commentValidator;
+    private final FieldTrimmer fieldTrimmer;
 
     @Autowired
     public NewsController(
@@ -45,7 +45,8 @@ public class NewsController {
             CommentService commentService,
             PaginationUtil paginationUtil,
             @Qualifier("newsValidator") Validator newsValidator,
-            @Qualifier("commentValidator") Validator commentValidator
+            @Qualifier("commentValidator") Validator commentValidator,
+            FieldTrimmer fieldTrimmer
     ) {
         this.pageProperties = pageProperties;
         this.newsService = newsService;
@@ -53,6 +54,7 @@ public class NewsController {
         this.paginationUtil = paginationUtil;
         this.newsValidator = newsValidator;
         this.commentValidator = commentValidator;
+        this.fieldTrimmer = fieldTrimmer;
     }
 
     @GetMapping
@@ -69,7 +71,7 @@ public class NewsController {
         pagination.setPageNumbers(
                 paginationUtil.getPageNumbers(newsService.countAll().intValue())
         );
-        pagination.setStartPosition(paginationUtil.getStartPosition(page) + 1);
+        pagination.setStartPosition(paginationUtil.getPageNumerationStart(page));
         modelMap.addAttribute("pagination", pagination);
         return pageProperties.getNewsPagePath();
     }
@@ -82,6 +84,7 @@ public class NewsController {
             ModelMap modelMap
     ) {
         logger.debug("Executing News Controller method : createNews");
+        news = fieldTrimmer.trim(news);
         newsValidator.validate(news, result);
         if (result.hasErrors()) {
             modelMap.addAttribute("news", news);
@@ -94,7 +97,9 @@ public class NewsController {
 
     @GetMapping(value = "/create")
     @PreAuthorize("hasAuthority('create_news')")
-    public String createNewsPage(ModelMap modelMap) {
+    public String createNewsPage(
+            ModelMap modelMap
+    ) {
         logger.debug("Executing News Controller method : createNewsPage");
         modelMap.addAttribute("news", new NewsDTO());
         return pageProperties.getNewsCreatePagePath();
@@ -107,8 +112,6 @@ public class NewsController {
             ModelMap modelMap
     ) {
         logger.debug("Executing News Controller method : getNewsPiece with id " + id);
-        /*SimpleArticleDTO simpleNews = new SimpleArticleDTO();
-        simpleNews.setId(id);*/
         NewsDTO news = newsService.findById(id);
         modelMap.addAttribute("news", news);
         modelMap.addAttribute("comment", new CommentDTO());
@@ -124,6 +127,7 @@ public class NewsController {
             ModelMap modelMap
     ) {
         logger.debug("Executing News Controller method : updateNews with id " + id);
+        news = fieldTrimmer.trim(news);
         news.setId(id);
         newsValidator.validate(news, result);
         if (result.hasErrors()) {
@@ -141,8 +145,6 @@ public class NewsController {
             @PathVariable("id") Long id
     ) {
         logger.debug("Executing News Controller method : deleteNewsPiece with id " + id);
-        /*SimpleArticleDTO news = new SimpleArticleDTO();
-        news.setId(id);*/
         newsService.deleteById(id);
         return "redirect:" + WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/news";
     }
@@ -154,14 +156,12 @@ public class NewsController {
     ) {
         logger.debug("Executing News Controller method : deleteNews with id's " + Arrays.toString(ids));
         for (Long id : ids) {
-            /*SimpleArticleDTO news = new SimpleArticleDTO();
-            news.setId(id);*/
             newsService.deleteById(id);
         }
         return "redirect:" + WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/news";
     }
 
-    @PostMapping(value = "/{id}/comments/create")
+    @PostMapping(value = "/{id}/comments")
     @PreAuthorize("hasAuthority('create_comment')")
     public String createComment(
             @PathVariable("id") Long id,
@@ -170,11 +170,10 @@ public class NewsController {
             ModelMap modelMap
     ) {
         logger.debug("Executing News Controller method : createComment");
+        comment = fieldTrimmer.trim(comment);
         commentValidator.validate(comment, result);
         if (result.hasErrors()) {
             modelMap.addAttribute(comment);
-            /*SimpleArticleDTO simpleNews = new SimpleArticleDTO();
-            simpleNews.setId(id);*/
             NewsDTO news = newsService.findById(id);
             modelMap.addAttribute("news", news);
             modelMap.addAttribute("comment", comment);
@@ -195,11 +194,6 @@ public class NewsController {
             @PathVariable("commentid") Long commentId
     ) {
         logger.debug("Executing News Controller method : deleteComment with id " + commentId);
-        /*NewsDTO news = new NewsDTO();
-        news.setId(newsId);
-        CommentDTO comment = new CommentDTO();
-        comment.setId(commentId);
-        news.getComments().add(comment);*/
         commentService.deleteById(newsId, commentId);
         return "redirect:" + WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/news/" + newsId;
     }

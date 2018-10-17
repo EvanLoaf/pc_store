@@ -3,8 +3,8 @@ package com.gmail.evanloafakahaitao.pcstore.controller;
 import com.gmail.evanloafakahaitao.pcstore.controller.model.Pagination;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.PageProperties;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.WebProperties;
+import com.gmail.evanloafakahaitao.pcstore.controller.util.FieldTrimmer;
 import com.gmail.evanloafakahaitao.pcstore.controller.util.PaginationUtil;
-import com.gmail.evanloafakahaitao.pcstore.controller.validator.FeedbackValidator;
 import com.gmail.evanloafakahaitao.pcstore.service.FeedbackService;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.FeedbackDTO;
 import org.apache.logging.log4j.LogManager;
@@ -31,18 +31,21 @@ public class FeedbackController {
     private final PageProperties pageProperties;
     private final PaginationUtil paginationUtil;
     private final Validator feedbackValidator;
+    private final FieldTrimmer fieldTrimmer;
 
     @Autowired
     public FeedbackController(
             FeedbackService feedbackService,
             PageProperties pageProperties,
             PaginationUtil paginationUtil,
-            @Qualifier("feedbackValidator") Validator feedbackValidator
+            @Qualifier("feedbackValidator") Validator feedbackValidator,
+            FieldTrimmer fieldTrimmer
     ) {
         this.feedbackService = feedbackService;
         this.pageProperties = pageProperties;
         this.paginationUtil = paginationUtil;
         this.feedbackValidator = feedbackValidator;
+        this.fieldTrimmer = fieldTrimmer;
     }
 
     @GetMapping
@@ -59,7 +62,7 @@ public class FeedbackController {
         pagination.setPageNumbers(
                 paginationUtil.getPageNumbers(feedbackService.countAll().intValue())
         );
-        pagination.setStartPosition(paginationUtil.getStartPosition(page) + 1);
+        pagination.setStartPosition(paginationUtil.getPageNumerationStart(page));
         modelMap.addAttribute("pagination", pagination);
         return pageProperties.getFeedbackPagePath();
     }
@@ -72,6 +75,7 @@ public class FeedbackController {
             ModelMap modelMap
     ) {
         logger.debug("Executing Feedback Controller method : createFeedback");
+        feedback = fieldTrimmer.trim(feedback);
         feedbackValidator.validate(feedback, result);
         if (result.hasErrors()) {
             modelMap.addAttribute("feedback", feedback);

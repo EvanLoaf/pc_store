@@ -2,16 +2,15 @@ package com.gmail.evanloafakahaitao.pcstore.controller;
 
 import com.gmail.evanloafakahaitao.pcstore.controller.model.Pagination;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.WebProperties;
+import com.gmail.evanloafakahaitao.pcstore.controller.util.FieldTrimmer;
 import com.gmail.evanloafakahaitao.pcstore.controller.util.PaginationUtil;
 import com.gmail.evanloafakahaitao.pcstore.service.DiscountService;
 import com.gmail.evanloafakahaitao.pcstore.service.RoleService;
 import com.gmail.evanloafakahaitao.pcstore.service.UserService;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.DiscountDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.RoleDTO;
-import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleUserDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.UserDTO;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.PageProperties;
-import com.gmail.evanloafakahaitao.pcstore.controller.validator.UserValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +37,7 @@ public class UsersController {
     private final PaginationUtil paginationUtil;
     private final DiscountService discountService;
     private final Validator userValidator;
+    private final FieldTrimmer fieldTrimmer;
 
     @Autowired
     public UsersController(
@@ -46,7 +46,8 @@ public class UsersController {
             RoleService roleService,
             PaginationUtil paginationUtil,
             DiscountService discountService,
-            @Qualifier("userValidator") Validator userValidator
+            @Qualifier("userValidator") Validator userValidator,
+            FieldTrimmer fieldTrimmer
     ) {
         this.pageProperties = pageProperties;
         this.userService = userService;
@@ -54,6 +55,7 @@ public class UsersController {
         this.paginationUtil = paginationUtil;
         this.discountService = discountService;
         this.userValidator = userValidator;
+        this.fieldTrimmer = fieldTrimmer;
     }
 
     @GetMapping
@@ -70,7 +72,7 @@ public class UsersController {
         pagination.setPageNumbers(
                 paginationUtil.getPageNumbers(userService.countAll().intValue())
         );
-        pagination.setStartPosition(paginationUtil.getStartPosition(page) + 1);
+        pagination.setStartPosition(paginationUtil.getPageNumerationStart(page));
         modelMap.addAttribute("pagination", pagination);
         return pageProperties.getUsersPagePath();
     }
@@ -81,10 +83,8 @@ public class UsersController {
             ModelMap modelMap
     ) {
         logger.debug("Executing Users Controller method : getUser - Profile");
-        /*UserDTO user = new UserDTO();
-        user.setId(id);*/
-        UserDTO userRetrieved = userService.findByCurrentId();
-        modelMap.addAttribute("user", userRetrieved);
+        UserDTO user = userService.findByCurrentId();
+        modelMap.addAttribute("user", user);
         return pageProperties.getUserProfilePagePath();
     }
 
@@ -96,8 +96,8 @@ public class UsersController {
             BindingResult result,
             ModelMap modelMap
     ) {
-        //TODO check {id} with current.id
         logger.debug("Executing Users Controller method : updateUser with id " + id);
+        user = fieldTrimmer.trim(user);
         user.setId(id);
         userValidator.validate(user, result);
         if (result.hasErrors()) {
@@ -118,6 +118,7 @@ public class UsersController {
             ModelMap modelMap
     ) {
         logger.debug("Executing Users Controller method : updateUserByAdmin with id " + id);
+        user = fieldTrimmer.trim(user);
         user.setId(id);
         userValidator.validate(user, result);
         if (result.hasErrors()) {
@@ -136,8 +137,6 @@ public class UsersController {
     ) {
         logger.debug("Executing Users Controller method : deleteUsers with id's " + Arrays.toString(ids));
         for (Long id : ids) {
-            /*SimpleUserDTO user = new SimpleUserDTO();
-            user.setId(id);*/
             userService.deleteById(id);
         }
         return "redirect:" + WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/users";
@@ -164,8 +163,6 @@ public class UsersController {
             ModelMap modelMap
     ) {
         logger.debug("Executing Users Controller method : updateUserPage with id " + id);
-        /*UserDTO userDTO = new UserDTO();
-        userDTO.setId(id);*/
         UserDTO user = userService.findById(id);
         List<RoleDTO> roles = roleService.findAll();
         modelMap.addAttribute("roles", roles);

@@ -20,6 +20,9 @@ public class Role implements Serializable {
     @NotNull
     @Column
     private String name;
+    @NotNull
+    @Column
+    private boolean isDefault;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "RolePermission",
@@ -42,6 +45,14 @@ public class Role implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isDefault() {
+        return isDefault;
+    }
+
+    public void setDefault(boolean aDefault) {
+        isDefault = aDefault;
     }
 
     public Set<Permission> getPermissions() {

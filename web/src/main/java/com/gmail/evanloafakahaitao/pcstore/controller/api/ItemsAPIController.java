@@ -1,14 +1,13 @@
 package com.gmail.evanloafakahaitao.pcstore.controller.api;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.gmail.evanloafakahaitao.pcstore.controller.model.APIResponseEntity;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.PageProperties;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.ResponseProperties;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.WebProperties;
+import com.gmail.evanloafakahaitao.pcstore.controller.util.FieldTrimmer;
 import com.gmail.evanloafakahaitao.pcstore.controller.util.PaginationUtil;
 import com.gmail.evanloafakahaitao.pcstore.controller.validator.api.ItemAPIValidator;
 import com.gmail.evanloafakahaitao.pcstore.service.ItemService;
-import com.gmail.evanloafakahaitao.pcstore.service.OrderService;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.ItemDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,18 +30,21 @@ public class ItemsAPIController {
     private final PageProperties pageProperties;
     private final PaginationUtil paginationUtil;
     private final ItemAPIValidator itemAPIValidator;
+    private final FieldTrimmer fieldTrimmer;
 
     @Autowired
     public ItemsAPIController(
             ItemService itemService,
             PageProperties pageProperties,
             PaginationUtil paginationUtil,
-            ItemAPIValidator itemAPIValidator
+            ItemAPIValidator itemAPIValidator,
+            FieldTrimmer fieldTrimmer
     ) {
         this.itemService = itemService;
         this.pageProperties = pageProperties;
         this.paginationUtil = paginationUtil;
         this.itemAPIValidator = itemAPIValidator;
+        this.fieldTrimmer = fieldTrimmer;
     }
 
     @GetMapping
@@ -63,6 +65,7 @@ public class ItemsAPIController {
             @RequestBody ItemDTO item
     ) {
         logger.debug("Executing Item API Controller method : createItem");
+        item = fieldTrimmer.trim(item);
         Set<String> errors = itemAPIValidator.validate(item);
         APIResponseEntity response = new APIResponseEntity();
         if (!errors.isEmpty()) {
@@ -78,14 +81,18 @@ public class ItemsAPIController {
 
     @GetMapping(value = "/{id}")
     @PreAuthorize("hasAuthority('view_items_api')")
-    public ItemDTO getItem(@PathVariable(name = "id") Long id) {
+    public ItemDTO getItem(
+            @PathVariable(name = "id") Long id
+    ) {
         logger.debug("Executing Item API Controller method : getItem with id " + id);
         return itemService.findById(id);
     }
 
     @DeleteMapping(value = "/{id}")
     @PreAuthorize("hasAuthority('delete_item_api')")
-    public ResponseEntity<APIResponseEntity> deleteItem(@PathVariable(name = "id") Long id) {
+    public ResponseEntity<APIResponseEntity> deleteItem(
+            @PathVariable(name = "id") Long id
+    ) {
         logger.debug("Executing Item API Controller method : deleteItem with id " + id);
         itemService.deleteByOrdersCount(id);
         APIResponseEntity response = new APIResponseEntity();
@@ -100,6 +107,7 @@ public class ItemsAPIController {
             @PathVariable("id") Long id
     ) {
         logger.debug("Executing Item API Controller method : updateItem with id " + id);
+        item = fieldTrimmer.trim(item);
         item.setId(id);
         Set<String> errors = itemAPIValidator.validate(item);
         APIResponseEntity response = new APIResponseEntity();

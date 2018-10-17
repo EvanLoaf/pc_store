@@ -3,7 +3,7 @@ package com.gmail.evanloafakahaitao.pcstore.service.dto;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class DataOrderDTO implements Serializable {
+public class CreateOrderDTO implements Serializable {
 
     private static final long serialVersionUID = -3895436319279740913L;
 
@@ -39,7 +39,7 @@ public class DataOrderDTO implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        DataOrderDTO that = (DataOrderDTO) o;
+        CreateOrderDTO that = (CreateOrderDTO) o;
         return Objects.equals(quantity, that.quantity) &&
                 Objects.equals(userEmail, that.userEmail) &&
                 Objects.equals(itemVendorCode, that.itemVendorCode);

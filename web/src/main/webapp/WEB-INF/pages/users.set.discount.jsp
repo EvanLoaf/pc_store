@@ -61,9 +61,9 @@
                        class="btn btn-outline-success" aria-pressed="true" role="button">ITEMS</a>
                 </div>
             </security:authorize>
-            <security:authorize access="hasAnyAuthority('view_orders_self', 'view_orders_all')">
+            <security:authorize access="hasAuthority('view_orders_all')">
                 <div class="row">
-                    <a href="${app_entry_path}/orders"
+                    <a href="${app_entry_path}/orders/admin"
                        class="btn btn-outline-success" aria-pressed="true" role="button">SHOW ORDERS</a>
                 </div>
             </security:authorize>

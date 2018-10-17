@@ -2,6 +2,7 @@ package com.gmail.evanloafakahaitao.pcstore.controller;
 
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.PageProperties;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.WebProperties;
+import com.gmail.evanloafakahaitao.pcstore.controller.util.FieldTrimmer;
 import com.gmail.evanloafakahaitao.pcstore.controller.validator.UserValidator;
 import com.gmail.evanloafakahaitao.pcstore.service.UserService;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.UserDTO;
@@ -11,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,27 +26,34 @@ public class ApplicationController {
     private final PageProperties pageProperties;
     private final UserValidator userValidator;
     private final UserService userService;
+    private final FieldTrimmer fieldTrimmer;
 
     @Autowired
     public ApplicationController(
             PageProperties pageProperties,
             UserValidator userValidator,
-            UserService userService
+            UserService userService,
+            FieldTrimmer fieldTrimmer
     ) {
         this.pageProperties = pageProperties;
         this.userValidator = userValidator;
         this.userService = userService;
+        this.fieldTrimmer = fieldTrimmer;
     }
 
     @GetMapping(value = "/login")
-    public String loginPage(ModelMap modelMap) {
+    public String loginPage(
+            ModelMap modelMap
+    ) {
         logger.debug("Executing Application Controller method : loginPage");
         modelMap.addAttribute("user", new UserDTO());
         return pageProperties.getLoginPagePath();
     }
 
     @GetMapping(value = "/register")
-    public String registerPage(ModelMap modelMap) {
+    public String registerPage(
+            ModelMap modelMap
+    ) {
         logger.debug("Executing Application Controller method : registerPage");
         logger.info("Entered register page");
         modelMap.addAttribute("user", new UserDTO());
@@ -61,6 +67,7 @@ public class ApplicationController {
             ModelMap modelMap
     ) {
         logger.debug("Executing Application Controller method : registerUser");
+        user = fieldTrimmer.trim(user);
         userValidator.validate(user, result);
         if (result.hasErrors()) {
             modelMap.addAttribute("user", user);

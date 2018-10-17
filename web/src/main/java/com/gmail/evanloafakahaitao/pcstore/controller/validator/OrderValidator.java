@@ -1,7 +1,6 @@
 package com.gmail.evanloafakahaitao.pcstore.controller.validator;
 
-import com.gmail.evanloafakahaitao.pcstore.dao.model.Order;
-import com.gmail.evanloafakahaitao.pcstore.service.dto.DataOrderDTO;
+import com.gmail.evanloafakahaitao.pcstore.service.dto.CreateOrderDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
@@ -18,12 +17,12 @@ public class OrderValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return DataOrderDTO.class.equals(aClass);
+        return CreateOrderDTO.class.equals(aClass);
     }
 
     @Override
     public void validate(Object obj, Errors err) {
-        DataOrderDTO order = (DataOrderDTO) obj;
+        CreateOrderDTO order = (CreateOrderDTO) obj;
         ValidationUtils.rejectIfEmpty(err, "quantity", "order.quantity.empty");
         if (order.getQuantity() != null) {
             logger.info("Validating order - create");

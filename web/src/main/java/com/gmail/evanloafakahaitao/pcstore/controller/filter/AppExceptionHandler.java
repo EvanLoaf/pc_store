@@ -22,8 +22,7 @@ public class AppExceptionHandler {
     //TODO access exc
     @ExceptionHandler(AccessDeniedException.class)
     public String accessErrorHandler(HttpServletRequest request, Exception e) {
-
-
+        request.setAttribute("tip", "For further info regarding your account - contact administration");
         request.setAttribute("exception", e);
         request.setAttribute("url", request.getRequestURL());
         return pageProperties.getErrorsPagePath();
@@ -32,12 +31,10 @@ public class AppExceptionHandler {
     //TODO bad cred exc
     @ExceptionHandler(BadCredentialsException.class)
     public String badCredentialsErrorHandler(HttpServletRequest request, Exception e) {
-
-
+        request.setAttribute("tip", "For further info regarding your account - contact administration");
         request.setAttribute("exception", e);
         request.setAttribute("url", request.getRequestURL());
         return pageProperties.getErrorsPagePath();
-        /*return pageProperties.getErrorsAccessPagePath();*/
     }
 
     @ExceptionHandler(Exception.class)

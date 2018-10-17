@@ -56,7 +56,6 @@ public class AppAuthenticationSuccessHandler implements AuthenticationSuccessHan
         redirectStrategy.sendRedirect(request, response, targetUrl);
     }
 
-    //TODO here will be way more roles, authorities are placeholders
     private String determineTargetUrl(Authentication authentication) {
         boolean isUser = false;
         boolean isSecurityAdmin = false;

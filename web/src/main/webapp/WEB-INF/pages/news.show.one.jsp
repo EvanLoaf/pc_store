@@ -132,7 +132,7 @@
                 </table>
                 <div class="row">
                     <div class="col-lg-12">
-                        <form:form action="${app_entry_path}/news/${news.id}/comments/create" modelAttribute="comment"
+                        <form:form action="${app_entry_path}/news/${news.id}/comments" modelAttribute="comment"
                                    method="post">
                             <form:errors path="message" cssClass="alert-danger" element="div"/>
                             <div class="form-group">
@@ -152,13 +152,13 @@
             </security:authorize>
             <security:authorize access="hasAuthority('view_orders_self')">
                 <div class="row">
-                    <a href="${app_entry_path}/orders/self"
+                    <a href="${app_entry_path}/orders"
                        class="btn btn-outline-success" aria-pressed="true" role="button">SHOW ORDERS</a>
                 </div>
             </security:authorize>
             <security:authorize access="hasAuthority('view_orders_all')">
                 <div class="row">
-                    <a href="${app_entry_path}/orders/all"
+                    <a href="${app_entry_path}/orders/admin"
                        class="btn btn-outline-success" aria-pressed="true" role="button">SHOW ORDERS</a>
                 </div>
             </security:authorize>
