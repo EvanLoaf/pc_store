@@ -6,7 +6,15 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <%-- APPLICATION CONTEXT PATH --%>
     <c:set var="app" value="${pageContext.request.contextPath}"/>
+
+    <%-- PUBLIC ENTRY POINT PREFIX --%>
+    <c:set var="entry_point_prefix" value="/web"/>
+
+    <%-- INITIAL APP PATH --%>
+    <c:set var="app_entry_path" value="${app}${entry_point_prefix}"/>
+
     <jsp:include page="/WEB-INF/pages/util/head.jsp"/>
     <title>Show news</title>
 </head>
@@ -21,10 +29,10 @@
                 <div class="row">
                     <h1>You may update this piece of news</h1>
                 </div>
-                <form:form action="${app}/web/news/${news.id}" modelAttribute="news" method="post">
+                <form:form action="${app_entry_path}/news/${news.id}" modelAttribute="news" method="post">
                     <div class="row">
                         <div class="col-md-12">
-                            <a href="${app}/web/news/${news.id}/delete"
+                            <a href="${app_entry_path}/news/${news.id}/delete"
                                class="btn btn-outline-primary" aria-pressed="true" role="button">DELETE</a>
                         </div>
                     </div>
@@ -71,7 +79,7 @@
                                 <td>${comment.message}</td>
                                 <td>
                                     <security:authorize access="hasAuthority('remove_comments_all')">
-                                        <a href="${app}/web/news/${news.id}/comments/${comment.id}/delete"
+                                        <a href="${app_entry_path}/news/${news.id}/comments/${comment.id}/delete"
                                            class="btn btn-primary" aria-pressed="true" role="button">REMOVE</a>
                                     </security:authorize>
                                 </td>
@@ -124,7 +132,7 @@
                 </table>
                 <div class="row">
                     <div class="col-lg-12">
-                        <form:form action="${app}/web/news/${news.id}/comments/create" modelAttribute="comment"
+                        <form:form action="${app_entry_path}/news/${news.id}/comments/create" modelAttribute="comment"
                                    method="post">
                             <form:errors path="message" cssClass="alert-danger" element="div"/>
                             <div class="form-group">
@@ -144,38 +152,37 @@
             </security:authorize>
             <security:authorize access="hasAuthority('view_orders_self')">
                 <div class="row">
-                    <a href="${app}/web/orders/self"
+                    <a href="${app_entry_path}/orders/self"
                        class="btn btn-outline-success" aria-pressed="true" role="button">SHOW ORDERS</a>
                 </div>
             </security:authorize>
             <security:authorize access="hasAuthority('view_orders_all')">
                 <div class="row">
-                    <a href="${app}/web/orders/all"
+                    <a href="${app_entry_path}/orders/all"
                        class="btn btn-outline-success" aria-pressed="true" role="button">SHOW ORDERS</a>
                 </div>
             </security:authorize>
             <security:authorize access="hasAuthority('view_news')">
                 <div class="row">
-                    <a href="${app}/web/news"
+                    <a href="${app_entry_path}/news"
                        class="btn btn-outline-success" aria-pressed="true" role="button">NEWS</a>
                 </div>
             </security:authorize>
             <security:authorize access="hasAuthority('view_user_self')">
-                <security:authentication property="principal.id" var="userid"/>
                 <div class="row">
-                    <a href="${app}/web/users/${userid}"
+                    <a href="${app_entry_path}/users/profile"
                        class="btn btn-outline-success" aria-pressed="true" role="button">PROFILE</a>
                 </div>
             </security:authorize>
             <security:authorize access="hasAuthority('view_items')">
                 <div class="row">
-                    <a href="${app}/web/items"
+                    <a href="${app_entry_path}/items"
                        class="btn btn-outline-success" aria-pressed="true" role="button">ITEMS</a>
                 </div>
             </security:authorize>
             <jsp:include page="/WEB-INF/pages/util/ads.jsp"/>
             <div class="row">
-                <a href="${app}/web/logout"
+                <a href="${app_entry_path}/logout"
                    class="btn btn-outline-success" aria-pressed="true" role="button">LOG OUT</a>
             </div>
         </div>

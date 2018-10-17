@@ -4,18 +4,18 @@
            maxElementsInMemory="500"
            timeToIdleSeconds="30"
            timeToLiveSeconds="30"
-           eternal="true"
+           eternal="false"
            overflowToDisk="false"/>
     <cache name="com.gmail.evanloafakahaitao.pcstore.dao.model.Order"
            maxElementsInMemory="500"
            timeToIdleSeconds="30"
            timeToLiveSeconds="30"
-           eternal="true"
+           eternal="false"
            overflowToDisk="false"/>
     <cache name="com.gmail.evanloafakahaitao.pcstore.dao.model.User"
            maxElementsInMemory="500"
            timeToIdleSeconds="30"
            timeToLiveSeconds="30"
-           eternal="true"
+           eternal="false"
            overflowToDisk="false"/>
 </ehcache>

@@ -2,40 +2,47 @@ package com.gmail.evanloafakahaitao.pcstore.controller;
 
 import com.gmail.evanloafakahaitao.pcstore.controller.model.Pagination;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.PageProperties;
+import com.gmail.evanloafakahaitao.pcstore.controller.properties.WebProperties;
 import com.gmail.evanloafakahaitao.pcstore.controller.util.PaginationUtil;
 import com.gmail.evanloafakahaitao.pcstore.controller.validator.FeedbackValidator;
 import com.gmail.evanloafakahaitao.pcstore.service.FeedbackService;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.FeedbackDTO;
-import com.gmail.evanloafakahaitao.pcstore.service.util.CurrentUser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
 
 @Controller
-@RequestMapping("/web/feedback")
+@RequestMapping(WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/feedback")
 public class FeedbackController {
 
     private static final Logger logger = LogManager.getLogger(FeedbackController.class);
 
     private final FeedbackService feedbackService;
-    private final FeedbackValidator feedbackValidator;
     private final PageProperties pageProperties;
     private final PaginationUtil paginationUtil;
+    private final Validator feedbackValidator;
 
     @Autowired
-    public FeedbackController(FeedbackService feedbackService, FeedbackValidator feedbackValidator, PageProperties pageProperties, PaginationUtil paginationUtil) {
+    public FeedbackController(
+            FeedbackService feedbackService,
+            PageProperties pageProperties,
+            PaginationUtil paginationUtil,
+            @Qualifier("feedbackValidator") Validator feedbackValidator
+    ) {
         this.feedbackService = feedbackService;
-        this.feedbackValidator = feedbackValidator;
         this.pageProperties = pageProperties;
         this.paginationUtil = paginationUtil;
+        this.feedbackValidator = feedbackValidator;
     }
 
     @GetMapping
@@ -71,7 +78,8 @@ public class FeedbackController {
             return pageProperties.getFeedbackCreatePagePath();
         } else {
             feedbackService.save(feedback);
-            return "redirect:/web/users/" + CurrentUser.getCurrentId() + "?feedback=true";
+            //TODO change url logic - w/o user id
+            return "redirect:" + WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/users/profile" + "?feedback=true";
         }
     }
 
@@ -92,6 +100,6 @@ public class FeedbackController {
         for (Long id : ids) {
             feedbackService.deleteById(id);
         }
-        return "redirect:/web/feedback";
+        return "redirect:" + WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/feedback";
     }
 }

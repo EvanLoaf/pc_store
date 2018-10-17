@@ -1,20 +1,20 @@
 package com.gmail.evanloafakahaitao.pcstore.service.converter.impl.entity;
 
-import com.gmail.evanloafakahaitao.pcstore.dao.model.Article;
+import com.gmail.evanloafakahaitao.pcstore.dao.model.News;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleArticleDTO;
 import org.springframework.stereotype.Component;
 
 @Component("simpleArticleConverter")
-public class SimpleArticleConverter implements Converter<SimpleArticleDTO, Article> {
+public class SimpleNewsConverter implements Converter<SimpleArticleDTO, News> {
 
     @Override
-    public Article toEntity(SimpleArticleDTO dto) {
-        Article article = new Article();
-        article.setTitle(dto.getTitle());
+    public News toEntity(SimpleArticleDTO dto) {
+        News news = new News();
+        news.setTitle(dto.getTitle());
         if (dto.getId() != null) {
-            article.setId(dto.getId());
+            news.setId(dto.getId());
         }
-        return article;
+        return news;
     }
 }

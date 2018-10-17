@@ -1,17 +1,17 @@
 package com.gmail.evanloafakahaitao.pcstore.service.impl;
 
-import com.gmail.evanloafakahaitao.pcstore.dao.ArticleDao;
+import com.gmail.evanloafakahaitao.pcstore.dao.NewsDao;
 import com.gmail.evanloafakahaitao.pcstore.dao.CommentDao;
 import com.gmail.evanloafakahaitao.pcstore.dao.UserDao;
-import com.gmail.evanloafakahaitao.pcstore.dao.model.Article;
+import com.gmail.evanloafakahaitao.pcstore.dao.model.News;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Comment;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
 import com.gmail.evanloafakahaitao.pcstore.service.CommentService;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.CommentDTO;
-import com.gmail.evanloafakahaitao.pcstore.service.dto.ArticleDTO;
-import com.gmail.evanloafakahaitao.pcstore.service.util.CurrentUser;
+import com.gmail.evanloafakahaitao.pcstore.service.dto.NewsDTO;
+import com.gmail.evanloafakahaitao.pcstore.service.util.CurrentUserUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,23 +31,23 @@ public class CommentServiceImpl implements CommentService {
     private static final Logger logger = LogManager.getLogger(CommentServiceImpl.class);
 
     private final CommentDao commentDao;
-    private final ArticleDao articleDao;
+    private final NewsDao newsDao;
     private final UserDao userDao;
     private final Converter<CommentDTO, Comment> commentConverter;
     private final DTOConverter<CommentDTO, Comment> commentDTOConverter;
-    private final DTOConverter<ArticleDTO, Article> articleDTOConverter;
+    private final DTOConverter<NewsDTO, News> articleDTOConverter;
 
     @Autowired
     public CommentServiceImpl(
             CommentDao commentDao,
-            ArticleDao articleDao,
+            NewsDao newsDao,
             UserDao userDao,
             @Qualifier("commentConverter") Converter<CommentDTO, Comment> commentConverter,
             @Qualifier("commentDTOConverter") DTOConverter<CommentDTO, Comment> commentDTOConverter,
-            @Qualifier("articleDTOConverter") DTOConverter<ArticleDTO, Article> articleDTOConverter
+            @Qualifier("articleDTOConverter") DTOConverter<NewsDTO, News> articleDTOConverter
     ) {
         this.commentDao = commentDao;
-        this.articleDao = articleDao;
+        this.newsDao = newsDao;
         this.userDao = userDao;
         this.commentConverter = commentConverter;
         this.commentDTOConverter = commentDTOConverter;
@@ -55,19 +55,19 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentDTO save(ArticleDTO articleDTO) {
-        logger.info("Saving comment for article : " + articleDTO.getId());
-        if (!articleDTO.getComments().isEmpty()) {
-            Article article = articleDao.findOne(articleDTO.getId());
-            Comment comment = commentConverter.toEntity(articleDTO.getComments().iterator().next());
-            User user = userDao.findOne(CurrentUser.getCurrentId());
+    public CommentDTO save(NewsDTO newsDTO) {
+        logger.info("Saving comment for article : " + newsDTO.getId());
+        if (!newsDTO.getComments().isEmpty()) {
+            News news = newsDao.findOne(newsDTO.getId());
+            Comment comment = commentConverter.toEntity(newsDTO.getComments().iterator().next());
+            User user = userDao.findOne(CurrentUserUtil.getCurrentId());
             if (comment.getCreated() == null) {
                 comment.setCreated(LocalDateTime.now());
             }
             comment.setDeleted(false);
             comment.setUser(user);
-            article.getComments().add(comment);
-            articleDao.update(article);
+            news.getComments().add(comment);
+            newsDao.update(news);
             return commentDTOConverter.toDto(comment);
         } else {
             return null;
@@ -75,22 +75,17 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public ArticleDTO deleteById(ArticleDTO articleDTO) {
+    public void deleteById(Long newsId, Long commendId) {
         logger.info("Deleting Comment by Id");
-        if (!articleDTO.getComments().isEmpty()) {
-            Article article = articleDao.findOne(articleDTO.getId());
-            Iterator<Comment> iterator = article.getComments().iterator();
-            while (iterator.hasNext()) {
-                Comment comment = iterator.next();
-                if (comment.getId().equals(articleDTO.getComments().iterator().next().getId())) {
-                    iterator.remove();
-                    break;
-                }
+        News news = newsDao.findOne(newsId);
+        Iterator<Comment> iterator = news.getComments().iterator();
+        while (iterator.hasNext()) {
+            Comment comment = iterator.next();
+            if (comment.getId().equals(commendId)) {
+                iterator.remove();
+                break;
             }
-            articleDao.update(article);
-            return articleDTOConverter.toDto(article);
-        } else {
-            return articleDTO;
         }
+        newsDao.update(news);
     }
 }

@@ -8,7 +8,7 @@ import com.gmail.evanloafakahaitao.pcstore.service.BusinessCardService;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.BusinessCardDTO;
-import com.gmail.evanloafakahaitao.pcstore.service.util.CurrentUser;
+import com.gmail.evanloafakahaitao.pcstore.service.util.CurrentUserUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +46,7 @@ public class BusinessCardServiceImpl implements BusinessCardService {
     public BusinessCardDTO save(BusinessCardDTO businessCard) {
         logger.info("Saving Business Card");
         User user = userDao.findOne(
-                CurrentUser.getCurrentId()
+                CurrentUserUtil.getCurrentId()
         );
         BusinessCard businessCardSaving = businessCardConverter.toEntity(businessCard);
         user.getBusinessCards().add(businessCardSaving);
@@ -55,9 +55,8 @@ public class BusinessCardServiceImpl implements BusinessCardService {
     }
 
     @Override
-    public BusinessCardDTO deleteById(BusinessCardDTO businessCard) {
+    public void deleteById(Long id) {
         logger.info("Deleting Business Card by Id");
-        businessCardDao.deleteById(businessCard.getId());
-        return businessCard;
+        businessCardDao.deleteById(id);
     }
 }

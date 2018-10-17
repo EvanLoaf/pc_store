@@ -1,4 +1,4 @@
-package com.gmail.evanloafakahaitao.pcstore.controller.util;
+package com.gmail.evanloafakahaitao.pcstore.service.xml.util;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;

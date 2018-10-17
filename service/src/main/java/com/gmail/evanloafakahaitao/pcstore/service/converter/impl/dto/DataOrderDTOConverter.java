@@ -29,10 +29,9 @@ public class DataOrderDTOConverter implements DTOConverter<DataOrderDTO, Order> 
     @Override
     public DataOrderDTO toDto(Order entity) {
         DataOrderDTO order = new DataOrderDTO();
-        order.setUuid(entity.getUuid());
         order.setQuantity(entity.getQuantity());
-        order.setItem(simpleItemDTOConverter.toDto(entity.getItem()));
-        order.setUser(simpleUserDTOConverter.toDto(entity.getUser()));
+        order.setItemVendorCode(entity.getItem().getVendorCode());
+        order.setUserEmail(entity.getUser().getEmail());
         return order;
     }
 }

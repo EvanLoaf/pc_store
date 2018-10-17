@@ -6,7 +6,15 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <%-- APPLICATION CONTEXT PATH --%>
     <c:set var="app" value="${pageContext.request.contextPath}"/>
+
+    <%-- PUBLIC ENTRY POINT PREFIX --%>
+    <c:set var="entry_point_prefix" value="/web"/>
+
+    <%-- INITIAL APP PATH --%>
+    <c:set var="app_entry_path" value="${app}${entry_point_prefix}"/>
+
     <jsp:include page="/WEB-INF/pages/util/head.jsp"/>
     <title>Create business card</title>
 </head>
@@ -22,7 +30,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <form:form action="${app}/web/cards" modelAttribute="businessCard" method="post">
+                    <form:form action="${app_entry_path}/cards" modelAttribute="businessCard" method="post">
                         <form:errors path="title" cssClass="alert-danger" element="div"/>
                         <div class="form-group">
                             <form:label path="title">Title</form:label>
@@ -49,33 +57,32 @@
                 Hello <security:authentication property="principal.name"/>
             </security:authorize>
             <security:authorize access="hasAuthority('view_user_self')">
-                <security:authentication property="principal.id" var="userid"/>
                 <div class="row">
-                    <a href="${app}/web/users/${userid}"
+                    <a href="${app_entry_path}/users/profile"
                        class="btn btn-outline-success" aria-pressed="true" role="button">PROFILE</a>
                 </div>
             </security:authorize>
             <security:authorize access="hasAuthority('view_items')">
                 <div class="row">
-                    <a href="${app}/web/items"
+                    <a href="${app_entry_path}/items"
                        class="btn btn-outline-success" aria-pressed="true" role="button">ITEMS</a>
                 </div>
             </security:authorize>
             <security:authorize access="hasAuthority('manage_business_card')">
                 <div class="row">
-                    <a href="${app}/web/cards"
+                    <a href="${app_entry_path}/cards"
                        class="btn btn-outline-success" aria-pressed="true" role="button">BUSINESS CARDS</a>
                 </div>
             </security:authorize>
             <security:authorize access="hasAuthority('view_news')">
                 <div class="row">
-                    <a href="${app}/web/news"
+                    <a href="${app_entry_path}/news"
                        class="btn btn-outline-success" aria-pressed="true" role="button">NEWS</a>
                 </div>
             </security:authorize>
             <jsp:include page="/WEB-INF/pages/util/ads.jsp"/>
             <div class="row">
-                <a href="${app}/web/logout"
+                <a href="${app_entry_path}/logout"
                    class="btn btn-outline-success" aria-pressed="true" role="button">LOG OUT</a>
             </div>
         </div>

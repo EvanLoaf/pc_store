@@ -5,7 +5,15 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <%-- APPLICATION CONTEXT PATH --%>
     <c:set var="app" value="${pageContext.request.contextPath}"/>
+
+    <%-- PUBLIC ENTRY POINT PREFIX --%>
+    <c:set var="entry_point_prefix" value="/web"/>
+
+    <%-- INITIAL APP PATH --%>
+    <c:set var="app_entry_path" value="${app}${entry_point_prefix}"/>
+
     <jsp:include page="/WEB-INF/pages/util/head.jsp"/>
     <title>News</title>
 </head>
@@ -16,11 +24,11 @@
             <jsp:include page="/WEB-INF/pages/util/ads.jsp"/>
         </div>
         <div class="col-md-8">
-            <form action="${app}/web/news/delete" method="post">
+            <form action="${app_entry_path}/news/delete" method="post">
                 <div class="row">
                     <div class="col-md-12">
                         <security:authorize access="hasAuthority('create_news')">
-                            <a href="${app}/web/news/create"
+                            <a href="${app_entry_path}/news/create"
                                class="btn btn-outline-primary" aria-pressed="true" role="button">ADD NEWS</a>
                         </security:authorize>
                         <security:authorize access="hasAuthority('remove_news_all')">
@@ -54,7 +62,7 @@
                                         </td>
                                     </security:authorize>
                                     <td>
-                                        <a href="${app}/web/news/${news.id}"
+                                        <a href="${app_entry_path}/news/${news.id}"
                                            class="page-link" aria-pressed="true"
                                            role="button">${news.title}</a>
                                     </td>
@@ -73,11 +81,11 @@
                                 <c:choose>
                                     <c:when test="${page == pagination.page}">
                                         <li class="page-item active">
-                                            <a class="page-link" href="${app}/web/news?page=${page}">${page}</a>
+                                            <a class="page-link" href="${app_entry_path}/news?page=${page}">${page}</a>
                                         </li>
                                     </c:when>
                                     <c:otherwise>
-                                        <li class="page-item"><a class="page-link" href="${app}/web/news?page=${page}">${page}</a></li>
+                                        <li class="page-item"><a class="page-link" href="${app_entry_path}/news?page=${page}">${page}</a></li>
                                     </c:otherwise>
                                 </c:choose>
                             </c:forEach>
@@ -92,38 +100,37 @@
             </security:authorize>
             <security:authorize access="hasAuthority('view_orders_self')">
                 <div class="row">
-                    <a href="${app}/web/orders/self"
+                    <a href="${app_entry_path}/orders/self"
                        class="btn btn-outline-success" aria-pressed="true" role="button">SHOW ORDERS</a>
                 </div>
             </security:authorize>
             <security:authorize access="hasAuthority('view_orders_all')">
                 <div class="row">
-                    <a href="${app}/web/orders/all"
+                    <a href="${app_entry_path}/orders/all"
                        class="btn btn-outline-success" aria-pressed="true" role="button">SHOW ORDERS</a>
                 </div>
             </security:authorize>
             <security:authorize access="hasAuthority('view_feedback')">
                 <div class="row">
-                    <a href="${app}/web/feedback"
+                    <a href="${app_entry_path}/feedback"
                        class="btn btn-outline-success" aria-pressed="true" role="button">SHOW FEEDBACK</a>
                 </div>
             </security:authorize>
             <security:authorize access="hasAuthority('view_user_self')">
-                <security:authentication property="principal.id" var="userid"/>
                 <div class="row">
-                    <a href="${app}/web/users/${userid}"
+                    <a href="${app_entry_path}/users/profile"
                        class="btn btn-outline-success" aria-pressed="true" role="button">PROFILE</a>
                 </div>
             </security:authorize>
             <security:authorize access="hasAuthority('view_items')">
                 <div class="row">
-                    <a href="${app}/web/items"
+                    <a href="${app_entry_path}/items"
                        class="btn btn-outline-success" aria-pressed="true" role="button">ITEMS</a>
                 </div>
             </security:authorize>
             <jsp:include page="/WEB-INF/pages/util/ads.jsp"/>
             <div class="row">
-                <a href="${app}/web/logout"
+                <a href="${app_entry_path}/logout"
                    class="btn btn-outline-success" aria-pressed="true" role="button">LOG OUT</a>
             </div>
         </div>

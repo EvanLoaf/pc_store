@@ -2,6 +2,7 @@ package com.gmail.evanloafakahaitao.pcstore.service.impl;
 
 import com.gmail.evanloafakahaitao.pcstore.dao.DiscountDao;
 import com.gmail.evanloafakahaitao.pcstore.dao.ItemDao;
+import com.gmail.evanloafakahaitao.pcstore.dao.OrderDao;
 import com.gmail.evanloafakahaitao.pcstore.dao.impl.DiscountDaoImpl;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Discount;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
@@ -39,6 +40,7 @@ public class ItemServiceImpl implements ItemService {
 
     private final ItemDao itemDao;
     private final DiscountDao discountDao;
+    private final OrderDao orderDao;
     private final Converter<ItemDTO, Item> itemConverter;
     private final DTOConverter<ItemDTO, Item> itemDTOConverter;
     private final DTOConverter<SimpleItemDTO, Item> simpleItemDTOConverter;
@@ -51,7 +53,8 @@ public class ItemServiceImpl implements ItemService {
             @Qualifier("itemConverter") Converter<ItemDTO, Item> itemConverter,
             @Qualifier("itemDTOConverter") DTOConverter<ItemDTO, Item> itemDTOConverter,
             @Qualifier("simpleItemDTOConverter") DTOConverter<SimpleItemDTO, Item> simpleItemDTOConverter,
-            @Qualifier("discountDTOConverter") DTOConverter<DiscountDTO, Discount> discountDTOConverter
+            @Qualifier("discountDTOConverter") DTOConverter<DiscountDTO, Discount> discountDTOConverter,
+            OrderDao orderDao
     ) {
         this.itemDao = itemDao;
         this.discountDao = discountDao;
@@ -59,6 +62,7 @@ public class ItemServiceImpl implements ItemService {
         this.itemDTOConverter = itemDTOConverter;
         this.simpleItemDTOConverter = simpleItemDTOConverter;
         this.discountDTOConverter = discountDTOConverter;
+        this.orderDao = orderDao;
     }
 
     @Override
@@ -71,21 +75,21 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional(readOnly = true)
-    public ItemDTO findByVendorCode(ItemDTO itemDTO) {
+    public ItemDTO findByVendorCode(String vendorCode) {
         logger.info("Retrieving Item by VendorCode");
-        Item item = itemDao.findByVendorCode(itemDTO.getVendorCode());
+        Item item = itemDao.findByVendorCode(vendorCode);
         if (item != null) {
             return itemDTOConverter.toDto(item);
         } else {
-            return itemDTO;
+            return null;
         }
     }
 
     @Override
     @Transactional(readOnly = true)
-    public ItemDTO findById(ItemDTO itemDTO) {
+    public ItemDTO findById(Long id) {
         logger.info("Retrieving Item by Id");
-        Item item = itemDao.findOne(itemDTO.getId());
+        Item item = itemDao.findOne(id);
         return itemDTOConverter.toDto(item);
     }
 
@@ -123,23 +127,21 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public SimpleItemDTO softDelete(SimpleItemDTO simpleItemDTO) {
+    public void softDelete(Long id) {
         logger.info("Soft Deleting Item");
-        itemDao.softDelete(simpleItemDTO.getId());
-        return simpleItemDTO;
+        itemDao.softDelete(id);
     }
 
     @Override
-    public SimpleItemDTO hardDelete(SimpleItemDTO simpleItemDTO) {
+    public void hardDelete(Long id) {
         logger.info("Hard Deleting Item");
-        itemDao.deleteById(simpleItemDTO.getId());
-        return simpleItemDTO;
+        itemDao.deleteById(id);
     }
 
     @Override
-    public SimpleItemDTO copy(SimpleItemDTO simpleItemDTO) {
+    public SimpleItemDTO copy(Long id) {
         logger.info("Copying Item");
-        Item item = itemDao.findOne(simpleItemDTO.getId());
+        Item item = itemDao.findOne(id);
         Item newItem = new Item();
         newItem.setName(item.getName());
         newItem.setDescription(item.getDescription());
@@ -177,5 +179,16 @@ public class ItemServiceImpl implements ItemService {
             itemDao.update(item);
         }
         return discountDTOConverter.toDto(discount);
+    }
+
+    @Override
+    public void deleteByOrdersCount(Long id) {
+        logger.info("Deleting by order count");
+        Long countOfOrdersForItem = orderDao.countByItemId(id);
+        if (countOfOrdersForItem != null && countOfOrdersForItem.equals(0L)) {
+            itemDao.deleteById(id);
+        } else {
+            itemDao.softDelete(id);
+        }
     }
 }

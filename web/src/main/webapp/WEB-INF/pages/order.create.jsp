@@ -5,7 +5,15 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <%-- APPLICATION CONTEXT PATH --%>
     <c:set var="app" value="${pageContext.request.contextPath}"/>
+
+    <%-- PUBLIC ENTRY POINT PREFIX --%>
+    <c:set var="entry_point_prefix" value="/web"/>
+
+    <%-- INITIAL APP PATH --%>
+    <c:set var="app_entry_path" value="${app}${entry_point_prefix}"/>
+
     <jsp:include page="/WEB-INF/pages/util/head.jsp"/>
     <title>Create order</title>
 </head>
@@ -42,7 +50,7 @@
                                 <td>
                                     <c:choose>
                                         <c:when test="${not empty item.discounts}">
-                                            <c:out value="${item.discounts.iterator().next().percent}"/>
+                                            <c:out value="${item.discounts.iterator().next().percent} %"/>
                                         </c:when>
                                         <c:otherwise>
                                             0
@@ -52,7 +60,7 @@
                                 <td>
                                     <c:choose>
                                         <c:when test="${not empty user.discount}">
-                                            <c:out value="${user.discount.percent}"/>
+                                            <c:out value="${user.discount.percent} %"/>
                                         </c:when>
                                         <c:otherwise>
                                             0
@@ -65,7 +73,7 @@
                 </div>
             </div>
             <security:authorize access="hasAuthority('create_order')">
-                <form:form action="${app}/web/orders" modelAttribute="order" method="post">
+                <form:form action="${app_entry_path}/orders" modelAttribute="order" method="post">
                     <form:errors path="quantity" cssClass="alert-danger" element="div"/>
                     <div class="form-group">
                         <form:label path="quantity">Quantity :</form:label>
@@ -73,13 +81,13 @@
                                     placeholder="Enter quantity"/>
                     </div>
                     <div class="form-group" hidden>
-                        <form:label path="user.email">email :</form:label>
-                        <form:input type="email" path="user.email" class="form-control" id="email"
+                        <form:label path="userEmail">email :</form:label>
+                        <form:input type="email" path="userEmail" class="form-control" id="userEmail"
                                     />
                     </div>
                     <div class="form-group" hidden>
-                        <form:label path="item.vendorCode">vendor code :</form:label>
-                        <form:input type="text" path="item.vendorCode" class="form-control" id="vendorcode"
+                        <form:label path="itemVendorCode">vendor code :</form:label>
+                        <form:input type="text" path="itemVendorCode" class="form-control" id="itemVendorCode"
                                     />
                     </div>
                     <button type="submit" class="btn btn-primary">Place order</button>
@@ -92,26 +100,25 @@
             </security:authorize>
             <security:authorize access="hasAuthority('view_items')">
                 <div class="row">
-                    <a href="${app}/web/items"
+                    <a href="${app_entry_path}/items"
                        class="btn btn-outline-success" aria-pressed="true" role="button">ITEMS</a>
                 </div>
             </security:authorize>
             <security:authorize access="hasAuthority('view_user_self')">
-                <security:authentication property="principal.id" var="userid"/>
                 <div class="row">
-                    <a href="${app}/web/users/${userid}"
+                    <a href="${app_entry_path}/users/profile"
                        class="btn btn-outline-success" aria-pressed="true" role="button">PROFILE</a>
                 </div>
             </security:authorize>
             <security:authorize access="hasAuthority('view_news')">
                 <div class="row">
-                    <a href="${app}/web/news"
+                    <a href="${app_entry_path}/news"
                        class="btn btn-outline-success" aria-pressed="true" role="button">NEWS</a>
                 </div>
             </security:authorize>
             <jsp:include page="/WEB-INF/pages/util/ads.jsp"/>
             <div class="row">
-                <a href="${app}/web/logout"
+                <a href="${app_entry_path}/logout"
                    class="btn btn-outline-success" aria-pressed="true" role="button">LOG OUT</a>
             </div>
         </div>

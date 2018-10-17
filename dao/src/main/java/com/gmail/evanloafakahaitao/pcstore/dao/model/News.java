@@ -11,11 +11,11 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-@Table(name = "News")
+@Table
 @Entity
 @SQLDelete(sql = "update t_news set f_is_deleted = true where f_id = ?")
 @Where(clause = "f_is_deleted = false")
-public class Article extends SoftDeleteEntity implements Serializable {
+public class News extends SoftDeleteEntity implements Serializable {
 
     private static final long serialVersionUID = 1782542057905945600L;
 
@@ -91,9 +91,9 @@ public class Article extends SoftDeleteEntity implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Article article = (Article) o;
-        return Objects.equals(title, article.title) &&
-                Objects.equals(content, article.content);
+        News news = (News) o;
+        return Objects.equals(title, news.title) &&
+                Objects.equals(content, news.content);
     }
 
     @Override

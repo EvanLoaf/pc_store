@@ -73,7 +73,7 @@ public class DatabaseConfig {
         factoryBean.setHibernateProperties(properties);
         //TODO need to include disable/soft delete classes?
         factoryBean.setAnnotatedClasses(
-                Article.class,
+                News.class,
                 Audit.class,
                 Comment.class,
                 SoftDeleteAndDisableEntity.class,

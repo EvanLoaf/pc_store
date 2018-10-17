@@ -7,18 +7,9 @@ public class DataOrderDTO implements Serializable {
 
     private static final long serialVersionUID = -3895436319279740913L;
 
-    private String uuid;
     private Integer quantity;
-    private SimpleItemDTO item;
-    private SimpleUserDTO user;
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
+    private String userEmail;
+    private String itemVendorCode;
 
     public Integer getQuantity() {
         return quantity;
@@ -28,20 +19,20 @@ public class DataOrderDTO implements Serializable {
         this.quantity = quantity;
     }
 
-    public SimpleItemDTO getItem() {
-        return item;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setItem(SimpleItemDTO item) {
-        this.item = item;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
-    public SimpleUserDTO getUser() {
-        return user;
+    public String getItemVendorCode() {
+        return itemVendorCode;
     }
 
-    public void setUser(SimpleUserDTO user) {
-        this.user = user;
+    public void setItemVendorCode(String itemVendorCode) {
+        this.itemVendorCode = itemVendorCode;
     }
 
     @Override
@@ -49,11 +40,13 @@ public class DataOrderDTO implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DataOrderDTO that = (DataOrderDTO) o;
-        return Objects.equals(uuid, that.uuid);
+        return Objects.equals(quantity, that.quantity) &&
+                Objects.equals(userEmail, that.userEmail) &&
+                Objects.equals(itemVendorCode, that.itemVendorCode);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid);
+        return Objects.hash(quantity, userEmail, itemVendorCode);
     }
 }

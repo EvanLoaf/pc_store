@@ -8,7 +8,7 @@ import com.gmail.evanloafakahaitao.pcstore.service.FeedbackService;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.FeedbackDTO;
-import com.gmail.evanloafakahaitao.pcstore.service.util.CurrentUser;
+import com.gmail.evanloafakahaitao.pcstore.service.util.CurrentUserUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +49,7 @@ public class FeedbackServiceImpl implements FeedbackService {
         logger.info("Saving Feedback");
         Feedback feedback = feedbackConverter.toEntity(feedbackDTO);
         User user = userDao.findOne(
-                CurrentUser.getCurrentId()
+                CurrentUserUtil.getCurrentId()
         );
         feedback.setUser(user);
         feedbackDao.create(feedback);
@@ -65,10 +65,9 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public Long deleteById(Long id) {
+    public void deleteById(Long id) {
         logger.info("Deleting Feedback by Id");
         feedbackDao.deleteById(id);
-        return id;
     }
 
     @Override

@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:set var="app" value="${pageContext.request.contextPath}"/>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+<c:set var="app" value="${pageContext.request.contextPath}"/>
 <security:authorize access="hasAnyAuthority('sales_admin_basic_permission', 'security_admin_basic_permission')">
     <img src="${app}/resources/images/admin.jpg" class="img-fluid" alt="Hello admin" title="Admin">
 </security:authorize>

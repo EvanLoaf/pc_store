@@ -1,11 +1,11 @@
 package com.gmail.evanloafakahaitao.pcstore.service;
 
 import com.gmail.evanloafakahaitao.pcstore.service.dto.CommentDTO;
-import com.gmail.evanloafakahaitao.pcstore.service.dto.ArticleDTO;
+import com.gmail.evanloafakahaitao.pcstore.service.dto.NewsDTO;
 
 public interface CommentService {
 
-    CommentDTO save(ArticleDTO articleDTO);
+    CommentDTO save(NewsDTO newsDTO);
 
-    ArticleDTO deleteById(ArticleDTO articleDTO);
+    void deleteById(Long newsId, Long commendId);
 }

@@ -6,7 +6,15 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <%-- APPLICATION CONTEXT PATH --%>
     <c:set var="app" value="${pageContext.request.contextPath}"/>
+
+    <%-- PUBLIC ENTRY POINT PREFIX --%>
+    <c:set var="entry_point_prefix" value="/web"/>
+
+    <%-- INITIAL APP PATH --%>
+    <c:set var="app_entry_path" value="${app}${entry_point_prefix}"/>
+
     <jsp:include page="/WEB-INF/pages/util/head.jsp"/>
     <title> UploadItems</title>
 </head>
@@ -18,6 +26,20 @@
         </div>
         <div class="col-md-8">
             <div class="row">
+                <c:if test="${not empty duplicates}">
+                    <c:forEach items="${duplicates}" var="duplicate">
+                        <div class="container-fluid">
+                            <p>Could not save Item with duplicate Vendor Code : ${duplicate}</p>
+                        </div>
+                    </c:forEach>
+                    <div class="develop">
+                        <p>
+                            Please check your upload Data
+                        </p>
+                    </div>
+                </c:if>
+            </div>
+            <div class="row">
                 <h1>Choose file to upload items from</h1>
             </div>
             <div class="row">
@@ -26,7 +48,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <form method="post" action="${app}/web/items/upload" enctype="multipart/form-data">
+                    <form method="post" action="${app_entry_path}/items/upload" enctype="multipart/form-data">
                         <table>
                             <tr>
                                 <td>
@@ -52,19 +74,19 @@
             </security:authorize>
             <security:authorize access="hasAuthority('view_news')">
                 <div class="row">
-                    <a href="${app}/web/news"
+                    <a href="${app_entry_path}/news"
                        class="btn btn-outline-success" aria-pressed="true" role="button">NEWS</a>
                 </div>
             </security:authorize>
             <security:authorize access="hasAuthority('create_item')">
                 <div class="row">
-                    <a href="${app}/web/items/create"
+                    <a href="${app_entry_path}/items/create"
                        class="btn btn-outline-success" aria-pressed="true" role="button">CREATE ITEM</a>
                 </div>
             </security:authorize>
             <security:authorize access="hasAuthority('view_items')">
                 <div class="row">
-                    <a href="${app}/web/items"
+                    <a href="${app_entry_path}/items"
                        class="btn btn-outline-success" aria-pressed="true" role="button">ITEMS</a>
                 </div>
             </security:authorize>

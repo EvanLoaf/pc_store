@@ -1,6 +1,7 @@
 package com.gmail.evanloafakahaitao.pcstore.config;
 
 import com.gmail.evanloafakahaitao.pcstore.controller.filter.AppAuthenticationSuccessHandler;
+import com.gmail.evanloafakahaitao.pcstore.controller.properties.WebProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -36,22 +37,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                    .antMatchers("/web/register**", "/web/login**", "/web/users").permitAll()
+                    .antMatchers(
+                            WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/register",
+                            WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/login",
+                            WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/register/users/create").permitAll()
                     .antMatchers("/resources/**").permitAll()
-                    .antMatchers("/web/**").fullyAuthenticated()
+                    .antMatchers(WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/**").fullyAuthenticated()
                 .and()
                 .formLogin()
                     .usernameParameter("email")
                     .passwordParameter("password")
-                    .loginPage("/web/login")
-                    .loginProcessingUrl("/web/login")
+                    .loginPage(WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/login")
+                    .loginProcessingUrl(WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/login")
                     .successHandler(appAuthenticationSuccessHandler)
-                    .failureUrl("/web/login?error=true")
+                    .failureUrl(WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/login?error=true")
                     .permitAll()
                 .and()
                     .logout()
-                    .logoutUrl("/web/logout")
-                    .logoutSuccessUrl("/web/login?logout=true")
+                    .logoutUrl(WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/logout")
+                    .logoutSuccessUrl(WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/login?logout=true")
                     .permitAll()
                 .and()
                     .csrf()

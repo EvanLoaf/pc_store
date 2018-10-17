@@ -8,13 +8,13 @@ public interface OrderService {
 
     SimpleOrderDTO save(DataOrderDTO dataOrderDTO);
 
-    List<SimpleOrderDTO> findByUserId(SimpleUserDTO simpleUserDTO, Integer startPosition, Integer maxResults);
+    List<SimpleOrderDTO> findByCurrentUserId(Integer startPosition, Integer maxResults);
 
     SimpleOrderDTO update(SimpleOrderDTO orderDTO);
 
-    SimpleOrderDTO deleteByUuid(SimpleOrderDTO simpleOrderDTO);
+    void deleteByUuid(String uuid);
 
     List<OrderDTO> findAll(Integer startPosition, Integer maxResults);
 
-    Long countByItemId(SimpleItemDTO item);
+    Long countByItemId(Long itemId);
 }

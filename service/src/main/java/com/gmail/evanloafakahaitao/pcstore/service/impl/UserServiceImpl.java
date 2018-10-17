@@ -4,6 +4,7 @@ import com.gmail.evanloafakahaitao.pcstore.dao.DiscountDao;
 import com.gmail.evanloafakahaitao.pcstore.dao.RoleDao;
 import com.gmail.evanloafakahaitao.pcstore.dao.UserDao;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Discount;
+import com.gmail.evanloafakahaitao.pcstore.dao.model.PermissionEnum;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Role;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
 import com.gmail.evanloafakahaitao.pcstore.service.UserService;
@@ -12,6 +13,7 @@ import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.DiscountDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleUserDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.UserDTO;
+import com.gmail.evanloafakahaitao.pcstore.service.util.CurrentUserUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +28,7 @@ import java.util.List;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.REPEATABLE_READ)
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements  UserService {
 
     private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
@@ -80,6 +82,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO update(UserDTO userDTO) {
         logger.info("Updating User");
+        //TODO test
+        if (CurrentUserUtil.getCurrentAuthorities().contains(PermissionEnum.USER_BASIC_PERMISSION.toString())) {
+            if (!userDTO.getId().equals(CurrentUserUtil.getCurrentId())) {
+                throw new IllegalStateException("User is only allowed to update himself");
+            }
+        }
         User user = userDao.findOne(userDTO.getId());
         if (userDTO.getDisabled() != null) {
             user.setDisabled(userDTO.getDisabled());
@@ -113,29 +121,39 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public SimpleUserDTO findByEmail(SimpleUserDTO userDTO) {
+    public SimpleUserDTO findByEmail(String email) {
         logger.info("Retrieving User by Email");
-        User user = userDao.findByEmail(userDTO.getEmail());
+        User user = userDao.findByEmail(email);
         if (user != null) {
             return simpleUserDTOConverter.toDto(user);
         } else {
-            return userDTO;
+            //TODO not found?
+            return null;
         }
     }
 
     @Override
     @Transactional(readOnly = true)
-    public UserDTO findById(UserDTO userDTO) {
+    public UserDTO findById(Long id) {
         logger.info("Retrieving User by Id");
-        User user = userDao.findOne(userDTO.getId());
+        User user = userDao.findOne(id);
+        //TODO not found?
         return userDTOConverter.toDto(user);
     }
 
     @Override
-    public SimpleUserDTO deleteById(SimpleUserDTO simpleUserDTO) {
+    public UserDTO findByCurrentId() {
+        logger.info("Retrieving User by Current Id");
+        User user = userDao.findOne(
+                CurrentUserUtil.getCurrentId()
+        );
+        return userDTOConverter.toDto(user);
+    }
+
+    @Override
+    public void deleteById(Long id) {
         logger.info("Deleting User by Id");
-        userDao.deleteById(simpleUserDTO.getId());
-        return simpleUserDTO;
+        userDao.deleteById(id);
     }
 
     @Override

@@ -9,11 +9,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Collection;
 
-public class CurrentUser {
+public class CurrentUserUtil {
 
-    private static final Logger logger = LogManager.getLogger(CurrentUser.class);
+    private static final Logger logger = LogManager.getLogger(CurrentUserUtil.class);
 
-    private CurrentUser() {
+    private CurrentUserUtil() {
     }
 
     private static UserPrincipal getCurrentUser() {

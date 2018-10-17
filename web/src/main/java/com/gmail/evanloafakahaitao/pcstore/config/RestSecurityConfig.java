@@ -1,5 +1,6 @@
 package com.gmail.evanloafakahaitao.pcstore.config;
 
+import com.gmail.evanloafakahaitao.pcstore.controller.properties.WebProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -14,7 +15,7 @@ public class RestSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.antMatcher("/api/**")
+        http.antMatcher(WebProperties.REST_API_ENTRY_POINT_PREFIX + "/**")
                     .authorizeRequests().anyRequest().fullyAuthenticated()
                 .and()
                     .httpBasic().authenticationEntryPoint(authenticationEntryPoint())

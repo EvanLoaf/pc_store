@@ -30,15 +30,12 @@ public class DataOrderConverter implements Converter<DataOrderDTO, Order> {
     public Order toEntity(DataOrderDTO dto) {
         Order order = new Order();
         order.setQuantity(dto.getQuantity());
-        if (dto.getUuid() != null) {
-            order.setUuid(dto.getUuid());
-        }
-        if (dto.getUser() != null) {
-            order.setUser(simpleUserConverter.toEntity(dto.getUser()));
-        }
-        if (dto.getItem() != null) {
-            order.setItem(simpleItemConverter.toEntity(dto.getItem()));
-        }
+        User user = new User();
+        user.setEmail(dto.getUserEmail());
+        order.setUser(user);
+        Item item = new Item();
+        item.setVendorCode(dto.getItemVendorCode());
+        order.setItem(item);
         return order;
     }
 }

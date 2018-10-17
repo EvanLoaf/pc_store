@@ -13,11 +13,13 @@ public interface UserService {
 
     UserDTO update(UserDTO userDTO);
 
-    SimpleUserDTO findByEmail(SimpleUserDTO simpleUserDTO);
+    SimpleUserDTO findByEmail(String email);
 
-    UserDTO findById(UserDTO userDTO);
+    UserDTO findById(Long id);
 
-    SimpleUserDTO deleteById(SimpleUserDTO simpleUserDTO);
+    UserDTO findByCurrentId();
+
+    void deleteById(Long id);
 
     Long countAll();
 

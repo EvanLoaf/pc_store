@@ -5,7 +5,15 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <%-- APPLICATION CONTEXT PATH --%>
     <c:set var="app" value="${pageContext.request.contextPath}"/>
+
+    <%-- PUBLIC ENTRY POINT PREFIX --%>
+    <c:set var="entry_point_prefix" value="/web"/>
+
+    <%-- INITIAL APP PATH --%>
+    <c:set var="app_entry_path" value="${app}${entry_point_prefix}"/>
+
     <jsp:include page="/WEB-INF/pages/util/head.jsp"/>
     <title>Update user</title>
 </head>
@@ -18,7 +26,7 @@
         <div class="col-xl-8">
             <div class="row">
                 <div class="col-lg-12">
-                    <form:form action="${app}/web/users/${user.id}/admin" modelAttribute="user" method="post">
+                    <form:form action="${app_entry_path}/users/${user.id}/admin" modelAttribute="user" method="post">
                         <form:errors path="password" cssClass="container-fluid" element="div"/>
                         <div class="form-group">
                             <form:label path="password">Password</form:label>
@@ -52,19 +60,19 @@
             </security:authorize>
             <security:authorize access="hasAuthority('view_users_all')">
                 <div class="row">
-                    <a href="${app}/web/users"
+                    <a href="${app_entry_path}/users"
                        class="btn btn-outline-success" aria-pressed="true" role="button">USERS</a>
                 </div>
             </security:authorize>
             <security:authorize access="hasAuthority('view_audit')">
                 <div class="row">
-                    <a href="${app}/web/audit"
+                    <a href="${app_entry_path}/audit"
                        class="btn btn-outline-success" aria-pressed="true" role="button">AUDIT</a>
                 </div>
             </security:authorize>
             <jsp:include page="/WEB-INF/pages/util/ads.jsp"/>
             <div class="row">
-                <a href="${app}/web/logout"
+                <a href="${app_entry_path}/logout"
                    class="btn btn-outline-success" aria-pressed="true" role="button">LOG OUT</a>
             </div>
         </div>

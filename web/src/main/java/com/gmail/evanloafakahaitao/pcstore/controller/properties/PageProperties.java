@@ -1,78 +1,56 @@
 package com.gmail.evanloafakahaitao.pcstore.controller.properties;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
-import java.util.Objects;
 
 @Component
 public class PageProperties {
 
-    private final Environment environment;
-
-    private String schemaFilePath;
+    @Value("${pagination.max.results:5}")
     private Integer paginationMaxResults;
+    @Value("${register.page.path}")
     private String registerPagePath;
+    @Value("${login.page.path}")
     private String loginPagePath;
+    @Value("${errors.page.path}")
     private String errorsPagePath;
-    private String errorsAccessPagePath;
+    @Value("${items.page.path}")
     private String itemsPagePath;
+    @Value("${item.create.page.path}")
     private String itemCreatePagePath;
+    @Value("${items.upload.page.path}")
     private String itemsUploadPagePath;
+    @Value("${items.set.discount.page.path}")
     private String itemsSetDiscountPagePath;
+    @Value("${users.page.path}")
     private String usersPagePath;
+    @Value("${user.profile.page.path}")
     private String userProfilePagePath;
+    @Value("${user.update.page.path}")
     private String userUpdatePagePath;
+    @Value("${users.set.discount.page.path}")
     private String usersSetDiscountPagePath;
+    @Value("${orders.page.path}")
     private String ordersPagePath;
+    @Value("${order.create.page.path}")
     private String orderCreatePagePath;
+    @Value("${news.page.path}")
     private String newsPagePath;
+    @Value("${news.create.page.path}")
     private String newsCreatePagePath;
+    @Value("${news.show.one.page.path}")
     private String newsShowOnePagePath;
+    @Value("${feedback.page.path}")
     private String feedbackPagePath;
+    @Value("${feedback.create.page.path}")
     private String feedbackCreatePagePath;
+    //TODO del audit before prod
+    @Value("${audit.page.path}")
     private String auditPagePath;
+    @Value("${business.cards.page.path}")
     private String businessCardsPagePath;
+    @Value("${business.card.create.page.path}")
     private String businessCardCreatePagePath;
-
-    @Autowired
-    public PageProperties(Environment environment) {
-        this.environment = environment;
-    }
-
-    @PostConstruct
-    private void initialize() {
-        this.schemaFilePath = environment.getProperty("schema.file.path");
-        this.paginationMaxResults = Integer.valueOf(Objects.requireNonNull(environment.getProperty("pagination.max.results")));
-        this.registerPagePath = environment.getProperty("register.page.path");
-        this.loginPagePath = environment.getProperty("login.page.path");
-        this.errorsPagePath = environment.getProperty("errors.page.path");
-        this.errorsAccessPagePath = environment.getProperty("errors.access.page.path");
-        this.itemsPagePath = environment.getProperty("items.page.path");
-        this.itemCreatePagePath = environment.getProperty("item.create.page.path");
-        this.itemsUploadPagePath = environment.getProperty("items.upload.page.path");
-        this.itemsSetDiscountPagePath = environment.getProperty("items.set.discount.page.path");
-        this.usersPagePath = environment.getProperty("users.page.path");
-        this.userProfilePagePath = environment.getProperty("user.profile.page.path");
-        this.userUpdatePagePath = environment.getProperty("user.update.page.path");
-        this.usersSetDiscountPagePath = environment.getProperty("users.set.discount.page.path");
-        this.ordersPagePath = environment.getProperty("orders.page.path");
-        this.orderCreatePagePath = environment.getProperty("order.create.page.path");
-        this.newsPagePath = environment.getProperty("news.page.path");
-        this.newsCreatePagePath = environment.getProperty("news.create.page.path");
-        this.newsShowOnePagePath = environment.getProperty("news.show.one.page.path");
-        this.feedbackPagePath = environment.getProperty("feedback.page.path");
-        this.feedbackCreatePagePath = environment.getProperty("feedback.create.page.path");
-        this.auditPagePath = environment.getProperty("audit.page.path");
-        this.businessCardsPagePath = environment.getProperty("business.cards.page.path");
-        this.businessCardCreatePagePath = environment.getProperty("business.card.create.page.path");
-    }
-
-    public String getSchemaFilePath() {
-        return schemaFilePath;
-    }
 
     public Integer getPaginationMaxResults() {
         return paginationMaxResults;
@@ -88,10 +66,6 @@ public class PageProperties {
 
     public String getErrorsPagePath() {
         return errorsPagePath;
-    }
-
-    public String getErrorsAccessPagePath() {
-        return errorsAccessPagePath;
     }
 
     public String getItemsPagePath() {

@@ -14,7 +14,7 @@ import org.springframework.validation.Validator;
 
 import java.util.regex.Pattern;
 
-@Component
+@Component("userValidator")
 public class UserValidator implements Validator {
 
     private static final Logger logger = LogManager.getLogger(UserValidator.class);
@@ -35,6 +35,8 @@ public class UserValidator implements Validator {
     public void validate(Object obj, Errors err) {
         UserDTO user = (UserDTO) obj;
         if (user.getId() == null) {
+            logger.info("Validating user - create");
+
             ValidationUtils.rejectIfEmpty(err, "email", "user.email.empty");
             ValidationUtils.rejectIfEmpty(err, "password", "user.password.empty");
             ValidationUtils.rejectIfEmpty(err, "firstName", "user.firstname.empty");
@@ -68,17 +70,14 @@ public class UserValidator implements Validator {
                 err.rejectValue("firstName", "user.firstname.length");
             }
             if (user.getEmail() != null && user.getEmail().length() <= 30) {
-                SimpleUserDTO userDTO = new SimpleUserDTO();
-                userDTO.setEmail(user.getEmail());
-                SimpleUserDTO userByEmail = userService.findByEmail(userDTO);
-                if (userByEmail.getId() != null) {
+                SimpleUserDTO userByEmail = userService.findByEmail(user.getEmail());
+                if (userByEmail != null) {
                     err.rejectValue("email", "user.email.exists");
                 }
             }
 
         } else {
-            //TODO test this
-            /*ValidationUtils.rejectIfEmpty(err, "password", "user.password.empty");*/
+            logger.info("Validating user - update");
 
             if (user.getPassword() != null && !user.getPassword().equals("")) {
                 Pattern passwordPattern = Pattern.compile(

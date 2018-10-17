@@ -11,21 +11,23 @@ public interface ItemService {
 
     List<ItemDTO> findAllNotDeleted(Integer startPosition, Integer maxResults);
 
-    ItemDTO findByVendorCode(ItemDTO itemDTO);
+    ItemDTO findByVendorCode(String vendorCode);
 
-    ItemDTO findById(ItemDTO itemDTO);
+    ItemDTO findById(Long id);
 
     ItemDTO save(ItemDTO itemDTO);
 
     ItemDTO update(ItemDTO itemDTO);
 
-    SimpleItemDTO softDelete(SimpleItemDTO simpleItemDTO);
+    void softDelete(Long id);
 
-    SimpleItemDTO hardDelete(SimpleItemDTO simpleItemDTO);
+    void hardDelete(Long id);
 
-    SimpleItemDTO copy(SimpleItemDTO simpleItemDTO);
+    SimpleItemDTO copy(Long id);
 
     Long countAll();
 
     DiscountDTO updateDiscountAll(Long discountId, BigDecimal minPriceRange, BigDecimal maxPriceRange);
+
+    void deleteByOrdersCount(Long id);
 }

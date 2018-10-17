@@ -3,7 +3,9 @@ package com.gmail.evanloafakahaitao.pcstore.controller;
 import com.gmail.evanloafakahaitao.pcstore.controller.model.ItemDiscountData;
 import com.gmail.evanloafakahaitao.pcstore.controller.model.Pagination;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.PageProperties;
-import com.gmail.evanloafakahaitao.pcstore.controller.util.FileConverter;
+import com.gmail.evanloafakahaitao.pcstore.controller.properties.WebProperties;
+import com.gmail.evanloafakahaitao.pcstore.service.util.XMLItemSaverUtil;
+import com.gmail.evanloafakahaitao.pcstore.service.xml.util.FileConverter;
 import com.gmail.evanloafakahaitao.pcstore.controller.util.PaginationUtil;
 import com.gmail.evanloafakahaitao.pcstore.controller.validator.ItemDiscountDataValidator;
 import com.gmail.evanloafakahaitao.pcstore.controller.validator.ItemValidator;
@@ -18,54 +20,51 @@ import com.gmail.evanloafakahaitao.pcstore.service.xml.util.XMLItemConverter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
 @Controller
-@RequestMapping("/web/items")
+@RequestMapping(WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/items")
 public class ItemsController {
 
     private static final Logger logger = LogManager.getLogger(ItemsController.class);
 
     private final PageProperties pageProperties;
     private final ItemService itemService;
-    private final ItemValidator itemValidator;
-    private final FileConverter fileConverter;
-    private final XMLItemConverter xmlItemConverter;
     private final XMLService xmlService;
     private final PaginationUtil paginationUtil;
     private final DiscountService discountService;
-    private final ItemDiscountDataValidator itemDiscountDataValidator;
+    private final XMLItemSaverUtil xmlItemSaverUtil;
+    private final Validator itemValidator;
+    private final Validator itemDiscountDataValidator;
 
     @Autowired
     public ItemsController(
             PageProperties pageProperties,
             ItemService itemService,
-            ItemValidator itemValidator,
-            FileConverter fileConverter,
-            XMLItemConverter xmlItemConverter,
             XMLService xmlService,
             PaginationUtil paginationUtil,
             DiscountService discountService,
-            ItemDiscountDataValidator itemDiscountDataValidator
+            XMLItemSaverUtil xmlItemSaverUtil,
+            @Qualifier("itemValidator") Validator itemValidator,
+            @Qualifier("itemDiscountDataValidator") Validator itemDiscountDataValidator
     ) {
         this.pageProperties = pageProperties;
         this.itemService = itemService;
-        this.itemValidator = itemValidator;
-        this.fileConverter = fileConverter;
-        this.xmlItemConverter = xmlItemConverter;
         this.xmlService = xmlService;
         this.paginationUtil = paginationUtil;
         this.discountService = discountService;
+        this.xmlItemSaverUtil = xmlItemSaverUtil;
+        this.itemValidator = itemValidator;
         this.itemDiscountDataValidator = itemDiscountDataValidator;
     }
 
@@ -102,7 +101,7 @@ public class ItemsController {
             return pageProperties.getItemCreatePagePath();
         } else {
             itemService.save(item);
-            return "redirect:/web/items";
+            return "redirect:" + WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/items";
         }
     }
 
@@ -124,17 +123,18 @@ public class ItemsController {
     @PostMapping(value = "/upload")
     @PreAuthorize("hasAuthority('upload_items')")
     public String uploadItems(
-            @RequestParam("file") MultipartFile multipartItems
-    ) throws IOException {
+            @RequestParam("file") MultipartFile multipartItems,
+            ModelMap modelMap
+    ) {
         logger.debug("Executing Item Controller method : uploadItems");
-        File itemsFile = fileConverter.convert(multipartItems);
-        List<ItemXMLDTO> xmlItems = xmlService.getXmlItems(itemsFile, pageProperties.getSchemaFilePath());
-        List<ItemDTO> items = xmlItemConverter.toItems(xmlItems);
-        for (ItemDTO item : items) {
-            //TODO validate and return if vendor code already exists
-            itemService.save(item);
+        List<ItemDTO> items = xmlService.getUploadedXmlItems(multipartItems);
+        List<String> vendorCodeDuplicates = xmlItemSaverUtil.saveUploadedItems(items);
+        if (!vendorCodeDuplicates.isEmpty()) {
+            modelMap.addAttribute("duplicates", vendorCodeDuplicates);
+            return pageProperties.getItemsUploadPagePath();
+        } else {
+            return "redirect:" + WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/items";
         }
-        return "redirect:/web/items";
     }
 
     @PostMapping(value = "/delete")
@@ -144,11 +144,11 @@ public class ItemsController {
     ) {
         logger.debug("Executing Item Controller method : deleteItems with id's " + Arrays.toString(ids));
         for (Long id : ids) {
-            SimpleItemDTO item = new SimpleItemDTO();
-            item.setId(id);
-            itemService.softDelete(item);
+            /*SimpleItemDTO item = new SimpleItemDTO();
+            item.setId(id);*/
+            itemService.softDelete(id);
         }
-        return "redirect:/web/items";
+        return "redirect:" + WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/items";
     }
 
     @GetMapping(value = "/{id}/copy")
@@ -157,10 +157,10 @@ public class ItemsController {
             @PathVariable("id") Long id
     ) {
         logger.debug("Executing Item Controller method : copyItem with id " + id);
-        SimpleItemDTO item = new SimpleItemDTO();
-        item.setId(id);
-        itemService.copy(item);
-        return "redirect:/web/items";
+        /*SimpleItemDTO item = new SimpleItemDTO();
+        item.setId(id);*/
+        itemService.copy(id);
+        return "redirect:" + WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/items";
     }
 
     @PostMapping(value = "/discounts/update")
@@ -183,7 +183,7 @@ public class ItemsController {
                     discountData.getMinPriceRange(),
                     discountData.getMaxPriceRange()
             );
-            return "redirect:/web/items" + "?itemdiscounts=true";
+            return "redirect:" + WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/items" + "?itemdiscounts=true";
         }
 
     }

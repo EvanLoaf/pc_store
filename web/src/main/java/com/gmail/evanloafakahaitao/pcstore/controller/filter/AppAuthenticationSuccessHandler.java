@@ -1,6 +1,7 @@
 package com.gmail.evanloafakahaitao.pcstore.controller.filter;
 
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.PageProperties;
+import com.gmail.evanloafakahaitao.pcstore.dao.model.PermissionEnum;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Objects;
 
 @Component
 public class AppAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
@@ -44,7 +46,8 @@ public class AppAuthenticationSuccessHandler implements AuthenticationSuccessHan
     private void handle(
             HttpServletRequest request,
             HttpServletResponse response,
-            Authentication authentication) throws IOException {
+            Authentication authentication
+    ) throws IOException {
         String targetUrl = determineTargetUrl(authentication);
         if (response.isCommitted()) {
             logger.debug("Response has already been committed. Unable to redirect to {}", targetUrl);
@@ -61,17 +64,17 @@ public class AppAuthenticationSuccessHandler implements AuthenticationSuccessHan
         boolean isApiAdmin = false;
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (GrantedAuthority grantedAuthority : authorities) {
-            switch (grantedAuthority.getAuthority()) {
-                case "user_basic_permission":
+            switch (Objects.requireNonNull(PermissionEnum.getPermission(grantedAuthority.getAuthority()))) {
+                case USER_BASIC_PERMISSION:
                     isUser = true;
                     break;
-                case "security_admin_basic_permission":
+                case SECURITY_ADMIN_BASIC_PERMISSION:
                     isSecurityAdmin = true;
                     break;
-                case "sales_admin_basic_permission":
+                case SALES_ADMIN_BASIC_PERMISSION:
                     isSalesAdmin = true;
                     break;
-                case "api_admin_basic_permission":
+                case API_ADMIN_BASIC_PERMISSION:
                     isApiAdmin = true;
                     break;
             }

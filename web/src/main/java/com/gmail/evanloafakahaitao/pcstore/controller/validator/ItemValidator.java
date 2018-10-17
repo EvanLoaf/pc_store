@@ -2,7 +2,8 @@ package com.gmail.evanloafakahaitao.pcstore.controller.validator;
 
 import com.gmail.evanloafakahaitao.pcstore.service.ItemService;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.ItemDTO;
-import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleItemDTO;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -11,8 +12,10 @@ import org.springframework.validation.Validator;
 
 import java.util.regex.Pattern;
 
-@Component
+@Component("itemValidator")
 public class ItemValidator implements Validator {
+
+    private static final Logger logger = LogManager.getLogger(ItemValidator.class);
 
     private final ItemService itemService;
 
@@ -30,6 +33,8 @@ public class ItemValidator implements Validator {
     public void validate(Object obj, Errors err) {
         ItemDTO item = (ItemDTO) obj;
         if (item.getId() == null) {
+            logger.info("Validating item - create");
+
             ValidationUtils.rejectIfEmpty(err, "vendorCode", "item.vendorcode.empty");
             ValidationUtils.rejectIfEmpty(err, "name", "item.name.empty");
             ValidationUtils.rejectIfEmpty(err, "description", "item.description.empty");
@@ -45,14 +50,13 @@ public class ItemValidator implements Validator {
                 err.rejectValue("description", "item.description.length");
             }
             if (item.getVendorCode() != null && item.getVendorCode().length() <= 20) {
-                ItemDTO itemDTO = new ItemDTO();
-                itemDTO.setVendorCode(item.getVendorCode());
-                ItemDTO itemByVendorCode = itemService.findByVendorCode(itemDTO);
-                if (itemByVendorCode.getId() != null) {
+                ItemDTO itemByVendorCode = itemService.findByVendorCode(item.getVendorCode());
+                if (itemByVendorCode != null) {
                     err.rejectValue("vendorCode", "item.vendorcode.exists");
                 }
             }
             if (item.getPrice() != null) {
+                //TODO test any pruice
                 Pattern pattern = Pattern.compile(
                         "^-?\\d+\\.?\\d*$",
                         Pattern.CASE_INSENSITIVE
@@ -62,6 +66,8 @@ public class ItemValidator implements Validator {
                 }
             }
         } else {
+            logger.info("Validating news - update");
+
             if (item.getVendorCode() != null && item.getVendorCode().length() > 20) {
                 err.rejectValue("vendorCode", "item.vendorcode.length");
             }

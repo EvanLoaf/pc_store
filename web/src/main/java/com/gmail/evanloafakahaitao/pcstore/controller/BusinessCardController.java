@@ -1,43 +1,45 @@
 package com.gmail.evanloafakahaitao.pcstore.controller;
 
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.PageProperties;
+import com.gmail.evanloafakahaitao.pcstore.controller.properties.WebProperties;
 import com.gmail.evanloafakahaitao.pcstore.controller.validator.BusinessCardValidator;
 import com.gmail.evanloafakahaitao.pcstore.service.BusinessCardService;
 import com.gmail.evanloafakahaitao.pcstore.service.UserService;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.BusinessCardDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.UserDTO;
-import com.gmail.evanloafakahaitao.pcstore.service.util.CurrentUser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/web/cards")
+@RequestMapping(WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/cards")
 public class BusinessCardController {
 
     private static final Logger logger = LogManager.getLogger(BusinessCardController.class);
 
     private final BusinessCardService businessCardService;
-    private final BusinessCardValidator businessCardValidator;
     private final PageProperties pageProperties;
     private final UserService userService;
+    private final Validator businessCardValidator;
 
     @Autowired
     public BusinessCardController(
             BusinessCardService businessCardService,
-            BusinessCardValidator businessCardValidator,
             PageProperties pageProperties,
-            UserService userService
+            UserService userService,
+            @Qualifier("businessCardValidator") Validator businessCardValidator
     ) {
         this.businessCardService = businessCardService;
-        this.businessCardValidator = businessCardValidator;
         this.pageProperties = pageProperties;
         this.userService = userService;
+        this.businessCardValidator = businessCardValidator;
     }
 
     @GetMapping
@@ -46,9 +48,7 @@ public class BusinessCardController {
             ModelMap modelMap
     ) {
         logger.debug("Executing BusinessCard Controller method : getBusinessCards");
-        UserDTO userDTO = new UserDTO();
-        userDTO.setId(CurrentUser.getCurrentId());
-        UserDTO user = userService.findById(userDTO);
+        UserDTO user = userService.findByCurrentId();
         modelMap.addAttribute("businessCards", user.getBusinessCards());
         return pageProperties.getBusinessCardsPagePath();
     }
@@ -67,7 +67,7 @@ public class BusinessCardController {
             return pageProperties.getBusinessCardCreatePagePath();
         } else {
             businessCardService.save(businessCard);
-            return "redirect:/web/business/cards";
+            return "redirect:" + WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/cards";
         }
     }
 
@@ -87,9 +87,9 @@ public class BusinessCardController {
             @PathVariable("id") Long id
     ) {
         logger.debug("Executing BusinessCard Controller method : deleteBusinessCardPage with id " + id);
-        BusinessCardDTO businessCard = new BusinessCardDTO();
-        businessCard.setId(id);
-        businessCardService.deleteById(businessCard);
-        return "redirect:/web/business/cards";
+        /*BusinessCardDTO businessCard = new BusinessCardDTO();
+        businessCard.setId(id);*/
+        businessCardService.deleteById(id);
+        return "redirect:" + WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/cards";
     }
 }

@@ -11,6 +11,7 @@ import com.gmail.evanloafakahaitao.pcstore.service.OrderService;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.*;
+import com.gmail.evanloafakahaitao.pcstore.service.util.CurrentUserUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
@@ -25,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -70,10 +72,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public SimpleOrderDTO save(DataOrderDTO dataOrderDTO) {
         logger.info("Saving Order");
-        if (dataOrderDTO.getUser() != null && dataOrderDTO.getItem() != null) {
-            User user = userDao.findByEmail(dataOrderDTO.getUser().getEmail());
-            Item item = itemDao.findByVendorCode(dataOrderDTO.getItem().getVendorCode());
-            Order order = dataOrderConverter.toEntity(dataOrderDTO);
+            User user = userDao.findByEmail(dataOrderDTO.getUserEmail());
+            Item item = itemDao.findByVendorCode(dataOrderDTO.getItemVendorCode());
+            Order order = new Order();
+            order.setQuantity(dataOrderDTO.getQuantity());
             order.setCreated(LocalDateTime.now());
             order.setStatus(OrderStatusEnum.NEW);
             order.setUuid(UUID.randomUUID().toString());
@@ -102,17 +104,22 @@ public class OrderServiceImpl implements OrderService {
             order.setItem(item);
             orderDao.create(order);
             return simpleOrderDTOConverter.toDto(order);
-        } else {
-            return null;
-        }
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<SimpleOrderDTO> findByUserId(SimpleUserDTO simpleUserDTO, Integer startPosition, Integer maxResults) {
+    public List<SimpleOrderDTO> findByCurrentUserId(Integer startPosition, Integer maxResults) {
         logger.info("Retrieving Order by User Id");
-        List<Order> orders = orderDao.findByUserId(simpleUserDTO.getId(), startPosition, maxResults);
-        return simpleOrderDTOConverter.toDTOList(orders);
+        List<Order> orders = orderDao.findByUserId(
+                CurrentUserUtil.getCurrentId(),
+                startPosition,
+                maxResults
+        );
+        if (!orders.isEmpty()) {
+            return simpleOrderDTOConverter.toDTOList(orders);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     @Override
@@ -129,10 +136,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public SimpleOrderDTO deleteByUuid(SimpleOrderDTO simpleOrderDTO) {
+    public void deleteByUuid(String uuid) {
         logger.info("Deleting Order by Uuid");
-        orderDao.deleteByUuid(simpleOrderDTO.getUuid());
-        return simpleOrderDTO;
+        orderDao.deleteByUuid(uuid);
     }
 
     @Override
@@ -145,8 +151,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional(readOnly = true)
-    public Long countByItemId(SimpleItemDTO item) {
+    public Long countByItemId(Long itemId) {
         logger.info("Counting Orders by Item Id");
-        return orderDao.countByItemId(item.getId());
+        return orderDao.countByItemId(itemId);
     }
 }

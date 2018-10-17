@@ -1,13 +1,17 @@
 package com.gmail.evanloafakahaitao.pcstore.controller.validator;
 
 import com.gmail.evanloafakahaitao.pcstore.service.dto.BusinessCardDTO;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-@Component
+@Component("businessCardValidator")
 public class BusinessCardValidator implements Validator {
+
+    private static final Logger logger = LogManager.getLogger(BusinessCardValidator.class);
 
     @Override
     public boolean supports(Class<?> aClass) {
@@ -16,8 +20,9 @@ public class BusinessCardValidator implements Validator {
 
     @Override
     public void validate(Object obj, Errors err) {
-        BusinessCardDTO businessCard = (BusinessCardDTO) obj;
+        logger.info("Validating business card - create");
 
+        BusinessCardDTO businessCard = (BusinessCardDTO) obj;
         ValidationUtils.rejectIfEmpty(err, "title", "business.card.title.empty");
         ValidationUtils.rejectIfEmpty(err, "fullName", "business.card.fullname.empty");
         ValidationUtils.rejectIfEmpty(err, "workingTelephone", "business.card.working.telephone.empty");

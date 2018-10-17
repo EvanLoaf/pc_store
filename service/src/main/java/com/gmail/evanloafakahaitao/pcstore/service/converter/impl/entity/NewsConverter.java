@@ -1,10 +1,10 @@
 package com.gmail.evanloafakahaitao.pcstore.service.converter.impl.entity;
 
-import com.gmail.evanloafakahaitao.pcstore.dao.model.Article;
+import com.gmail.evanloafakahaitao.pcstore.dao.model.News;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Comment;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
-import com.gmail.evanloafakahaitao.pcstore.service.dto.ArticleDTO;
+import com.gmail.evanloafakahaitao.pcstore.service.dto.NewsDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.CommentDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleUserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +12,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component("articleConverter")
-public class ArticleConverter implements Converter<ArticleDTO, Article> {
+public class NewsConverter implements Converter<NewsDTO, News> {
 
     private final Converter<SimpleUserDTO, User> simpleUserConverter;
     private final Converter<CommentDTO, Comment> commentConverter;
 
     @Autowired
-    public ArticleConverter(
+    public NewsConverter(
             @Qualifier("simpleUserConverter") Converter<SimpleUserDTO, User> simpleUserConverter,
             @Qualifier("commentConverter") Converter<CommentDTO, Comment> commentConverter
     ) {
@@ -27,16 +27,16 @@ public class ArticleConverter implements Converter<ArticleDTO, Article> {
     }
 
     @Override
-    public Article toEntity(ArticleDTO dto) {
-        Article article = new Article();
-        article.setTitle(dto.getTitle());
-        article.setContent(dto.getContent());
+    public News toEntity(NewsDTO dto) {
+        News news = new News();
+        news.setTitle(dto.getTitle());
+        news.setContent(dto.getContent());
         if (dto.getId() != null) {
-            article.setId(dto.getId());
+            news.setId(dto.getId());
         }
         if (!dto.getComments().isEmpty()) {
-            article.setComments(commentConverter.toEntitySet(dto.getComments()));
+            news.setComments(commentConverter.toEntitySet(dto.getComments()));
         }
-        return article;
+        return news;
     }
 }

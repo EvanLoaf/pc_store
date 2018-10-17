@@ -1,12 +1,11 @@
 package com.gmail.evanloafakahaitao.pcstore.service.dto;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class ArticleDTO implements Serializable {
+public class NewsDTO implements Serializable {
 
     private static final long serialVersionUID = 7468075411840216853L;
 
@@ -69,9 +68,9 @@ public class ArticleDTO implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ArticleDTO articleDTO = (ArticleDTO) o;
-        return Objects.equals(title, articleDTO.title) &&
-                Objects.equals(content, articleDTO.content);
+        NewsDTO newsDTO = (NewsDTO) o;
+        return Objects.equals(title, newsDTO.title) &&
+                Objects.equals(content, newsDTO.content);
     }
 
     @Override

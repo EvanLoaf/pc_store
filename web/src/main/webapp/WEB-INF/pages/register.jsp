@@ -5,7 +5,15 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <%-- APPLICATION CONTEXT PATH --%>
     <c:set var="app" value="${pageContext.request.contextPath}"/>
+
+    <%-- PUBLIC ENTRY POINT PREFIX --%>
+    <c:set var="entry_point_prefix" value="/web"/>
+
+    <%-- INITIAL APP PATH --%>
+    <c:set var="app_entry_path" value="${app}${entry_point_prefix}"/>
+
     <jsp:include page="/WEB-INF/pages/util/head.jsp"/>
     <title>Registration</title>
 </head>
@@ -15,7 +23,7 @@
         <div class="col-md-4">
         </div>
         <div class="col-md-4">
-            <form:form action="${app}/web/users" modelAttribute="user" method="post">
+            <form:form action="${app_entry_path}/register/users/create" modelAttribute="user" method="post">
                 <form:errors path="email" cssClass="alert-danger" element="div"/>
                 <div class="form-group">
                     <form:label path="email">Email address</form:label>
@@ -32,7 +40,7 @@
                 <form:errors path="firstName" cssClass="alert-danger" element="div"/>
                 <div class="form-group">
                     <form:label path="firstName">First name</form:label>
-                    <form:input type="text" path="firstName"  class="form-control"
+                    <form:input type="text" path="firstName" class="form-control"
                                 id="firstName"
                                 placeholder="John"/>
                 </div>
@@ -56,7 +64,7 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form:form>
-            <a href="${app}/web/login" class="btn btn-dark" aria-pressed="true" role="button">Already
+            <a href="${app_entry_path}/login" class="btn btn-dark" aria-pressed="true" role="button">Already
                 got an account</a>
         </div>
         <div class="col-md-4">

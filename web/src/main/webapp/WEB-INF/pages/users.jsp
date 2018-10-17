@@ -5,7 +5,15 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <%-- APPLICATION CONTEXT PATH --%>
     <c:set var="app" value="${pageContext.request.contextPath}"/>
+
+    <%-- PUBLIC ENTRY POINT PREFIX --%>
+    <c:set var="entry_point_prefix" value="/web"/>
+
+    <%-- INITIAL APP PATH --%>
+    <c:set var="app_entry_path" value="${app}${entry_point_prefix}"/>
+
     <jsp:include page="/WEB-INF/pages/util/head.jsp"/>
     <title>Users</title>
 </head>
@@ -27,7 +35,7 @@
 
             <div class="row">
                 <div class="col-md-8">
-                    <form action="${app}/web/users/delete" method="post">
+                    <form action="${app_entry_path}/users/delete" method="post">
                         <div class="row">
                             <div class="col-md-12">
                                 <security:authorize access="hasAuthority('delete_user')">
@@ -80,19 +88,19 @@
                                             <td>${user.disabled}</td>
                                             <td>
                                                 <security:authorize access="hasAuthority('update_users_all')">
-                                                    <a href="${app}/web/users/${user.id}/update"
+                                                    <a href="${app_entry_path}/users/${user.id}/update"
                                                        class="btn btn-primary" aria-pressed="true"
                                                        role="button">UPDATE</a>
                                                 </security:authorize>
                                                 <security:authorize access="hasAuthority('disable_user')">
                                                     <c:choose>
                                                         <c:when test="${user.disabled}">
-                                                            <a href="${app}/web/users/${user.id}/disable?disable=${!user.disabled}"
+                                                            <a href="${app_entry_path}/users/${user.id}/disable?disable=${!user.disabled}"
                                                                class="btn btn-primary" aria-pressed="true"
                                                                role="button">ENABLE</a>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <a href="${app}/web/users/${user.id}/disable?disable=${!user.disabled}"
+                                                            <a href="${app_entry_path}/users/${user.id}/disable?disable=${!user.disabled}"
                                                                class="btn btn-primary" aria-pressed="true"
                                                                role="button">DISABLE</a>
                                                         </c:otherwise>
@@ -114,12 +122,12 @@
                                             <c:when test="${page == pagination.page}">
                                                 <li class="page-item active">
                                                     <a class="page-link"
-                                                       href="${app}/web/items?page=${page}">${page}</a>
+                                                       href="${app_entry_path}/items?page=${page}">${page}</a>
                                                 </li>
                                             </c:when>
                                             <c:otherwise>
                                                 <li class="page-item"><a class="page-link"
-                                                                         href="${app}/web/items?page=${page}">${page}</a>
+                                                                         href="${app_entry_path}/items?page=${page}">${page}</a>
                                                 </li>
                                             </c:otherwise>
                                         </c:choose>
@@ -137,7 +145,7 @@
             </security:authorize>
             <jsp:include page="/WEB-INF/pages/util/ads.jsp"/>
             <div class="row">
-                <a href="${app}/web/logout"
+                <a href="${app_entry_path}/logout"
                    class="btn btn-outline-success" aria-pressed="true" role="button">LOG OUT</a>
             </div>
         </div>

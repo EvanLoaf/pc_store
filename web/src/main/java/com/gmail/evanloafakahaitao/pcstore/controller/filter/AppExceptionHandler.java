@@ -24,8 +24,9 @@ public class AppExceptionHandler {
     public String accessErrorHandler(HttpServletRequest request, Exception e) {
 
 
-
-        return pageProperties.getErrorsAccessPagePath();
+        request.setAttribute("exception", e);
+        request.setAttribute("url", request.getRequestURL());
+        return pageProperties.getErrorsPagePath();
     }
 
     //TODO bad cred exc
@@ -33,8 +34,10 @@ public class AppExceptionHandler {
     public String badCredentialsErrorHandler(HttpServletRequest request, Exception e) {
 
 
-
-        return pageProperties.getErrorsAccessPagePath();
+        request.setAttribute("exception", e);
+        request.setAttribute("url", request.getRequestURL());
+        return pageProperties.getErrorsPagePath();
+        /*return pageProperties.getErrorsAccessPagePath();*/
     }
 
     @ExceptionHandler(Exception.class)

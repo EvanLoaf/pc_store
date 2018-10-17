@@ -6,5 +6,5 @@ public interface BusinessCardService {
 
     BusinessCardDTO save(BusinessCardDTO businessCard);
 
-    BusinessCardDTO deleteById(BusinessCardDTO businessCard);
+    void deleteById(Long id);
 }
