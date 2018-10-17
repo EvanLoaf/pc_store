@@ -5,6 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -64,10 +65,11 @@ public class FieldTrimmerUtil {
     }
 
     public List<ItemDTO> trim(List<ItemDTO> items) {
+        List<ItemDTO> trimmedItems = new ArrayList<>();
         for (ItemDTO item : items) {
-            item = trim(item);
+            trimmedItems.add(trim(item));
         }
-        return items;
+        return trimmedItems;
     }
 
     public FeedbackDTO trim(FeedbackDTO feedback) {

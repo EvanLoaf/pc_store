@@ -109,8 +109,8 @@ public class ItemsAPIController {
         item = fieldTrimmerUtil.trim(item);
         item.setId(id);
         Set<String> errors = itemAPIValidator.validate(item);
-        APIResponseEntity response = new APIResponseEntity();
         if (!errors.isEmpty()) {
+            APIResponseEntity response = new APIResponseEntity();
             response.setMessage(APIResponseProperties.ITEM_NOT_UPDATED);
             response.setErrors(errors);
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
