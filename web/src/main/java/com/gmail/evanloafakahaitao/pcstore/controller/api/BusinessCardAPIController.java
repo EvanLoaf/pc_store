@@ -53,8 +53,6 @@ public class BusinessCardAPIController {
     ) {
         logger.debug("Executing BusinessCard API Controller method : deleteBusinessCards with id " + id);
         businessCardService.deleteById(id);
-        APIResponseEntity response = new APIResponseEntity();
-        response.setMessage(APIResponseProperties.BUSINESS_CARD_DELETED);
-        return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

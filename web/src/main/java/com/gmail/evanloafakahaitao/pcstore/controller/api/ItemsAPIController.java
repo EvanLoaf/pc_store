@@ -96,9 +96,7 @@ public class ItemsAPIController {
     ) {
         logger.debug("Executing Item API Controller method : deleteItem with id " + id);
         itemService.deleteByOrdersCount(id);
-        APIResponseEntity response = new APIResponseEntity();
-        response.setMessage(APIResponseProperties.ITEM_DELETED);
-        return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping(value = "/{id}")
@@ -118,8 +116,7 @@ public class ItemsAPIController {
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         } else {
             itemService.update(item);
-            response.setMessage(APIResponseProperties.ITEM_UPDATED);
-            return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
 }
