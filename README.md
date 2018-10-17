@@ -15,10 +15,12 @@ PC Store has several profiles for development/production purposes. You have to c
 ## Usage
 
 Project uses Spring 8.* Core and its plugins, Hibernate 5.3.*, HQL queries, Liquibase migration and Log4j logging.
+
 Application can be packaged with Maven and Deployed to Apache Tomcat Server.
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
 For any inquiries: evanloafakahaitao@gmail.com
 
 ## License

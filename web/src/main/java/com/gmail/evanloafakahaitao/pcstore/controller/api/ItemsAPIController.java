@@ -76,7 +76,6 @@ public class ItemsAPIController {
         } else {
             itemService.save(item);
             response.setMessage(APIResponseProperties.ITEM_CREATED);
-            response.setErrors(Collections.emptySet());
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         }
     }
@@ -99,7 +98,6 @@ public class ItemsAPIController {
         itemService.deleteByOrdersCount(id);
         APIResponseEntity response = new APIResponseEntity();
         response.setMessage(APIResponseProperties.ITEM_DELETED);
-        response.setErrors(Collections.emptySet());
         return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
     }
 
@@ -121,7 +119,6 @@ public class ItemsAPIController {
         } else {
             itemService.update(item);
             response.setMessage(APIResponseProperties.ITEM_UPDATED);
-            response.setErrors(Collections.emptySet());
             return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
         }
     }
