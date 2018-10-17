@@ -44,9 +44,6 @@ public class PageProperties {
     private String feedbackPagePath;
     @Value("${feedback.create.page.path}")
     private String feedbackCreatePagePath;
-    //TODO del audit before prod
-    @Value("${audit.page.path}")
-    private String auditPagePath;
     @Value("${business.cards.page.path}")
     private String businessCardsPagePath;
     @Value("${business.card.create.page.path}")
@@ -126,10 +123,6 @@ public class PageProperties {
 
     public String getFeedbackCreatePagePath() {
         return feedbackCreatePagePath;
-    }
-
-    public String getAuditPagePath() {
-        return auditPagePath;
     }
 
     public String getBusinessCardsPagePath() {

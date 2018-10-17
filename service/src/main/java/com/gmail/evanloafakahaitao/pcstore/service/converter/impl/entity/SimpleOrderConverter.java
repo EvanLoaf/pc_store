@@ -5,7 +5,6 @@ import com.gmail.evanloafakahaitao.pcstore.dao.model.Order;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleItemDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleOrderDTO;
-import net.sf.ehcache.search.expression.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -24,7 +23,6 @@ public class SimpleOrderConverter implements Converter<SimpleOrderDTO, Order> {
 
     @Override
     public Order toEntity(SimpleOrderDTO dto) {
-        //TODO might be probs here, not sure yet
         Order order = new Order();
         order.setUuid(dto.getUuid());
         order.setStatus(dto.getStatus());

@@ -14,14 +14,12 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.REPEATABLE_READ)
+@Transactional
 public class FeedbackServiceImpl implements FeedbackService {
 
     private static final Logger logger = LogManager.getLogger(FeedbackServiceImpl.class);

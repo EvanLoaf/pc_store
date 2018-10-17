@@ -14,15 +14,6 @@
             <DefaultRolloverStrategy max="20"/>
         </RollingFile>
 
-        <RollingFile name="RollingFileDao" fileName="logs/application_dao.log"
-                     filePattern="logs/app-%d{MM-dd-yyyy}.log.gz">
-            <PatternLayout pattern="%d{YYYY-MM-DD} [%t] %-5p %c{3}:%L - %msg%n"/>
-            <Policies>
-                <SizeBasedTriggeringPolicy size="10 MB"/>
-            </Policies>
-            <DefaultRolloverStrategy max="20"/>
-        </RollingFile>
-
         <RollingFile name="RollingFileApi" fileName="logs/application_api.log"
                      filePattern="logs/app-%d{MM-dd-yyyy}.log.gz">
             <PatternLayout pattern="%d{YYYY-MM-DD} [%t] %-5p %c{1}:%L - %msg%n"/>
@@ -33,9 +24,6 @@
         </RollingFile>
     </Appenders>
     <Loggers>
-        <Logger name="com.gmail.evanloafakahaitao.pcstore.dao" level="info">
-            <AppenderRef ref="RollingFileDao"/>
-        </Logger>
         <Logger name="com.gmail.evanloafakahaitao.pcstore.controller.api" level="debug">
             <AppenderRef ref="RollingFileApi"/>
         </Logger>

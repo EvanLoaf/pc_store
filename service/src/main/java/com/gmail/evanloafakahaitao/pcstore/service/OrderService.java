@@ -16,5 +16,5 @@ public interface OrderService {
 
     List<OrderDTO> findAll(Integer startPosition, Integer maxResults);
 
-    Long countByItemId(Long itemId);
+    Long countAll();
 }

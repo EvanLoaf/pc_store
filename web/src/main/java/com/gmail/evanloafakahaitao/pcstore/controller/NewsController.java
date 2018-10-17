@@ -2,7 +2,7 @@ package com.gmail.evanloafakahaitao.pcstore.controller;
 
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.PageProperties;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.WebProperties;
-import com.gmail.evanloafakahaitao.pcstore.controller.util.FieldTrimmer;
+import com.gmail.evanloafakahaitao.pcstore.controller.util.FieldTrimmerUtil;
 import com.gmail.evanloafakahaitao.pcstore.controller.util.PaginationUtil;
 import com.gmail.evanloafakahaitao.pcstore.service.NewsService;
 import com.gmail.evanloafakahaitao.pcstore.service.CommentService;
@@ -36,7 +36,7 @@ public class NewsController {
     private final PaginationUtil paginationUtil;
     private final Validator newsValidator;
     private final Validator commentValidator;
-    private final FieldTrimmer fieldTrimmer;
+    private final FieldTrimmerUtil fieldTrimmerUtil;
 
     @Autowired
     public NewsController(
@@ -46,7 +46,7 @@ public class NewsController {
             PaginationUtil paginationUtil,
             @Qualifier("newsValidator") Validator newsValidator,
             @Qualifier("commentValidator") Validator commentValidator,
-            FieldTrimmer fieldTrimmer
+            FieldTrimmerUtil fieldTrimmerUtil
     ) {
         this.pageProperties = pageProperties;
         this.newsService = newsService;
@@ -54,7 +54,7 @@ public class NewsController {
         this.paginationUtil = paginationUtil;
         this.newsValidator = newsValidator;
         this.commentValidator = commentValidator;
-        this.fieldTrimmer = fieldTrimmer;
+        this.fieldTrimmerUtil = fieldTrimmerUtil;
     }
 
     @GetMapping
@@ -69,7 +69,7 @@ public class NewsController {
         Pagination pagination = new Pagination();
         pagination.setPage(page);
         pagination.setPageNumbers(
-                paginationUtil.getPageNumbers(newsService.countAll().intValue())
+                paginationUtil.getPageNumbers(newsService.countAllNotDeleted().intValue())
         );
         pagination.setStartPosition(paginationUtil.getPageNumerationStart(page));
         modelMap.addAttribute("pagination", pagination);
@@ -84,7 +84,7 @@ public class NewsController {
             ModelMap modelMap
     ) {
         logger.debug("Executing News Controller method : createNews");
-        news = fieldTrimmer.trim(news);
+        news = fieldTrimmerUtil.trim(news);
         newsValidator.validate(news, result);
         if (result.hasErrors()) {
             modelMap.addAttribute("news", news);
@@ -127,7 +127,7 @@ public class NewsController {
             ModelMap modelMap
     ) {
         logger.debug("Executing News Controller method : updateNews with id " + id);
-        news = fieldTrimmer.trim(news);
+        news = fieldTrimmerUtil.trim(news);
         news.setId(id);
         newsValidator.validate(news, result);
         if (result.hasErrors()) {
@@ -170,7 +170,7 @@ public class NewsController {
             ModelMap modelMap
     ) {
         logger.debug("Executing News Controller method : createComment");
-        comment = fieldTrimmer.trim(comment);
+        comment = fieldTrimmerUtil.trim(comment);
         commentValidator.validate(comment, result);
         if (result.hasErrors()) {
             modelMap.addAttribute(comment);
@@ -187,11 +187,11 @@ public class NewsController {
         }
     }
 
-    @GetMapping(value = "/{newsid}/comments/{commentid}/delete")
+    @GetMapping(value = "/{newsId}/comments/{commentId}/delete")
     @PreAuthorize("hasAuthority('remove_comments_all')")
     public String deleteComment(
-            @PathVariable("newsid") Long newsId,
-            @PathVariable("commentid") Long commentId
+            @PathVariable("newsId") Long newsId,
+            @PathVariable("commentId") Long commentId
     ) {
         logger.debug("Executing News Controller method : deleteComment with id " + commentId);
         commentService.deleteById(newsId, commentId);

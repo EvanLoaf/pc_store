@@ -5,7 +5,6 @@ import com.gmail.evanloafakahaitao.pcstore.dao.model.Order;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.*;
-import net.sf.ehcache.search.expression.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;

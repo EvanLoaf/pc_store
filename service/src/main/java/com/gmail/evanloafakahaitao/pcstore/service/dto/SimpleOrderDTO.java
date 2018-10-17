@@ -4,7 +4,6 @@ import com.gmail.evanloafakahaitao.pcstore.dao.model.OrderStatusEnum;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class SimpleOrderDTO implements Serializable {

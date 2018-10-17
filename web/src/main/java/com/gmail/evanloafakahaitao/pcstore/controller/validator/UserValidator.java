@@ -87,17 +87,34 @@ public class UserValidator implements Validator {
                     err.rejectValue("password", "user.password.invalid");
                 }
             }
-            if (user.getLastName() != null && !user.getLastName().equals("") && user.getLastName().length() > 20) {
-                err.rejectValue("lastName", "user.lastname.length");
+            if (user.getLastName() != null) {
+                if (user.getLastName().equals("")) {
+                    err.rejectValue("lastName", "user.lastname.empty");
+                } else if (user.getLastName().length() > 20) {
+                    err.rejectValue("lastName", "user.lastname.length");
+                }
+
             }
-            if (user.getFirstName() != null && !user.getFirstName().equals("") && user.getFirstName().length() > 20) {
-                err.rejectValue("firstName", "user.firstname.length");
+            if (user.getFirstName() != null) {
+                if (user.getFirstName().equals("")) {
+                    err.rejectValue("firstName", "user.firstname.empty");
+                } else if (user.getFirstName().length() > 20) {
+                    err.rejectValue("firstName", "user.firstname.length");
+                }
             }
-            if (user.getAddress() != null && !user.getAddress().equals("") && user.getAddress().length() > 90) {
-                err.rejectValue("address", "user.address.length");
+            if (user.getAddress() != null) {
+                if (user.getAddress().equals("")) {
+                    err.rejectValue("address", "user.address.empty");
+                } else if (user.getAddress().length() > 90) {
+                    err.rejectValue("address", "user.address.length");
+                }
             }
-            if (user.getPhoneNumber() != null && !user.getPhoneNumber().equals("") && user.getPhoneNumber().length() > 20) {
-                err.rejectValue("phoneNumber", "user.phonenumber.length");
+            if (user.getPhoneNumber() != null) {
+                if (user.getPhoneNumber().equals("")) {
+                    err.rejectValue("phoneNumber", "user.phonenumber.empty");
+                } else if (user.getPhoneNumber().length() > 20) {
+                    err.rejectValue("phoneNumber", "user.phonenumber.length");
+                }
             }
         }
     }

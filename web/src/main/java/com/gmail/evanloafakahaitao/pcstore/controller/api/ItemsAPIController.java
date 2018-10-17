@@ -2,9 +2,9 @@ package com.gmail.evanloafakahaitao.pcstore.controller.api;
 
 import com.gmail.evanloafakahaitao.pcstore.controller.model.APIResponseEntity;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.PageProperties;
-import com.gmail.evanloafakahaitao.pcstore.controller.properties.ResponseProperties;
+import com.gmail.evanloafakahaitao.pcstore.controller.properties.APIResponseProperties;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.WebProperties;
-import com.gmail.evanloafakahaitao.pcstore.controller.util.FieldTrimmer;
+import com.gmail.evanloafakahaitao.pcstore.controller.util.FieldTrimmerUtil;
 import com.gmail.evanloafakahaitao.pcstore.controller.util.PaginationUtil;
 import com.gmail.evanloafakahaitao.pcstore.controller.validator.api.ItemAPIValidator;
 import com.gmail.evanloafakahaitao.pcstore.service.ItemService;
@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -30,7 +31,7 @@ public class ItemsAPIController {
     private final PageProperties pageProperties;
     private final PaginationUtil paginationUtil;
     private final ItemAPIValidator itemAPIValidator;
-    private final FieldTrimmer fieldTrimmer;
+    private final FieldTrimmerUtil fieldTrimmerUtil;
 
     @Autowired
     public ItemsAPIController(
@@ -38,13 +39,13 @@ public class ItemsAPIController {
             PageProperties pageProperties,
             PaginationUtil paginationUtil,
             ItemAPIValidator itemAPIValidator,
-            FieldTrimmer fieldTrimmer
+            FieldTrimmerUtil fieldTrimmerUtil
     ) {
         this.itemService = itemService;
         this.pageProperties = pageProperties;
         this.paginationUtil = paginationUtil;
         this.itemAPIValidator = itemAPIValidator;
-        this.fieldTrimmer = fieldTrimmer;
+        this.fieldTrimmerUtil = fieldTrimmerUtil;
     }
 
     @GetMapping
@@ -65,16 +66,17 @@ public class ItemsAPIController {
             @RequestBody ItemDTO item
     ) {
         logger.debug("Executing Item API Controller method : createItem");
-        item = fieldTrimmer.trim(item);
+        item = fieldTrimmerUtil.trim(item);
         Set<String> errors = itemAPIValidator.validate(item);
         APIResponseEntity response = new APIResponseEntity();
         if (!errors.isEmpty()) {
-            response.setMessage(ResponseProperties.ITEM_NOT_CREATED);
+            response.setMessage(APIResponseProperties.ITEM_NOT_CREATED);
             response.setErrors(errors);
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         } else {
             itemService.save(item);
-            response.setMessage(ResponseProperties.ITEM_CREATED);
+            response.setMessage(APIResponseProperties.ITEM_CREATED);
+            response.setErrors(Collections.emptySet());
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         }
     }
@@ -96,7 +98,8 @@ public class ItemsAPIController {
         logger.debug("Executing Item API Controller method : deleteItem with id " + id);
         itemService.deleteByOrdersCount(id);
         APIResponseEntity response = new APIResponseEntity();
-        response.setMessage(ResponseProperties.ITEM_DELETED);
+        response.setMessage(APIResponseProperties.ITEM_DELETED);
+        response.setErrors(Collections.emptySet());
         return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
     }
 
@@ -107,17 +110,18 @@ public class ItemsAPIController {
             @PathVariable("id") Long id
     ) {
         logger.debug("Executing Item API Controller method : updateItem with id " + id);
-        item = fieldTrimmer.trim(item);
+        item = fieldTrimmerUtil.trim(item);
         item.setId(id);
         Set<String> errors = itemAPIValidator.validate(item);
         APIResponseEntity response = new APIResponseEntity();
         if (!errors.isEmpty()) {
-            response.setMessage(ResponseProperties.ITEM_NOT_UPDATED);
+            response.setMessage(APIResponseProperties.ITEM_NOT_UPDATED);
             response.setErrors(errors);
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         } else {
             itemService.update(item);
-            response.setMessage(ResponseProperties.ITEM_UPDATED);
+            response.setMessage(APIResponseProperties.ITEM_UPDATED);
+            response.setErrors(Collections.emptySet());
             return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
         }
     }

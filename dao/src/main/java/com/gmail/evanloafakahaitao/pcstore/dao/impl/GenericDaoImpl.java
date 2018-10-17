@@ -45,6 +45,12 @@ public abstract class GenericDaoImpl<T extends Serializable> implements GenericD
         return (Long) getCurrentSession().createQuery("select count(*) from " + clazz.getSimpleName()).uniqueResult();
     }
 
+
+    @Override
+    public Long countAllNotDeleted() {
+        return (Long) getCurrentSession().createQuery("select count(*) from " + clazz.getSimpleName() + " as c where c.isDeleted=false").uniqueResult();
+    }
+
     @Override
     public void create(T entity) {
         getCurrentSession().persist(entity);
@@ -66,7 +72,6 @@ public abstract class GenericDaoImpl<T extends Serializable> implements GenericD
         delete(entity);
     }
 
-    //TODO protected postavit
     protected Session getCurrentSession() {
         return sessionFactory.getCurrentSession();
     }

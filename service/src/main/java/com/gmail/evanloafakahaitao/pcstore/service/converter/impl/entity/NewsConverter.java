@@ -2,11 +2,9 @@ package com.gmail.evanloafakahaitao.pcstore.service.converter.impl.entity;
 
 import com.gmail.evanloafakahaitao.pcstore.dao.model.News;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Comment;
-import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.NewsDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.CommentDTO;
-import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleUserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -14,15 +12,12 @@ import org.springframework.stereotype.Component;
 @Component("articleConverter")
 public class NewsConverter implements Converter<NewsDTO, News> {
 
-    private final Converter<SimpleUserDTO, User> simpleUserConverter;
     private final Converter<CommentDTO, Comment> commentConverter;
 
     @Autowired
     public NewsConverter(
-            @Qualifier("simpleUserConverter") Converter<SimpleUserDTO, User> simpleUserConverter,
             @Qualifier("commentConverter") Converter<CommentDTO, Comment> commentConverter
     ) {
-        this.simpleUserConverter = simpleUserConverter;
         this.commentConverter = commentConverter;
     }
 

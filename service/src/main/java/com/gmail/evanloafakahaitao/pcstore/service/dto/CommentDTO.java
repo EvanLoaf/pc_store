@@ -1,7 +1,6 @@
 package com.gmail.evanloafakahaitao.pcstore.service.dto;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class CommentDTO implements Serializable {

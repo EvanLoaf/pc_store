@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
@@ -55,7 +55,7 @@
                                 <td>${businessCard.workingTelephone}</td>
                                 <security:authorize access="hasAuthority('manage_business_card')">
                                     <td>
-                                        <a href="${app_entry_path}/business/cards/${businessCard.id}/delete"
+                                        <a href="${app_entry_path}/cards/${businessCard.id}/delete"
                                            class="btn btn-primary" aria-pressed="true" role="button">DELETE</a>
                                     </td>
                                 </security:authorize>

@@ -59,13 +59,12 @@ public class OrdersController {
             ModelMap modelMap
     ) {
         logger.debug("Executing Orders Controller method : getOrdersFromUser page " + page);
-        //TODO single method with /all - cin service check auth and then find for curr id or all
         List<SimpleOrderDTO> orders = orderService.findByCurrentUserId(paginationUtil.getStartPosition(page), pageProperties.getPaginationMaxResults());
         modelMap.addAttribute("orders", orders);
         Pagination pagination = new Pagination();
         pagination.setPage(page);
         pagination.setPageNumbers(
-                paginationUtil.getPageNumbers(userService.countAll().intValue())
+                paginationUtil.getPageNumbers(orderService.countAll().intValue())
         );
         pagination.setStartPosition(paginationUtil.getPageNumerationStart(page));
         modelMap.addAttribute("pagination", pagination);
@@ -85,7 +84,7 @@ public class OrdersController {
         Pagination pagination = new Pagination();
         pagination.setPage(page);
         pagination.setPageNumbers(
-                paginationUtil.getPageNumbers(userService.countAll().intValue())
+                paginationUtil.getPageNumbers(userService.countAllNotDeleted().intValue())
         );
         pagination.setStartPosition(paginationUtil.getPageNumerationStart(page));
         modelMap.addAttribute("pagination", pagination);

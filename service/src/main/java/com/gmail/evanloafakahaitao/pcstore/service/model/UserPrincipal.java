@@ -12,6 +12,8 @@ import java.util.List;
 
 public class UserPrincipal implements UserDetails {
 
+    private static final long serialVersionUID = 3868923801985737089L;
+
     private Long id;
     private String name;
     private String username;
@@ -67,7 +69,6 @@ public class UserPrincipal implements UserDetails {
         return isDeleted;
     }
 
-    //TODO isEnabled principal
     @Override
     public boolean isEnabled() {
         return !isDisabled;

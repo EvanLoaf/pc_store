@@ -3,7 +3,6 @@ package com.gmail.evanloafakahaitao.pcstore.service.converter.impl.dto;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Item;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Order;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
-import com.gmail.evanloafakahaitao.pcstore.service.dto.ItemDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleItemDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleOrderDTO;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,5 @@
 package com.gmail.evanloafakahaitao.pcstore.dao;
 
-import org.hibernate.Session;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -15,6 +13,8 @@ public interface GenericDao<T extends Serializable> {
 
     Long countAll();
 
+    Long countAllNotDeleted();
+
     void create(final T entity);
 
     void update(final T entity);
@@ -22,7 +22,4 @@ public interface GenericDao<T extends Serializable> {
     void delete(final T entity);
 
     void deleteById(final long entityId);
-
-    //TODO deleted method from interface to make it protected..
-    //Session getCurrentSession();
 }

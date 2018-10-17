@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class FieldTrimmer {
+public class FieldTrimmerUtil {
 
-    private static final Logger logger = LogManager.getLogger(FieldTrimmer.class);
+    private static final Logger logger = LogManager.getLogger(FieldTrimmerUtil.class);
 
     public UserDTO trim(UserDTO user) {
         logger.info("Trimming user entity");

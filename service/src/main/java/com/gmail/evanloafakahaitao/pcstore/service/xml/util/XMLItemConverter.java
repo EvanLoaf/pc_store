@@ -1,6 +1,5 @@
 package com.gmail.evanloafakahaitao.pcstore.service.xml.util;
 
-import com.gmail.evanloafakahaitao.pcstore.dao.model.Item;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.ItemDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.xml.dto.ItemXMLDTO;
 import org.apache.logging.log4j.LogManager;

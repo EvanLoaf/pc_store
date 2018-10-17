@@ -4,7 +4,7 @@ import com.gmail.evanloafakahaitao.pcstore.controller.model.ItemDiscountData;
 import com.gmail.evanloafakahaitao.pcstore.controller.model.Pagination;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.PageProperties;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.WebProperties;
-import com.gmail.evanloafakahaitao.pcstore.controller.util.FieldTrimmer;
+import com.gmail.evanloafakahaitao.pcstore.controller.util.FieldTrimmerUtil;
 import com.gmail.evanloafakahaitao.pcstore.service.util.XMLItemSaverUtil;
 import com.gmail.evanloafakahaitao.pcstore.controller.util.PaginationUtil;
 import com.gmail.evanloafakahaitao.pcstore.service.DiscountService;
@@ -46,7 +46,7 @@ public class ItemsController {
     private final XMLItemSaverUtil xmlItemSaverUtil;
     private final Validator itemValidator;
     private final Validator itemDiscountDataValidator;
-    private final FieldTrimmer fieldTrimmer;
+    private final FieldTrimmerUtil fieldTrimmerUtil;
 
     @Autowired
     public ItemsController(
@@ -58,7 +58,7 @@ public class ItemsController {
             XMLItemSaverUtil xmlItemSaverUtil,
             @Qualifier("itemValidator") Validator itemValidator,
             @Qualifier("itemDiscountDataValidator") Validator itemDiscountDataValidator,
-            FieldTrimmer fieldTrimmer
+            FieldTrimmerUtil fieldTrimmerUtil
     ) {
         this.pageProperties = pageProperties;
         this.itemService = itemService;
@@ -68,7 +68,7 @@ public class ItemsController {
         this.xmlItemSaverUtil = xmlItemSaverUtil;
         this.itemValidator = itemValidator;
         this.itemDiscountDataValidator = itemDiscountDataValidator;
-        this.fieldTrimmer = fieldTrimmer;
+        this.fieldTrimmerUtil = fieldTrimmerUtil;
     }
 
     @GetMapping
@@ -83,7 +83,7 @@ public class ItemsController {
         Pagination pagination = new Pagination();
         pagination.setPage(page);
         pagination.setPageNumbers(
-                paginationUtil.getPageNumbers(itemService.countAll().intValue())
+                paginationUtil.getPageNumbers(itemService.countAllNotDeleted().intValue())
         );
         pagination.setStartPosition(paginationUtil.getPageNumerationStart(page));
         modelMap.addAttribute("pagination", pagination);
@@ -98,7 +98,7 @@ public class ItemsController {
             ModelMap modelMap
     ) {
         logger.debug("Executing Item Controller method : createItem");
-        item = fieldTrimmer.trim(item);
+        item = fieldTrimmerUtil.trim(item);
         itemValidator.validate(item, result);
         if (result.hasErrors()) {
             modelMap.addAttribute("item", item);
@@ -132,7 +132,7 @@ public class ItemsController {
     ) {
         logger.debug("Executing Item Controller method : uploadItems");
         List<ItemDTO> items = xmlService.getUploadedXmlItems(multipartItems);
-        items = fieldTrimmer.trim(items);
+        items = fieldTrimmerUtil.trim(items);
         List<String> vendorCodeDuplicates = xmlItemSaverUtil.saveUploadedItems(items);
         if (!vendorCodeDuplicates.isEmpty()) {
             modelMap.addAttribute("duplicates", vendorCodeDuplicates);

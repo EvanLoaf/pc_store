@@ -8,7 +8,6 @@ import com.gmail.evanloafakahaitao.pcstore.dao.model.Order;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.OrderStatusEnum;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
 import com.gmail.evanloafakahaitao.pcstore.service.OrderService;
-import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.*;
 import com.gmail.evanloafakahaitao.pcstore.service.util.CurrentUserUtil;
@@ -17,8 +16,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -28,7 +25,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
+@Transactional
 public class OrderServiceImpl implements OrderService {
 
     private static final Logger logger = LogManager.getLogger(OrderServiceImpl.class);
@@ -36,11 +33,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderDao orderDao;
     private final ItemDao itemDao;
     private final UserDao userDao;
-    private final Converter<OrderDTO, Order> orderConverter;
     private final DTOConverter<OrderDTO, Order> orderDTOConverter;
-    private final Converter<CreateOrderDTO, Order> dataOrderConverter;
-    private final DTOConverter<CreateOrderDTO, Order> dataOrderDTOConverter;
-    private final Converter<SimpleOrderDTO, Order> simpleOrderConverter;
     private final DTOConverter<SimpleOrderDTO, Order> simpleOrderDTOConverter;
 
     @Autowired
@@ -48,21 +41,13 @@ public class OrderServiceImpl implements OrderService {
             OrderDao orderDao,
             ItemDao itemDao,
             UserDao userDao,
-            @Qualifier("orderConverter") Converter<OrderDTO, Order> orderConverter,
             @Qualifier("orderDTOConverter") DTOConverter<OrderDTO, Order> orderDTOConverter,
-            @Qualifier("dataOrderDTOConverter") DTOConverter<CreateOrderDTO, Order> dataOrderDTOConverter,
-            @Qualifier("dataOrderConverter") Converter<CreateOrderDTO, Order> dataOrderConverter,
-            @Qualifier("simpleOrderConverter") Converter<SimpleOrderDTO, Order> simpleOrderConverter,
             @Qualifier("simpleOrderDTOConverter") DTOConverter<SimpleOrderDTO, Order> simpleOrderDTOConverter
     ) {
         this.orderDao = orderDao;
         this.itemDao = itemDao;
         this.userDao = userDao;
-        this.orderConverter = orderConverter;
         this.orderDTOConverter = orderDTOConverter;
-        this.dataOrderDTOConverter = dataOrderDTOConverter;
-        this.dataOrderConverter = dataOrderConverter;
-        this.simpleOrderConverter = simpleOrderConverter;
         this.simpleOrderDTOConverter = simpleOrderDTOConverter;
     }
 
@@ -147,9 +132,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public Long countByItemId(Long itemId) {
-        logger.info("Counting Orders by Item Id");
-        return orderDao.countByItemId(itemId);
+    public Long countAll() {
+        logger.info("Counting all Orders");
+        return orderDao.countAll();
     }
 }

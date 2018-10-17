@@ -18,11 +18,11 @@ public class XMLValidator {
 
     private static final Logger logger = LogManager.getLogger(XMLValidator.class);
 
-    public boolean validate(File xmlFile, String xsdRoute) {
+    public boolean validate(File xmlFile, String xsdSchemaPath) {
         logger.info("Validating XML Items");
         try (
                 InputStream xml = new FileInputStream(xmlFile);
-                InputStream xsd = new FileInputStream(xsdRoute)
+                InputStream xsd = new FileInputStream(xsdSchemaPath)
         ) {
             SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             Schema schema = factory.newSchema(new StreamSource(xsd));

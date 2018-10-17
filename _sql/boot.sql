@@ -103,17 +103,6 @@ create table if not exists t_feedback (
     on delete restrict
 );
 
-create table if not exists t_audit (
-  f_id         bigint(19) unsigned auto_increment not null,
-  f_user_id    bigint(19) unsigned                not null,
-  f_event_type varchar(30)                        not null,
-  f_created    datetime default now()             not null,
-  primary key (f_id),
-  foreign key (f_user_id) references t_user (f_id)
-    on update cascade
-    on delete restrict
-);
-
 create table if not exists t_news (
   f_id         bigint(19) unsigned auto_increment            not null,
   f_title      varchar(40)                                   not null,
@@ -327,7 +316,3 @@ values (1, 'testnews', 'test message', now(), false, 2);
 
 insert into t_comment (f_id, f_message, f_created, f_is_deleted, f_user_id, f_news_id)
 values (1, 'test comment', now(), false, 4, 1);
-
-(5, 'user1@pcst.by', 'user', 'default', 'password', false, (select r.f_id from t_role r where r.f_name = 'user'), null)
-
-(5, 'api1@pcst.by', 'api', 'admin', 'password', false, (select r.f_id from t_role r where r.f_name = 'api_admin'), null)

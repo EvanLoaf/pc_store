@@ -1,6 +1,6 @@
 package com.gmail.evanloafakahaitao.pcstore.controller.properties;
 
-public interface ResponseProperties {
+public interface APIResponseProperties {
 
     String ITEM_CREATED = "Item was created";
     String ITEM_NOT_CREATED = "Item creation failed";

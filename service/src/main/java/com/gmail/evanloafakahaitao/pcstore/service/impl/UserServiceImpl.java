@@ -13,22 +13,23 @@ import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.DiscountDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleUserDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.UserDTO;
+import com.gmail.evanloafakahaitao.pcstore.service.exception.UserNotFoundException;
 import com.gmail.evanloafakahaitao.pcstore.service.util.CurrentUserUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
-@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.REPEATABLE_READ)
-public class UserServiceImpl implements  UserService {
+@Transactional
+public class UserServiceImpl implements UserService {
 
     private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
@@ -81,10 +82,14 @@ public class UserServiceImpl implements  UserService {
     @Override
     public UserDTO update(UserDTO userDTO) {
         logger.info("Updating User");
-        //TODO test
-        if (CurrentUserUtil.getCurrentAuthorities().contains(PermissionEnum.USER_BASIC_PERMISSION.toString())) {
-            if (!userDTO.getId().equals(CurrentUserUtil.getCurrentId())) {
-                throw new IllegalStateException("User is only allowed to update himself");
+        for (GrantedAuthority currentAuthority : CurrentUserUtil.getCurrentAuthorities()) {
+            if (Objects.requireNonNull(
+                    PermissionEnum.getPermission(currentAuthority.getAuthority()))
+                    .equals(PermissionEnum.USER_BASIC_PERMISSION)
+            ) {
+                if (!userDTO.getId().equals(CurrentUserUtil.getCurrentId())) {
+                    throw new IllegalStateException("User is only allowed to update himself");
+                }
             }
         }
         User user = userDao.findOne(userDTO.getId());
@@ -126,7 +131,6 @@ public class UserServiceImpl implements  UserService {
         if (user != null) {
             return simpleUserDTOConverter.toDto(user);
         } else {
-            //TODO not found?
             return null;
         }
     }
@@ -136,8 +140,11 @@ public class UserServiceImpl implements  UserService {
     public UserDTO findById(Long id) {
         logger.info("Retrieving User by Id");
         User user = userDao.findOne(id);
-        //TODO not found?
-        return userDTOConverter.toDto(user);
+        if (user != null) {
+            return userDTOConverter.toDto(user);
+        } else {
+            throw new UserNotFoundException("User was not found - " + id);
+        }
     }
 
     @Override
@@ -156,9 +163,9 @@ public class UserServiceImpl implements  UserService {
     }
 
     @Override
-    public Long countAll() {
+    public Long countAllNotDeleted() {
         logger.info("Counting all Users");
-        return userDao.countAll();
+        return userDao.countAllNotDeleted();
     }
 
     @Override

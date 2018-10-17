@@ -1,6 +1,5 @@
 package com.gmail.evanloafakahaitao.pcstore.service;
 
-import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.DiscountDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleUserDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.UserDTO;
@@ -21,7 +20,7 @@ public interface UserService {
 
     void deleteById(Long id);
 
-    Long countAll();
+    Long countAllNotDeleted();
 
     List<UserDTO> findAllNotDeleted(Integer startPosition, Integer maxResults);
 

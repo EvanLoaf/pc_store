@@ -78,15 +78,15 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <hibernate.validator.version>6.0.12.Final</hibernate.validator.version>
-        <lang3.version>3.8</lang3.version>
-        <ehcache.version>5.3.5.Final</ehcache.version>
-        <hibernate.version>5.3.5.Final</hibernate.version>
-        <mysql.version>8.0.11</mysql.version>
+        <hibernate.validator.version>6.0.13.Final</hibernate.validator.version>
+        <lang3.version>3.8.1</lang3.version>
+        <ehcache.version>5.3.6.Final</ehcache.version>
+        <hibernate.version>5.3.6.Final</hibernate.version>
+        <mysql.version>8.0.12</mysql.version>
         <servlet.jstl.version>1.2</servlet.jstl.version>
         <servlet-api.version>4.0.1</servlet-api.version>
-        <logger.version>2.11.1</logger.version>
-        <spring.version>5.1.0.RELEASE</spring.version>
+        <log4j.version>2.11.1</log4j.version>
+        <spring.version>5.1.1.RELEASE</spring.version>
         <slf4j.version>2.11.1</slf4j.version>
         <hikaricp.version>3.2.0</hikaricp.version>
         <liquibase.version>3.6.2</liquibase.version>
@@ -123,12 +123,12 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
-            <version>${logger.version}</version>
+            <version>${log4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
-            <version>${logger.version}</version>
+            <version>${log4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>

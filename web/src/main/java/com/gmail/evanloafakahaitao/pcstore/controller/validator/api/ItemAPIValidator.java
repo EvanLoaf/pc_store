@@ -1,6 +1,5 @@
 package com.gmail.evanloafakahaitao.pcstore.controller.validator.api;
 
-import com.gmail.evanloafakahaitao.pcstore.dao.model.Item;
 import com.gmail.evanloafakahaitao.pcstore.service.ItemService;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.ItemDTO;
 import org.apache.logging.log4j.LogManager;

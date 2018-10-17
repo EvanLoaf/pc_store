@@ -2,8 +2,6 @@ package com.gmail.evanloafakahaitao.pcstore.dao.model;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -25,8 +23,10 @@ public class Profile implements Serializable {
     @GeneratedValue(generator = "generator")
     @Column(unique = true, nullable = false)
     private Long userId;
+    @NotNull
     @Column
     private String address;
+    @NotNull
     @Column
     private String phoneNumber;
     @OneToOne

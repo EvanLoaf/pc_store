@@ -1,7 +1,7 @@
 package com.gmail.evanloafakahaitao.pcstore.controller.api;
 
 import com.gmail.evanloafakahaitao.pcstore.controller.model.APIResponseEntity;
-import com.gmail.evanloafakahaitao.pcstore.controller.properties.ResponseProperties;
+import com.gmail.evanloafakahaitao.pcstore.controller.properties.APIResponseProperties;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.WebProperties;
 import com.gmail.evanloafakahaitao.pcstore.service.BusinessCardService;
 import com.gmail.evanloafakahaitao.pcstore.service.UserService;
@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.Set;
 
 @RestController
@@ -45,7 +46,7 @@ public class BusinessCardAPIController {
         return user.getBusinessCards();
     }
 
-    @DeleteMapping(value = "/{id}/delete")
+    @DeleteMapping(value = "/{id}")
     @PreAuthorize("hasAuthority('manage_business_card_api')")
     public ResponseEntity<APIResponseEntity> deleteBusinessCard(
             @PathVariable("id") Long id
@@ -53,7 +54,8 @@ public class BusinessCardAPIController {
         logger.debug("Executing BusinessCard API Controller method : deleteBusinessCards with id " + id);
         businessCardService.deleteById(id);
         APIResponseEntity response = new APIResponseEntity();
-        response.setMessage(ResponseProperties.BUSINESS_CARD_DELETED);
+        response.setMessage(APIResponseProperties.BUSINESS_CARD_DELETED);
+        response.setErrors(Collections.emptySet());
         return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
     }
 }

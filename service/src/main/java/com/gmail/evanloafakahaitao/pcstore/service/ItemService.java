@@ -21,11 +21,9 @@ public interface ItemService {
 
     void softDelete(Long id);
 
-    void hardDelete(Long id);
-
     SimpleItemDTO copy(Long id);
 
-    Long countAll();
+    Long countAllNotDeleted();
 
     DiscountDTO updateDiscountAll(Long discountId, BigDecimal minPriceRange, BigDecimal maxPriceRange);
 

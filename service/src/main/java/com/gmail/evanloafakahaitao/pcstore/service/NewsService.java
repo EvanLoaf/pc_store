@@ -15,7 +15,7 @@ public interface NewsService {
 
     List<SimpleArticleDTO> findAll(Integer startPosition, Integer maxResults);
 
-    Long countAll();
+    Long countAllNotDeleted();
 
     NewsDTO findById(Long id);
 }

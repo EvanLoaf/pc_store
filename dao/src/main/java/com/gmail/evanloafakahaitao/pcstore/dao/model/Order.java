@@ -1,7 +1,6 @@
 package com.gmail.evanloafakahaitao.pcstore.dao.model;
 
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

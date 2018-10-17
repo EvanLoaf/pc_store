@@ -2,7 +2,7 @@ package com.gmail.evanloafakahaitao.pcstore.controller;
 
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.PageProperties;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.WebProperties;
-import com.gmail.evanloafakahaitao.pcstore.controller.util.FieldTrimmer;
+import com.gmail.evanloafakahaitao.pcstore.controller.util.FieldTrimmerUtil;
 import com.gmail.evanloafakahaitao.pcstore.controller.validator.UserValidator;
 import com.gmail.evanloafakahaitao.pcstore.service.UserService;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.UserDTO;
@@ -26,19 +26,19 @@ public class ApplicationController {
     private final PageProperties pageProperties;
     private final UserValidator userValidator;
     private final UserService userService;
-    private final FieldTrimmer fieldTrimmer;
+    private final FieldTrimmerUtil fieldTrimmerUtil;
 
     @Autowired
     public ApplicationController(
             PageProperties pageProperties,
             UserValidator userValidator,
             UserService userService,
-            FieldTrimmer fieldTrimmer
+            FieldTrimmerUtil fieldTrimmerUtil
     ) {
         this.pageProperties = pageProperties;
         this.userValidator = userValidator;
         this.userService = userService;
-        this.fieldTrimmer = fieldTrimmer;
+        this.fieldTrimmerUtil = fieldTrimmerUtil;
     }
 
     @GetMapping(value = "/login")
@@ -67,7 +67,7 @@ public class ApplicationController {
             ModelMap modelMap
     ) {
         logger.debug("Executing Application Controller method : registerUser");
-        user = fieldTrimmer.trim(user);
+        user = fieldTrimmerUtil.trim(user);
         userValidator.validate(user, result);
         if (result.hasErrors()) {
             modelMap.addAttribute("user", user);

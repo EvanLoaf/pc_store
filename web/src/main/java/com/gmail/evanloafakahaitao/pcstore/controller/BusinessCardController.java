@@ -2,7 +2,7 @@ package com.gmail.evanloafakahaitao.pcstore.controller;
 
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.PageProperties;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.WebProperties;
-import com.gmail.evanloafakahaitao.pcstore.controller.util.FieldTrimmer;
+import com.gmail.evanloafakahaitao.pcstore.controller.util.FieldTrimmerUtil;
 import com.gmail.evanloafakahaitao.pcstore.service.BusinessCardService;
 import com.gmail.evanloafakahaitao.pcstore.service.UserService;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.BusinessCardDTO;
@@ -28,7 +28,7 @@ public class BusinessCardController {
     private final PageProperties pageProperties;
     private final UserService userService;
     private final Validator businessCardValidator;
-    private final FieldTrimmer fieldTrimmer;
+    private final FieldTrimmerUtil fieldTrimmerUtil;
 
     @Autowired
     public BusinessCardController(
@@ -36,13 +36,13 @@ public class BusinessCardController {
             PageProperties pageProperties,
             UserService userService,
             @Qualifier("businessCardValidator") Validator businessCardValidator,
-            FieldTrimmer fieldTrimmer
+            FieldTrimmerUtil fieldTrimmerUtil
     ) {
         this.businessCardService = businessCardService;
         this.pageProperties = pageProperties;
         this.userService = userService;
         this.businessCardValidator = businessCardValidator;
-        this.fieldTrimmer = fieldTrimmer;
+        this.fieldTrimmerUtil = fieldTrimmerUtil;
     }
 
     @GetMapping
@@ -64,7 +64,7 @@ public class BusinessCardController {
             ModelMap modelMap
     ) {
         logger.debug("Executing BusinessCard Controller method : createBusinessCard");
-        businessCard = fieldTrimmer.trim(businessCard);
+        businessCard = fieldTrimmerUtil.trim(businessCard);
         businessCardValidator.validate(businessCard, result);
         if (result.hasErrors()) {
             modelMap.addAttribute("businessCard", businessCard);

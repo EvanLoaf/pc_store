@@ -3,7 +3,7 @@ package com.gmail.evanloafakahaitao.pcstore.controller;
 import com.gmail.evanloafakahaitao.pcstore.controller.model.Pagination;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.PageProperties;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.WebProperties;
-import com.gmail.evanloafakahaitao.pcstore.controller.util.FieldTrimmer;
+import com.gmail.evanloafakahaitao.pcstore.controller.util.FieldTrimmerUtil;
 import com.gmail.evanloafakahaitao.pcstore.controller.util.PaginationUtil;
 import com.gmail.evanloafakahaitao.pcstore.service.FeedbackService;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.FeedbackDTO;
@@ -31,7 +31,7 @@ public class FeedbackController {
     private final PageProperties pageProperties;
     private final PaginationUtil paginationUtil;
     private final Validator feedbackValidator;
-    private final FieldTrimmer fieldTrimmer;
+    private final FieldTrimmerUtil fieldTrimmerUtil;
 
     @Autowired
     public FeedbackController(
@@ -39,13 +39,13 @@ public class FeedbackController {
             PageProperties pageProperties,
             PaginationUtil paginationUtil,
             @Qualifier("feedbackValidator") Validator feedbackValidator,
-            FieldTrimmer fieldTrimmer
+            FieldTrimmerUtil fieldTrimmerUtil
     ) {
         this.feedbackService = feedbackService;
         this.pageProperties = pageProperties;
         this.paginationUtil = paginationUtil;
         this.feedbackValidator = feedbackValidator;
-        this.fieldTrimmer = fieldTrimmer;
+        this.fieldTrimmerUtil = fieldTrimmerUtil;
     }
 
     @GetMapping
@@ -75,14 +75,13 @@ public class FeedbackController {
             ModelMap modelMap
     ) {
         logger.debug("Executing Feedback Controller method : createFeedback");
-        feedback = fieldTrimmer.trim(feedback);
+        feedback = fieldTrimmerUtil.trim(feedback);
         feedbackValidator.validate(feedback, result);
         if (result.hasErrors()) {
             modelMap.addAttribute("feedback", feedback);
             return pageProperties.getFeedbackCreatePagePath();
         } else {
             feedbackService.save(feedback);
-            //TODO change url logic - w/o user id
             return "redirect:" + WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/users/profile" + "?feedback=true";
         }
     }

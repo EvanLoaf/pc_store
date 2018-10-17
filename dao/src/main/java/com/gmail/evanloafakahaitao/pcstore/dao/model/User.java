@@ -1,8 +1,6 @@
 package com.gmail.evanloafakahaitao.pcstore.dao.model;
 
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -14,8 +12,6 @@ import java.util.Set;
 
 @Entity
 @Table
-@Cacheable
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SQLDelete(sql = "update t_user set f_is_deleted = true where f_id = ?")
 public class User extends SoftDeleteAndDisableEntity implements Serializable {
 

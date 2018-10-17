@@ -9,21 +9,20 @@ import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.NewsDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleArticleDTO;
+import com.gmail.evanloafakahaitao.pcstore.service.exception.NewsNotFoundException;
 import com.gmail.evanloafakahaitao.pcstore.service.util.CurrentUserUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.REPEATABLE_READ)
+@Transactional
 public class NewsServiceImpl implements NewsService {
 
     private static final Logger logger = LogManager.getLogger(NewsServiceImpl.class);
@@ -92,15 +91,19 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public Long countAll() {
+    public Long countAllNotDeleted() {
         logger.info("Counting all News");
-        return newsDao.countAll();
+        return newsDao.countAllNotDeleted();
     }
 
     @Override
     public NewsDTO findById(Long id) {
         logger.info("Retrieving News by Id");
-        News article = newsDao.findOne(id);
-        return articleDTOConverter.toDto(article);
+        News news = newsDao.findOne(id);
+        if (news != null) {
+            return articleDTOConverter.toDto(news);
+        } else {
+            throw new NewsNotFoundException("Piece of news was not found - " + id);
+        }
     }
 }

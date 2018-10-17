@@ -32,59 +32,35 @@ public class ItemValidator implements Validator {
     @Override
     public void validate(Object obj, Errors err) {
         ItemDTO item = (ItemDTO) obj;
-        if (item.getId() == null) {
-            logger.info("Validating item - create");
+        logger.info("Validating item - create");
 
-            ValidationUtils.rejectIfEmpty(err, "vendorCode", "item.vendorcode.empty");
-            ValidationUtils.rejectIfEmpty(err, "name", "item.name.empty");
-            ValidationUtils.rejectIfEmpty(err, "description", "item.description.empty");
-            ValidationUtils.rejectIfEmpty(err, "price", "item.price.empty");
+        ValidationUtils.rejectIfEmpty(err, "vendorCode", "item.vendorcode.empty");
+        ValidationUtils.rejectIfEmpty(err, "name", "item.name.empty");
+        ValidationUtils.rejectIfEmpty(err, "description", "item.description.empty");
+        ValidationUtils.rejectIfEmpty(err, "price", "item.price.empty");
 
-            if (item.getVendorCode().length() > 20) {
-                err.rejectValue("vendorCode", "item.vendorcode.length");
+        if (item.getVendorCode().length() > 20) {
+            err.rejectValue("vendorCode", "item.vendorcode.length");
+        }
+        if (item.getName().length() > 20) {
+            err.rejectValue("name", "item.name.length");
+        }
+        if (item.getDescription().length() > 100) {
+            err.rejectValue("description", "item.description.length");
+        }
+        if (item.getVendorCode() != null && item.getVendorCode().length() <= 20) {
+            ItemDTO itemByVendorCode = itemService.findByVendorCode(item.getVendorCode());
+            if (itemByVendorCode != null) {
+                err.rejectValue("vendorCode", "item.vendorcode.exists");
             }
-            if (item.getName().length() > 20) {
-                err.rejectValue("name", "item.name.length");
-            }
-            if (item.getDescription().length() > 100) {
-                err.rejectValue("description", "item.description.length");
-            }
-            if (item.getVendorCode() != null && item.getVendorCode().length() <= 20) {
-                ItemDTO itemByVendorCode = itemService.findByVendorCode(item.getVendorCode());
-                if (itemByVendorCode != null) {
-                    err.rejectValue("vendorCode", "item.vendorcode.exists");
-                }
-            }
-            if (item.getPrice() != null) {
-                //TODO test any pruice
-                Pattern pattern = Pattern.compile(
-                        "^-?\\d+\\.?\\d*$",
-                        Pattern.CASE_INSENSITIVE
-                );
-                if (!(pattern.matcher(item.getPrice().toString()).matches())) {
-                    err.rejectValue("price", "item.price.invalid");
-                }
-            }
-        } else {
-            logger.info("Validating news - update");
-
-            if (item.getVendorCode() != null && item.getVendorCode().length() > 20) {
-                err.rejectValue("vendorCode", "item.vendorcode.length");
-            }
-            if (item.getName() != null && item.getName().length() > 20) {
-                err.rejectValue("name", "item.name.length");
-            }
-            if (item.getDescription() != null && item.getDescription().length() > 100) {
-                err.rejectValue("description", "item.description.length");
-            }
-            if (item.getPrice() != null) {
-                Pattern pattern = Pattern.compile(
-                        "^-?\\d+\\.?\\d*$",
-                        Pattern.CASE_INSENSITIVE
-                );
-                if (!(pattern.matcher(item.getPrice().toString()).matches())) {
-                    err.rejectValue("price", "item.price.invalid");
-                }
+        }
+        if (item.getPrice() != null) {
+            Pattern pattern = Pattern.compile(
+                    "^-?\\d+\\.?\\d*$",
+                    Pattern.CASE_INSENSITIVE
+            );
+            if (!(pattern.matcher(item.getPrice().toString()).matches())) {
+                err.rejectValue("price", "item.price.invalid");
             }
         }
     }

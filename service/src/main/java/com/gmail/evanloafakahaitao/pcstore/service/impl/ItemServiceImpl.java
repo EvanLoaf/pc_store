@@ -3,14 +3,9 @@ package com.gmail.evanloafakahaitao.pcstore.service.impl;
 import com.gmail.evanloafakahaitao.pcstore.dao.DiscountDao;
 import com.gmail.evanloafakahaitao.pcstore.dao.ItemDao;
 import com.gmail.evanloafakahaitao.pcstore.dao.OrderDao;
-import com.gmail.evanloafakahaitao.pcstore.dao.impl.DiscountDaoImpl;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Discount;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
-import com.gmail.evanloafakahaitao.pcstore.service.converter.impl.entity.DiscountConverter;
-import com.gmail.evanloafakahaitao.pcstore.service.converter.impl.entity.ItemConverter;
-import com.gmail.evanloafakahaitao.pcstore.service.converter.impl.dto.ItemDTOConverter;
-import com.gmail.evanloafakahaitao.pcstore.dao.impl.ItemDaoImpl;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.DiscountDTO;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.ItemDTO;
 import com.gmail.evanloafakahaitao.pcstore.dao.model.Item;
@@ -18,22 +13,16 @@ import com.gmail.evanloafakahaitao.pcstore.service.ItemService;
 import com.gmail.evanloafakahaitao.pcstore.service.dto.SimpleItemDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Service
-@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
+@Transactional
 public class ItemServiceImpl implements ItemService {
 
     private static final Logger logger = LogManager.getLogger(ItemServiceImpl.class);
@@ -102,7 +91,6 @@ public class ItemServiceImpl implements ItemService {
         return itemDTOConverter.toDto(item);
     }
 
-    //TODO it clears all the existing discount, although we got a set there.. if that's okay
     @Override
     public ItemDTO update(ItemDTO itemDTO) {
         logger.info("Updating Item Discount");
@@ -133,12 +121,6 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void hardDelete(Long id) {
-        logger.info("Hard Deleting Item");
-        itemDao.deleteById(id);
-    }
-
-    @Override
     public SimpleItemDTO copy(Long id) {
         logger.info("Copying Item");
         Item item = itemDao.findOne(id);
@@ -164,9 +146,9 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Long countAll() {
+    public Long countAllNotDeleted() {
         logger.info("Counting all Items");
-        return itemDao.countAll();
+        return itemDao.countAllNotDeleted();
     }
 
     @Override

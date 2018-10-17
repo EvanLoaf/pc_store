@@ -2,7 +2,7 @@ package com.gmail.evanloafakahaitao.pcstore.controller;
 
 import com.gmail.evanloafakahaitao.pcstore.controller.model.Pagination;
 import com.gmail.evanloafakahaitao.pcstore.controller.properties.WebProperties;
-import com.gmail.evanloafakahaitao.pcstore.controller.util.FieldTrimmer;
+import com.gmail.evanloafakahaitao.pcstore.controller.util.FieldTrimmerUtil;
 import com.gmail.evanloafakahaitao.pcstore.controller.util.PaginationUtil;
 import com.gmail.evanloafakahaitao.pcstore.service.DiscountService;
 import com.gmail.evanloafakahaitao.pcstore.service.RoleService;
@@ -37,7 +37,7 @@ public class UsersController {
     private final PaginationUtil paginationUtil;
     private final DiscountService discountService;
     private final Validator userValidator;
-    private final FieldTrimmer fieldTrimmer;
+    private final FieldTrimmerUtil fieldTrimmerUtil;
 
     @Autowired
     public UsersController(
@@ -47,7 +47,7 @@ public class UsersController {
             PaginationUtil paginationUtil,
             DiscountService discountService,
             @Qualifier("userValidator") Validator userValidator,
-            FieldTrimmer fieldTrimmer
+            FieldTrimmerUtil fieldTrimmerUtil
     ) {
         this.pageProperties = pageProperties;
         this.userService = userService;
@@ -55,7 +55,7 @@ public class UsersController {
         this.paginationUtil = paginationUtil;
         this.discountService = discountService;
         this.userValidator = userValidator;
-        this.fieldTrimmer = fieldTrimmer;
+        this.fieldTrimmerUtil = fieldTrimmerUtil;
     }
 
     @GetMapping
@@ -70,7 +70,7 @@ public class UsersController {
         Pagination pagination = new Pagination();
         pagination.setPage(page);
         pagination.setPageNumbers(
-                paginationUtil.getPageNumbers(userService.countAll().intValue())
+                paginationUtil.getPageNumbers(userService.countAllNotDeleted().intValue())
         );
         pagination.setStartPosition(paginationUtil.getPageNumerationStart(page));
         modelMap.addAttribute("pagination", pagination);
@@ -97,7 +97,7 @@ public class UsersController {
             ModelMap modelMap
     ) {
         logger.debug("Executing Users Controller method : updateUser with id " + id);
-        user = fieldTrimmer.trim(user);
+        user = fieldTrimmerUtil.trim(user);
         user.setId(id);
         userValidator.validate(user, result);
         if (result.hasErrors()) {
@@ -118,7 +118,7 @@ public class UsersController {
             ModelMap modelMap
     ) {
         logger.debug("Executing Users Controller method : updateUserByAdmin with id " + id);
-        user = fieldTrimmer.trim(user);
+        user = fieldTrimmerUtil.trim(user);
         user.setId(id);
         userValidator.validate(user, result);
         if (result.hasErrors()) {
@@ -128,6 +128,20 @@ public class UsersController {
             userService.update(user);
             return "redirect:" + WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/users" + "?update=true";
         }
+    }
+
+    @GetMapping(value = "/{id}/update")
+    @PreAuthorize("hasAuthority('update_users_all')")
+    public String updateUserPage(
+            @PathVariable("id") Long id,
+            ModelMap modelMap
+    ) {
+        logger.debug("Executing Users Controller method : updateUserPage with id " + id);
+        UserDTO user = userService.findById(id);
+        List<RoleDTO> roles = roleService.findAll();
+        modelMap.addAttribute("roles", roles);
+        modelMap.addAttribute("user", user);
+        return pageProperties.getUserUpdatePagePath();
     }
 
     @PostMapping(value = "/delete")
@@ -154,20 +168,6 @@ public class UsersController {
         user.setDisabled(disable);
         userService.update(user);
         return "redirect:" + WebProperties.PUBLIC_ENTRY_POINT_PREFIX + "/users";
-    }
-
-    @GetMapping(value = "/{id}/update")
-    @PreAuthorize("hasAuthority('update_users_all')")
-    public String updateUserPage(
-            @PathVariable("id") Long id,
-            ModelMap modelMap
-    ) {
-        logger.debug("Executing Users Controller method : updateUserPage with id " + id);
-        UserDTO user = userService.findById(id);
-        List<RoleDTO> roles = roleService.findAll();
-        modelMap.addAttribute("roles", roles);
-        modelMap.addAttribute("user", user);
-        return pageProperties.getUserUpdatePagePath();
     }
 
     @PostMapping(value = "/discounts/update")

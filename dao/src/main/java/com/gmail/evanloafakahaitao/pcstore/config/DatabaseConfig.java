@@ -50,7 +50,6 @@ public class DatabaseConfig {
     public SpringLiquibase springLiquibase(DataSource dataSource) {
         SpringLiquibase springLiquibase = new SpringLiquibase();
         springLiquibase.setDataSource(dataSource);
-        //TODO temp not drop first
         springLiquibase.setDropFirst(Boolean.TRUE);
         springLiquibase.setChangeLog("classpath:migration/db-changelog.xml");
         return springLiquibase;
@@ -63,7 +62,6 @@ public class DatabaseConfig {
         factoryBean.setDataSource(dataSource);
         factoryBean.setPhysicalNamingStrategy(new StorePhysicalNamingStrategy());
         Properties properties = new Properties();
-        //TODO dialect
         properties.put(DIALECT, databaseProperties.getHibernateDialect());
         properties.put(SHOW_SQL, databaseProperties.getHibernateShowSQL());
         properties.put(FORMAT_SQL, databaseProperties.getHibernateFormatSQL());
@@ -71,10 +69,8 @@ public class DatabaseConfig {
         properties.put(USE_SECOND_LEVEL_CACHE, databaseProperties.getHibernateUseSecondLevelCache());
         properties.put(CACHE_REGION_FACTORY, databaseProperties.getHibernateCacheRegionFactoryClass());
         factoryBean.setHibernateProperties(properties);
-        //TODO need to include disable/soft delete classes?
         factoryBean.setAnnotatedClasses(
                 News.class,
-                Audit.class,
                 Comment.class,
                 SoftDeleteAndDisableEntity.class,
                 Discount.class,

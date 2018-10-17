@@ -12,10 +12,4 @@
            timeToLiveSeconds="30"
            eternal="false"
            overflowToDisk="false"/>
-    <cache name="com.gmail.evanloafakahaitao.pcstore.dao.model.User"
-           maxElementsInMemory="500"
-           timeToIdleSeconds="30"
-           timeToLiveSeconds="30"
-           eternal="false"
-           overflowToDisk="false"/>
 </ehcache>

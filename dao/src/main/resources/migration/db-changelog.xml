@@ -3,22 +3,6 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-1">
-        <createTable tableName="t_audit">
-            <column autoIncrement="true" name="f_id" type="BIGINT UNSIGNED">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="f_user_id" type="BIGINT UNSIGNED">
-                <constraints nullable="false"/>
-            </column>
-            <column name="f_event_type" type="VARCHAR(30)">
-                <constraints nullable="false"/>
-            </column>
-            <column defaultValueComputed="CURRENT_TIMESTAMP" name="f_created" type="datetime">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
     <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-2">
         <createTable tableName="t_business_card">
             <column autoIncrement="true" name="f_id" type="BIGINT UNSIGNED">
@@ -801,11 +785,6 @@
             <column name="f_role_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-31">
-        <createIndex indexName="f_user_id" tableName="t_audit">
-            <column name="f_user_id"/>
-        </createIndex>
-    </changeSet>
     <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-32">
         <createIndex indexName="f_user_id" tableName="t_business_card">
             <column name="f_user_id"/>
@@ -825,9 +804,6 @@
         <createIndex indexName="f_user_id" tableName="t_news">
             <column name="f_user_id"/>
         </createIndex>
-    </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-36">
-        <addForeignKeyConstraint baseColumnNames="f_user_id" baseTableName="t_audit" constraintName="t_audit_ibfk_1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="CASCADE" referencedColumnNames="f_id" referencedTableName="t_user" validate="true"/>
     </changeSet>
     <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-37">
         <addForeignKeyConstraint baseColumnNames="f_user_id" baseTableName="t_business_card" constraintName="t_business_card_ibfk_1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="CASCADE" referencedColumnNames="f_id" referencedTableName="t_user" validate="true"/>
