@@ -3,10 +3,7 @@ package com.gmail.evanloafakahaitao.pcstore.service.impl;
 import com.gmail.evanloafakahaitao.pcstore.dao.DiscountDao;
 import com.gmail.evanloafakahaitao.pcstore.dao.RoleDao;
 import com.gmail.evanloafakahaitao.pcstore.dao.UserDao;
-import com.gmail.evanloafakahaitao.pcstore.dao.model.Discount;
-import com.gmail.evanloafakahaitao.pcstore.dao.model.PermissionEnum;
-import com.gmail.evanloafakahaitao.pcstore.dao.model.Role;
-import com.gmail.evanloafakahaitao.pcstore.dao.model.User;
+import com.gmail.evanloafakahaitao.pcstore.dao.model.*;
 import com.gmail.evanloafakahaitao.pcstore.service.UserService;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.Converter;
 import com.gmail.evanloafakahaitao.pcstore.service.converter.DTOConverter;
@@ -68,13 +65,17 @@ public class UserServiceImpl implements UserService {
         logger.info("Saving User");
         Role role = roleDao.findDefault();
         User user = userConverter.toEntity(userDTO);
+        Profile profile = new Profile();
+        profile.setAddress(userDTO.getAddress());
+        profile.setPhoneNumber(userDTO.getPhoneNumber());
         user.setDisabled(false);
         user.setDeleted(false);
         user.setRole(role);
         user.setPassword(
                 bCryptPasswordEncoder.encode(userDTO.getPassword())
         );
-        user.getProfile().setUser(user);
+        user.setProfile(profile);
+        profile.setUser(user);
         userDao.create(user);
         return userDTOConverter.toDto(user);
     }

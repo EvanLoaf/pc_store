@@ -27,7 +27,7 @@
         <Logger name="com.gmail.evanloafakahaitao.pcstore.controller.api" level="debug">
             <AppenderRef ref="RollingFileApi"/>
         </Logger>
-        <Root level="debug">
+        <Root level="info">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="RollingFile"/>
         </Root>

@@ -37,7 +37,7 @@ public class User extends SoftDeleteAndDisableEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "roleId", nullable = false)
     private Role role;
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Profile profile;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "discountId")

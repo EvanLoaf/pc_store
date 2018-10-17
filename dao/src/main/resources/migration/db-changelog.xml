@@ -223,16 +223,6 @@
             <column name="f_discount_id" type="BIGINT UNSIGNED"/>
         </createTable>
     </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-15">
-        <insert tableName="t_comment">
-            <column name="f_id" valueNumeric="1"/>
-            <column name="f_message" value="test comment"/>
-            <column name="f_created" valueDate="2018-10-17T10:37:06"/>
-            <column name="f_is_deleted" valueBoolean="false"/>
-            <column name="f_user_id" valueNumeric="4"/>
-            <column name="f_news_id" valueNumeric="1"/>
-        </insert>
-    </changeSet>
     <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-16">
         <insert tableName="t_discount">
             <column name="f_id" valueNumeric="1"/>
@@ -251,94 +241,6 @@
             <column name="f_name" value="thirty_percent"/>
             <column name="f_percent" valueNumeric="30"/>
             <column name="f_finish_date" valueDate="2019-10-17T10:37:04"/>
-        </insert>
-    </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-17">
-        <insert tableName="t_feedback">
-            <column name="f_id" valueNumeric="1"/>
-            <column name="f_user_id" valueNumeric="4"/>
-            <column name="f_message" value="hey"/>
-        </insert>
-        <insert tableName="t_feedback">
-            <column name="f_id" valueNumeric="2"/>
-            <column name="f_user_id" valueNumeric="4"/>
-            <column name="f_message" value="there"/>
-        </insert>
-    </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-18">
-        <insert tableName="t_item">
-            <column name="f_id" valueNumeric="1"/>
-            <column name="f_name" value="pc1"/>
-            <column name="f_vendor_code" value="vc1"/>
-            <column name="f_description" value="desc1"/>
-            <column name="f_price" valueNumeric="111.00000"/>
-            <column name="f_is_deleted" valueBoolean="false"/>
-        </insert>
-        <insert tableName="t_item">
-            <column name="f_id" valueNumeric="2"/>
-            <column name="f_name" value="pc2"/>
-            <column name="f_vendor_code" value="vc2"/>
-            <column name="f_description" value="desc2"/>
-            <column name="f_price" valueNumeric="111.00000"/>
-            <column name="f_is_deleted" valueBoolean="false"/>
-        </insert>
-        <insert tableName="t_item">
-            <column name="f_id" valueNumeric="3"/>
-            <column name="f_name" value="pc3"/>
-            <column name="f_vendor_code" value="vc3"/>
-            <column name="f_description" value="desc3"/>
-            <column name="f_price" valueNumeric="111.00000"/>
-            <column name="f_is_deleted" valueBoolean="false"/>
-        </insert>
-        <insert tableName="t_item">
-            <column name="f_id" valueNumeric="4"/>
-            <column name="f_name" value="pc4"/>
-            <column name="f_vendor_code" value="vc4"/>
-            <column name="f_description" value="desc4"/>
-            <column name="f_price" valueNumeric="111.00000"/>
-            <column name="f_is_deleted" valueBoolean="false"/>
-        </insert>
-        <insert tableName="t_item">
-            <column name="f_id" valueNumeric="5"/>
-            <column name="f_name" value="pc5"/>
-            <column name="f_vendor_code" value="vc5"/>
-            <column name="f_description" value="desc5"/>
-            <column name="f_price" valueNumeric="111.00000"/>
-            <column name="f_is_deleted" valueBoolean="false"/>
-        </insert>
-        <insert tableName="t_item">
-            <column name="f_id" valueNumeric="6"/>
-            <column name="f_name" value="pc6"/>
-            <column name="f_vendor_code" value="vc6"/>
-            <column name="f_description" value="desc6"/>
-            <column name="f_price" valueNumeric="111.00000"/>
-            <column name="f_is_deleted" valueBoolean="false"/>
-        </insert>
-        <insert tableName="t_item">
-            <column name="f_id" valueNumeric="7"/>
-            <column name="f_name" value="pc7"/>
-            <column name="f_vendor_code" value="vc7"/>
-            <column name="f_description" value="desc7"/>
-            <column name="f_price" valueNumeric="111.00000"/>
-            <column name="f_is_deleted" valueBoolean="false"/>
-        </insert>
-        <insert tableName="t_item">
-            <column name="f_id" valueNumeric="8"/>
-            <column name="f_name" value="pc8"/>
-            <column name="f_vendor_code" value="vc8"/>
-            <column name="f_description" value="desc8"/>
-            <column name="f_price" valueNumeric="111.00000"/>
-            <column name="f_is_deleted" valueBoolean="false"/>
-        </insert>
-    </changeSet>
-    <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-19">
-        <insert tableName="t_news">
-            <column name="f_id" valueNumeric="1"/>
-            <column name="f_title" value="testnews"/>
-            <column name="f_content" value="test message"/>
-            <column name="f_created" valueDate="2018-10-17T10:37:04"/>
-            <column name="f_is_deleted" valueBoolean="false"/>
-            <column name="f_user_id" valueNumeric="2"/>
         </insert>
     </changeSet>
     <changeSet author="evanloafakahaitao@gmail.com" id="1539761848268-20">
